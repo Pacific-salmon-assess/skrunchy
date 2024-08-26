@@ -55,3 +55,4 @@ data/*.csv
 *.xls
 *.xlsx
 data-out/
+.Rproj.user
