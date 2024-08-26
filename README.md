@@ -10,8 +10,8 @@
 
 The goal of skrunchy is to recreate and update the run reconstruction
 for Skeena River (summer run timing) Chinook upstream of Tyee test
-fishery, as documented in \[Winther et
-al. 2024\]{<https://publications.gc.ca/site/eng/9.901355/publication.html>}
+fishery, as documented in [Winther et
+al. 2024](https://publications.gc.ca/site/eng/9.901355/publication.html "An assessment of Skeena River Chinook salmon using genetic stock identification 1984 to 2020")
 
 ## Installation
 
