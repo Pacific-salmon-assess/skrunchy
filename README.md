@@ -6,7 +6,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-**Sk**eena River **Run** Reconstruction for **Ch**inook
+**Sk**eena River **Run** Reconstruction for **Ch**inook Salmon
 
 The goal of skrunchy is to recreate and update the run reconstruction
 for Skeena River (summer run timing) Chinook upstream of Tyee test
@@ -19,7 +19,7 @@ You can install the development version of skrunchy from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
+install.packages("pak")
 pak::pak("Pacific-salmon-assess/skrunchy")
 ```
 

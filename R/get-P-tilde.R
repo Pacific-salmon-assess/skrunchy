@@ -19,7 +19,7 @@
 get_P_tilde <- function(P, G) {
   populations <- dimnames(P)$i
   stopifnot( "Years are not equal for genetic and catch data" = all.equal(unique(dimnames(P)$y), unique(dimnames(G)$y)))
-  years <- unique(dimnames(P)$y)
+  years <- dimnames(P)$y
   n_years <- length(dimnames(P)$y)
   P_tilde_list <- list() # make empty list to store results for each year
   for(i in 1: n_years) { # cycle through years
