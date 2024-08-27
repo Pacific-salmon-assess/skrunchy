@@ -1,4 +1,5 @@
-
+#' Get population proportions
+#'
 #' Do weekly expansions of catch by weekly genetic proportions, and then sum the weekly expansions by population and year
 #'
 #' @param P Numeric, array of genetic proportions with 3 dimensions: w (statistical week), i (population), and y (year)

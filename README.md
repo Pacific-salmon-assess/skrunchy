@@ -6,7 +6,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-**Run** Reconstruction for **Sk**eena **Ch**inook
+**Sk**eena River **Run** Reconstruction for **Ch**inook
 
 The goal of skrunchy is to recreate and update the run reconstruction
 for Skeena River (summer run timing) Chinook upstream of Tyee test

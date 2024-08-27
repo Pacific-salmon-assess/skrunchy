@@ -2,7 +2,7 @@
 % Please edit documentation in R/get-P-tilde.R
 \name{get_P_tilde}
 \alias{get_P_tilde}
-\title{Do weekly expansions of catch by weekly genetic proportions, and then sum the weekly expansions by population and year}
+\title{Get population proportions}
 \usage{
 get_P_tilde(P, G)
 }
