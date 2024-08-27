@@ -10,6 +10,7 @@ dt <- merge(d, ds, by = c("i", "y"))
 
 
 ggplot(dt, aes(y = P_tilde, x = y, group = i)) +
-  geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde )) +
+  geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde ), colour="dodgerblue") +
+  geom_point() +
   geom_line() +
-  facet_wrap(~i)
+  facet_wrap(~i, ncol=2)

@@ -38,7 +38,7 @@ get_P_tilde <- function(P, sigma_P, G) {
     # Make into proportion of yearly catch by dividing expansions for each population
     # by the total yearly catch. Note that the function(x) gets applied to each
     # element of each vector automatically (not sure why).
-    P_tilde_list2 <- lapply(P_tilde_list1, FUN = function(x) { x / sum(x)} )
+    P_tilde_list2 <- lapply(P_tilde_list1, FUN = function(x) { x / sum(x)} ) # This could replace sum(x) with sum(G[ ,i])
   }
   P_tilde <- abind( P_tilde_list2, along=2) # bind list into array
   dimnames(P_tilde) <- list(i = populations, y = years) # fix names of dimensions
@@ -58,7 +58,7 @@ get_P_tilde <- function(P, sigma_P, G) {
     # Make into proportion of yearly catch by dividing expansions for each population
     # by the total yearly catch. Note that the function(x) gets applied to each
     # element of each vector automatically (not sure why).
-    sigma_P_tilde_list2 <- lapply(sigma_P_tilde_list1, FUN = function(x) { x / sum(x)} ) # FLAG: this is wrong. need to divide by G_y
+    sigma_P_tilde_list2 <- lapply(sigma_P_tilde_list1, FUN = function(x) { x / sum(G[ ,i])} ) # FLAG: need to check thoroughly!
   }
   sigma_P_tilde <- abind( sigma_P_tilde_list2, along=2) # bind list into array
   dimnames(sigma_P_tilde) <- list(i = populations, y = years) # fix names of dimensions
