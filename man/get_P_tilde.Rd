@@ -9,6 +9,8 @@ get_P_tilde(P, sigma_P, G)
 \arguments{
 \item{P}{Numeric, array of genetic proportions with 3 dimensions: w (statistical week), i (population), and y (year)}
 
+\item{sigma_P}{Numeric, array of SD of the genetic proportions, with 3 dimensions: w (week), i (population), and y (year).}
+
 \item{G}{Numeric, array of how many Chinook were caught in the gillnet Tyee Test Fishery by week, with 2 dimensions: w (week) and y (year)}
 }
 \value{

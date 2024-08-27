@@ -3,6 +3,7 @@
 #' Do weekly expansions of catch by weekly genetic proportions, and then sum the weekly expansions by population and year
 #'
 #' @param P Numeric, array of genetic proportions with 3 dimensions: w (statistical week), i (population), and y (year)
+#' @param sigma_P Numeric, array of SD of the genetic proportions, with 3 dimensions: w (week), i (population), and y (year).
 #' @param G Numeric, array of how many Chinook were caught in the gillnet Tyee Test Fishery by week, with 2 dimensions: w (week) and y (year)
 #'
 #' @return Numeric, list of 2 arrays. First is an array of pooled genetic proportions with 2 dimensions: i (population) and y (year).
@@ -33,7 +34,7 @@ get_P_tilde <- function(P, sigma_P, G) {
     # that explicit which vector to use. If there are the same number of weeks w and
     # years y than there could be issues. P is divided by 100 because it comes
     # from the Molecular Genetics Lab in proportions of 100.
-    P_tilde_list[[i]] <- P[,,i] / 100 * G[,i]
+    P_tilde_list[[i]] <- P[,,i] / 100 * G[,i] # THis could potentially be combined with the next 2 lines of code into one line.
     P_tilde_list1 <- lapply(P_tilde_list, FUN = function(x) {apply(x, 2, sum)}) # go through the list and sum weekly expansions by population
     # Make into proportion of yearly catch by dividing expansions for each population
     # by the total yearly catch. Note that the function(x) gets applied to each
@@ -53,7 +54,7 @@ get_P_tilde <- function(P, sigma_P, G) {
     # that explicit which vector to use. If there are the same number of weeks w and
     # years y than there could be issues. P is divided by 100 because it comes
     # from the Molecular Genetics Lab in proportions of 100.
-    sigma_P_tilde_list[[i]] <- sigma_P[,,i] / 100 * G[,i]
+    sigma_P_tilde_list[[i]] <- sigma_P[,,i] / 100 * G[,i] # THis could potentially be combined with the next 2 lines of code into one line.
     sigma_P_tilde_list1 <- lapply(sigma_P_tilde_list, FUN = function(x) {apply(x, 2, function(y) { sqrt(sum(y^2))} )}) # go through the list
     # Make into proportion of yearly catch by dividing expansions for each population
     # by the total yearly catch. Note that the function(x) gets applied to each
