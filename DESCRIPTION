@@ -15,3 +15,6 @@ Config/testthat/edition: 3
 Imports: 
     abind,
     rrandvec
+Depends:
+    abind,
+    rrandvec
