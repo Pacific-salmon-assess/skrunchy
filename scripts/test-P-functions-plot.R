@@ -1,4 +1,8 @@
 
+install.packages("pak")
+pak::pak("Pacific-salmon-assess/skrunchy")
+library(skrunchy)
+
 test <- make_P_G()
 P_tilde <- get_P_tilde(P = test$P, sigma_P = test$sigma_P, G = test$G)
 d <- as.data.frame.table(P_tilde$P_tilde, responseName = "P_tilde")
