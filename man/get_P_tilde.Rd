@@ -4,7 +4,7 @@
 \alias{get_P_tilde}
 \title{Get population proportions}
 \usage{
-get_P_tilde(P, G)
+get_P_tilde(P, sigma_P, G)
 }
 \arguments{
 \item{P}{Numeric, array of genetic proportions with 3 dimensions: w (statistical week), i (population), and y (year)}
@@ -12,7 +12,8 @@ get_P_tilde(P, G)
 \item{G}{Numeric, array of how many Chinook were caught in the gillnet Tyee Test Fishery by week, with 2 dimensions: w (week) and y (year)}
 }
 \value{
-Numeric, array of pooled genetic proportions with 2 dimensions: i (population) and y (year)
+Numeric, list of 2 arrays. First is an array of pooled genetic proportions with 2 dimensions: i (population) and y (year).
+Second is an array of SD of pooled genetic proportions with 2 dimensions: i (population) and y (year).
 }
 \description{
 Do weekly expansions of catch by weekly genetic proportions, and then sum the weekly expansions by population and year
@@ -20,9 +21,11 @@ Do weekly expansions of catch by weekly genetic proportions, and then sum the we
 \examples{
 library(rrandvec)
 library(abind)
-P <- make_P_G()[[1]]
-G <- make_P_G()[[2]]
+test <- make_P_G()
+P <- test$P
+sigma_P <- test$sigma_P
+G <- test$G
 
-P_tilde <- get_P_tilde(P = P, G= G)
+P_tilde <- get_P_tilde(P = P, sigma_P = sigma_P, G= G)
 
 }

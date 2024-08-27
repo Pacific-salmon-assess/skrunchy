@@ -1,0 +1,15 @@
+
+test <- make_P_G()
+P_tilde <- get_P_tilde(P = test$P, sigma_P = test$sigma_P, G = test$G)
+d <- as.data.frame.table(P_tilde$P_tilde, responseName = "P_tilde")
+ds <- as.data.frame.table(P_tilde$sigma_P_tilde, responseName = "sigma_P_tilde")
+dt <- merge(d, ds, by = c("i", "y"))
+
+
+dt <- merge(d, ds, by = c("i", "y"))
+
+
+ggplot(dt, aes(y = P_tilde, x = y, group = i)) +
+  geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde )) +
+  geom_line() +
+  facet_wrap(~i)

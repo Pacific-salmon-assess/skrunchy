@@ -34,9 +34,9 @@ P <- sapply(1:n_years, FUN = function(x) {
     rrandvec( n = n_weeks, d = n_populations)
   }, simplify = "array"
   )
-
+P <- P * 100
 # Make array of SD for genetic mixture proportions
-sigma_P <- array( data = runif(n = n_weeks * n_years * n_populations, min=1,max=20),
+sigma_P <- array( data = runif(n = n_weeks * n_years * n_populations, min=1,max=5),
                   dim = c( n_weeks, n_populations, n_years),
                   dimnames = list(w = 1:n_weeks, i = populations, y = years))
 
