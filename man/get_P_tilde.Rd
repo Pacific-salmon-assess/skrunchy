@@ -20,34 +20,8 @@ Do weekly expansions of catch by weekly genetic proportions, and then sum the we
 \examples{
 library(rrandvec)
 library(abind)
-
-catch_values <- seq(0,100,1) # fake weekly catch values
-n_weeks<- 12 # number of stat weeks in each fishing year
-n_years <- 40 # number of years
-years <- seq(1980, length.out=n_years) # years
-populations <- c("Kitsumkalum", "Lower Skeena", "Middle Skeena", "Zymoetz-Fiddler", "Large Lakes", "Upper Skeena") # populations
-n_populations <- length(populations)
-
-# make array of weekly catches
-G <- array(sample(catch_values, n_weeks*n_years, replace=TRUE), dim=c(n_weeks, n_years),
-           dimnames = list(w= 1:n_weeks, y= years))
-G
-# make list of matrices of genetic mixture proportions (add to 1)
-P_list <- lapply(1:n_years, FUN = function(x) {
-  array( rrandvec( n = n_weeks, d = length(populations)), dim = c(n_weeks,length(populations)))
-}
-)
-# bind list into array
-P <- abind(P_list, along=3)
-
-# Make array of genetic mixture proportions (add to 1)
-P <- sapply(1:n_years, FUN = function(x) {
-  rrandvec( n = n_weeks, d = n_populations)
-}, simplify = "array"
-)
-# name array dimensions
-dimnames(P) <- list(w = 1:n_weeks, i = populations, y = years)
-P
+P <- make_P_G()[[1]]
+G <- make_P_G()[[2]]
 
 P_tilde <- get_P_tilde(P = P, G= G)
 

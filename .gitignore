@@ -56,3 +56,5 @@ data/*.csv
 *.xlsx
 data-out/
 .Rproj.user
+inst/extdata
+inst/extdata/

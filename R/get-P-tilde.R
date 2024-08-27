@@ -6,43 +6,20 @@
 #' @param G Numeric, array of how many Chinook were caught in the gillnet Tyee Test Fishery by week, with 2 dimensions: w (week) and y (year)
 #'
 #' @return Numeric, array of pooled genetic proportions with 2 dimensions: i (population) and y (year)
-#' @export
-#'
+
 #' @examples
 #' library(rrandvec)
 #' library(abind)
-#'
-#' catch_values <- seq(0,100,1) # fake weekly catch values
-#' n_weeks<- 12 # number of stat weeks in each fishing year
-#' n_years <- 40 # number of years
-#' years <- seq(1980, length.out=n_years) # years
-#' populations <- c("Kitsumkalum", "Lower Skeena", "Middle Skeena", "Zymoetz-Fiddler", "Large Lakes", "Upper Skeena") # populations
-#' n_populations <- length(populations)
-#'
-#' # make array of weekly catches
-#' G <- array(sample(catch_values, n_weeks*n_years, replace=TRUE), dim=c(n_weeks, n_years),
-#'            dimnames = list(w= 1:n_weeks, y= years))
-#' G
-#' # make list of matrices of genetic mixture proportions (add to 1)
-#' P_list <- lapply(1:n_years, FUN = function(x) {
-#'   array( rrandvec( n = n_weeks, d = length(populations)), dim = c(n_weeks,length(populations)))
-#' }
-#' )
-#' # bind list into array
-#' P <- abind(P_list, along=3)
-#'
-#' # Make array of genetic mixture proportions (add to 1)
-#' P <- sapply(1:n_years, FUN = function(x) {
-#'   rrandvec( n = n_weeks, d = n_populations)
-#' }, simplify = "array"
-#' )
-#' # name array dimensions
-#' dimnames(P) <- list(w = 1:n_weeks, i = populations, y = years)
-#' P
+#' P <- make_P_G()[[1]]
+#' G <- make_P_G()[[2]]
 #'
 #' P_tilde <- get_P_tilde(P = P, G= G)
 #'
+#' @export
 get_P_tilde <- function(P, G) {
+  populations <- dimnames(P)$i
+  stopifnot( "Years are not equal for genetic and catch data" = all.equal(unique(dimnames(P)$y), unique(dimnames(G)$y)))
+  years <- unique(dimnames(P)$y)
   n_years <- length(dimnames(P)$y)
   P_tilde_list <- list() # make empty list to store results for each year
   for(i in 1: n_years) { # cycle through years
