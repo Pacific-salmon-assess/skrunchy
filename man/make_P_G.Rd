@@ -7,8 +7,9 @@
 make_P_G(
   catch_range = c(0, 100),
   n_weeks = 12,
-  n_years = 40,
-  start_year = 1980,
+  n_years = NA,
+  start_year = 1984,
+  end_year = 2023,
   population_names = c("Kitsumkalum", "Lower Skeena", "Middle Skeena", "Zymoetz-Fiddler",
     "Large Lakes", "Upper Skeena"),
   seed = TRUE,
@@ -20,9 +21,11 @@ make_P_G(
 
 \item{n_weeks}{Number of weeks fished.}
 
-\item{n_years}{Number of years of data to create.}
+\item{n_years}{Number of years of data to create. Default is NA}
 
 \item{start_year}{Start year for fake data.}
+
+\item{end_year}{End year for fake data.}
 
 \item{population_names}{Character vector with names of populations.}
 

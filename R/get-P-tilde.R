@@ -52,6 +52,7 @@ get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE) {
   for(i in 1: n_years) { # cycle through years
     # multiply arrays to get weekly expansions. sigma_P is divided by 100 because it comes
     # from the Molecular Genetics Lab in proportions of 100.
+    # FLAG: this might need to be adjsuted to remove non-summer run, upstream of Tyee populations.
     expand_weeks <- t(t((sigma_P[,,i] / 100)) * G[,i]) # Have to transpose to get rows and columns of results right. Checked by hand in excel.
     sum_sd <- apply(expand_weeks, 1, function(y) { sqrt(sum(y^2)) }) # Add SD by squaring, adding, then square root.
     # Make into proportion of yearly catch by dividing expansions for each population

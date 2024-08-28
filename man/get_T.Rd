@@ -4,7 +4,15 @@
 \alias{get_T}
 \title{Calculate Chinook returns to Terrace}
 \usage{
-get_T(P_tilde, sigma_P_tilde, K, sigma_K, y)
+get_T(
+  P_tilde,
+  sigma_P_tilde,
+  K,
+  sigma_K,
+  y,
+  known_population = "Kitsumkalum",
+  aggregate_population = "Skeena"
+)
 }
 \arguments{
 \item{P_tilde}{Numeric, array of genetic proportions at Skeena Tyee test fishery with 2 dimensions: i (population) and year (y).}
@@ -16,16 +24,27 @@ get_T(P_tilde, sigma_P_tilde, K, sigma_K, y)
 \item{sigma_K}{Numeric, vector of standard error (SE) of K. One dimension: y (year).}
 
 \item{y}{Integer, vector of years for Kitsumkalum Chinook spawners K and sigma_K.}
+
+\item{known_population}{Population i with known or estimated escapement. Defaults to Kitsumkalum.}
+
+\item{aggregate_population}{Population i that is the sum of the other populations. Defaults to Skeena.}
 }
 \value{
-Numeric, an array of
+A list with three elements. First element: Numeric, T which is an array of returns to Terrace with two dimensions: population (i) and year (y).
+Second element: numeric, sigma_T which is an array of SE of returns to Terrace of Chinook, with two dimensions: population (i) and year (y).
+Third element: dataframe with T, sigma_T, and year merged for plotting and reporting.
 }
 \description{
 Calculate returns to Terrace of adult Chinook salmon for population i and year y. Uses pooled genetic proportions and the number of Chinook returns to the Kitsumkalum River.
 }
 \examples{
+d <- make_P_G(start_year = 2000, end_year = 2001)
+res <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
+k <- data.frame( year = c(2000, 2001),
+                kitsumkalum_escapement = c(5000, 6000),
+                sd = c(500, 400))
+T <- get_T(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement,
+          y = k$year)
+T
 
-
-
-#' @export
 }

@@ -27,24 +27,47 @@ The goal of skrunchy is to recreate and update the run reconstruction for Skeena
 
 You can install the development version of skrunchy from [GitHub](https://github.com/) with:
 
-``` r
+```
 install.packages("pak")
 pak::pak("Pacific-salmon-assess/skrunchy")
+```
+
+```{r load-libraries}
+library(skrunchy)
+library(ggplot2)
 ```
 
 ## Example
 
 Make some fake genetic proportion and catch data, expand to estimates of annual proportions, and plot:
 
-```{r example}
-library(skrunchy)
-library(ggplot2)
-d <- make_P_G()
-P_tilde <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
-dt <- P_tilde$df_merged
+```{r example_P_tilde }
 
-ggplot(dt, aes(y = P_tilde, x = y, group = i)) +
+d <- make_P_G()
+res <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
+dp <- res$df_merged
+
+ggplot(dp, aes(y = P_tilde, x = y, group = i)) +
   geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde ), colour="dodgerblue") +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~i, ncol=2) +
+  geom_hline(aes(yintercept=0)) +
+  theme_classic()
+  
+```
+
+Now do expansions to get returns to Terrace for each population plus the aggregate
+
+```{r example_T }
+k <- read.csv(here("data/kitsumkalum-escapement.csv"))
+head(k)
+T <- get_T(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement,
+           y = k$year)
+dt <- T$df_merged
+
+ggplot(dt, aes(y = T, x = y, group = i)) +
+  #geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde ), colour="dodgerblue") +
   geom_point() +
   geom_line() +
   facet_wrap(~i, ncol=2) +

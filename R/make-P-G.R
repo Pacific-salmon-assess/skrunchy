@@ -6,8 +6,9 @@
 #'
 #' @param catch_range Integer, length 2 vector of minimum and maximum catch values to sample between.
 #' @param n_weeks Number of weeks fished.
-#' @param n_years Number of years of data to create.
+#' @param n_years Number of years of data to create. Default is NA
 #' @param start_year Start year for fake data.
+#' @param end_year End year for fake data.
 #' @param population_names Character vector with names of populations.
 #' @param seed Set seed to 1?
 #'
@@ -23,14 +24,16 @@
 #' G <- res$G
 #'
 #' @export
-make_P_G <- function( catch_range = c(0,100), n_weeks = 12, n_years = 40, start_year = 1980,
+make_P_G <- function( catch_range = c(0,100), n_weeks = 12, n_years = NA, start_year = 1984, end_year = 2023,
                       population_names = c("Kitsumkalum", "Lower Skeena", "Middle Skeena", "Zymoetz-Fiddler", "Large Lakes", "Upper Skeena"),
                       seed = TRUE, save_csv = TRUE) {
   if(seed == TRUE) set.seed(1)
   catch_values <- seq( catch_range[1], catch_range[2], 1) # fake weekly catch values
-  years <- seq(start_year, length.out=n_years) # years
+  if(is.na(n_years)) years <- seq(start_year, end_year, 1)
+  if(!is.na(n_years)) years <- seq(start_year, length.out=n_years) # years
   populations <- population_names # populations
   n_populations <- length(populations)
+  n_years <- length(years)
 
 # Make array of genetic mixture proportions (add to 100)
 P <- sapply(1:n_years, FUN = function(x) {
