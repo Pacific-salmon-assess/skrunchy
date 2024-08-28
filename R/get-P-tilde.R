@@ -7,8 +7,9 @@
 #' @param G Numeric, array of how many Chinook were caught in the gillnet Tyee Test Fishery by week, with 2 dimensions: w (week) and y (year)
 #' @param save_csv If TRUE, saves the first year of data as csv files for checking.
 #'
-#' @return Numeric, list of 2 arrays. First is an array of pooled genetic proportions with 2 dimensions: i (population) and y (year).
-#' Second is an array of SD of pooled genetic proportions with 2 dimensions: i (population) and y (year).
+#' @return List of 3 elements. First is an array of pooled genetic proportions with 2 dimensions: i (population) and y (year).
+#' Second is an array of SD of pooled genetic proportions with 2 dimensions: i (population) and y (year). Third is a data frame
+#' with P_tilde, sigma_P_tilde, and year merged for plotting and reporting.
 
 #' @examples
 #' library(rrandvec)
