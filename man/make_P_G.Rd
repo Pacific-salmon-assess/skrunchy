@@ -10,7 +10,9 @@ make_P_G(
   n_years = 40,
   start_year = 1980,
   population_names = c("Kitsumkalum", "Lower Skeena", "Middle Skeena", "Zymoetz-Fiddler",
-    "Large Lakes", "Upper Skeena")
+    "Large Lakes", "Upper Skeena"),
+  seed = TRUE,
+  save_csv = TRUE
 )
 }
 \arguments{
@@ -22,19 +24,21 @@ make_P_G(
 
 \item{start_year}{Start year for fake data.}
 
-\item{population_names}{Character vector with names of populatins.}
+\item{population_names}{Character vector with names of populations.}
+
+\item{seed}{Set seed to 1?}
 }
 \value{
-List with three elements. The first element is P, an array of genetic proportions with 3 dimensions: w (week), i (population), and y (year).
-The second element is sigma_P, an array of SD of the genetic proportions, with 3 dimensions: w (week), i (population), and y (year).
+List with three elements. The first element is P, an array of genetic proportions with 3 dimensions: i (population), w (week), and y (year).
+The second element is sigma_P, an array of SD of the genetic proportions, with 3 dimensions: i (population), w (week),  and y (year).
 The third element is G, an array of how many Chinook were caught in the gillnet Tyee Test Fishery by week, with 2 dimensions: w (week) and y (year).
 }
 \description{
-Make three fake data arrays, one for genetic mixture analysis by week, and one weekly test fishery catch.
+Make three fake data arrays: (1) proportions and (2) SD from genetic mixture analysis by population, week, and year,
+and (3) test fishery Chinook catch by week and year.
 }
 \examples{
 library(rrandvec)
-library(abind)
 res <- make_P_G()
 P <- res$P
 sigma_P <- res$sigma_P

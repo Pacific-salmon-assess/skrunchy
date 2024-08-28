@@ -14,7 +14,9 @@ Suggests:
 Config/testthat/edition: 3
 Imports: 
     abind,
-    rrandvec
+    rrandvec,
+    here
 Depends:
     abind,
-    rrandvec
+    rrandvec,
+    here
