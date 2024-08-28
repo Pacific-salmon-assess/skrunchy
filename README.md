@@ -23,12 +23,34 @@ install.packages("pak")
 pak::pak("Pacific-salmon-assess/skrunchy")
 ```
 
-<!-- ## Example -->
-<!-- This is a basic example which shows you how to solve a common problem: -->
-<!-- ```{r example} -->
-<!-- #library(skrunchy) -->
-<!-- ## basic example code -->
-<!-- ``` -->
+## Example
+
+Make some fake genetic proportion and catch data, expand to estimates of
+annual proportions, and plot:
+
+``` r
+library(skrunchy)
+#> Loading required package: abind
+#> Loading required package: rrandvec
+#> Loading required package: here
+#> here() starts at C:/github/skrunchy
+library(ggplot2)
+d <- make_P_G()
+P_tilde <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
+dt <- P_tilde$df_merged
+dt$y <- as.integer(as.character(dt$y))
+
+ggplot(dt, aes(y = P_tilde, x = y, group = i)) +
+  geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde ), colour="dodgerblue") +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~i, ncol=2) +
+  geom_hline(aes(yintercept=0)) +
+  theme_classic()
+```
+
+<img src="man/figures/README-example-1.png" width="100%" />
+
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 <!-- ```{r cars} -->
 <!-- #summary(cars) -->
