@@ -64,6 +64,7 @@ get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE) {
   d <- as.data.frame.table(P_tilde, responseName = "P_tilde")
   ds <- as.data.frame.table(sigma_P_tilde, responseName = "sigma_P_tilde")
   dt <- merge(d, ds, by = c("i", "y"))
+  dt$y <- as.integer(as.character(dt$y))
 
   res <- list(P_tilde = P_tilde, sigma_P_tilde = sigma_P_tilde, df_merged  = dt)
   res

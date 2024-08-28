@@ -38,7 +38,6 @@ library(ggplot2)
 d <- make_P_G()
 P_tilde <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
 dt <- P_tilde$df_merged
-dt$y <- as.integer(as.character(dt$y))
 
 ggplot(dt, aes(y = P_tilde, x = y, group = i)) +
   geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde ), colour="dodgerblue") +
