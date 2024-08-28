@@ -4,10 +4,12 @@
 \alias{get_T}
 \title{Calculate Chinook returns to Terrace}
 \usage{
-get_T(P_tilde, K, sigma_K, y)
+get_T(P_tilde, sigma_P_tilde, K, sigma_K, y)
 }
 \arguments{
 \item{P_tilde}{Numeric, array of genetic proportions at Skeena Tyee test fishery with 2 dimensions: i (population) and year (y).}
+
+\item{sigma_P_tilde}{Numeric, array of SD of pooled genetic proportions with 2 dimensions: i (population) and y (year).}
 
 \item{K}{Numeric, vector of estimates of Kitsumkalum Chinook spawners (ages 4, 5, 6, and 7, no jacks) based on a mark-recapture study and open population mark-recapture model (POPAN). One dimension: y (year). For more on POPAN models, see Cooch & White 2024 Chapter 12: http://www.phidot.org/software/mark/docs/book/pdf/chap12.pdf}
 
