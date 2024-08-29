@@ -57,11 +57,30 @@ str(d2)
 d <- dplyr::bind_rows(d1, d2)
 write.csv( d, here("data-out", "biodata-merge-no-fix.csv"), row.names = FALSE)
 
+
+
+as.numeric("1M")
+
+
 # get records that were actually aged
 aged <- d[ !is.na(as.numeric(d$age)), ]
+
+# look at sex
+unique(d$sex)
+
+# 2019 was entered in EU age????
+euage <- aged[ grep("^0.*|^1.*", aged$age), ]
+unique(euage$year_catch)
+
+table(d[d$year_catch=="2019", "age"])
+
+# plot
+
 ggplot(aged, aes(x = as.factor(age))) +
   geom_histogram(stat = "count")
-ggplot(aged, aes(x = as.numeric(year_catch))) +
+ggplot(aged, aes(x = as.numeric(year_catch), fill= sex)) +
+  geom_histogram(stat = "count")
+ggplot(aged, aes(x = as.numeric(year_catch), fill= age)) +
   geom_histogram(stat = "count")
 
 ggplot(ws, aes(x = as.numeric(year_catch))) +
