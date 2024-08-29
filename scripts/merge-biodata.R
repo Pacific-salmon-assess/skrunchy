@@ -11,6 +11,8 @@
 
 library(here)
 library(readxl)
+library(ggplot2)
+
 
 fix_names <- function(nms) {
   nms0 <- gsub("VESSEL\\(CFV\\)", "VESSEL_CFV", nms)
@@ -46,15 +48,22 @@ is.element(n2, n1)
 nd1 <- data.frame(names = n1, data = "old")
 nd2 <- data.frame(names = n2, data = "new")
 dm <- merge(nd1, nd2, by="names", all=TRUE, suffixes = c("old", "new"))
-write.csv( dm, here("data-out", "biodata-names-compare.csv"), row.names = FALSE)
+#write.csv( dm, here("data-out", "biodata-names-compare.csv"), row.names = FALSE)
 
 # bind data frames
 str(d1)
 str(d2)
 
 d <- dplyr::bind_rows(d1, d2)
+write.csv( d, here("data-out", "biodata-merge-no-fix.csv"), row.names = FALSE)
 
-library(ggplot2)
+# get records that were actually aged
+aged <- d[ !is.na(as.numeric(d$age)), ]
+ggplot(aged, aes(x = as.factor(age))) +
+  geom_histogram(stat = "count")
+ggplot(aged, aes(x = as.numeric(year_catch))) +
+  geom_histogram(stat = "count")
+
 ggplot(ws, aes(x = as.numeric(year_catch))) +
   geom_histogram()
 ggplot(d, aes(x = as.numeric(year_catch))) +
