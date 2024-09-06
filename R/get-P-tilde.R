@@ -12,7 +12,6 @@
 #' with P_tilde, sigma_P_tilde, and year merged for plotting and reporting.
 
 #' @examples
-#' library(rrandvec)
 #' library(abind)
 #' library(here)
 #' test <- make_P_G()

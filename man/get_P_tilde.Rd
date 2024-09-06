@@ -24,7 +24,6 @@ with P_tilde, sigma_P_tilde, and year merged for plotting and reporting.
 Do weekly expansions of catch by weekly genetic proportions, and then sum the weekly expansions by population and year
 }
 \examples{
-library(rrandvec)
 library(abind)
 library(here)
 test <- make_P_G()

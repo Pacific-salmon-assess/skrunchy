@@ -17,7 +17,6 @@
 #' The third element is G, an array of how many Chinook were caught in the gillnet Tyee Test Fishery by week, with 2 dimensions: w (week) and y (year).
 #'
 #' @examples
-#' library(rrandvec)
 #' res <- make_P_G()
 #' P <- res$P
 #' sigma_P <- res$sigma_P
@@ -36,13 +35,15 @@ make_P_G <- function( catch_range = c(0,100), n_weeks = 12, n_years = NA, start_
   n_years <- length(years)
 
 # Make array of genetic mixture proportions (add to 100)
+# for each year, make a matrix of n_weeks random vectors of length n_populations, that add to 100.
+# Then put the matrix for each year together into an array.
 P <- sapply(1:n_years, FUN = function(x) {
-  # for each year, make a matrix of n_weeks random vectors of length n_populations, that add to 1.
-  # Then transpose so that rows are populations, and multiply by 100 to match molecular
-  # genetics lab data outputs. Then put the matrix for each year together into an array.
-    t(rrandvec( n = n_weeks, d = n_populations)) * 100
+    fdat <- replicate(n_weeks, sample( 3:5, size = n_populations, replace=TRUE ))
+    fdat1 <- apply(fdat, 2, FUN = function(x) { x / sum(x)} * 100)
+    mdat <- matrix(data = fdat1, nrow = n_populations, ncol =  n_weeks, byrow=FALSE )
+    mdat
   }, simplify = "array"
-  )
+)
 
 # Make array of SD for genetic mixture proportions
 sigma_P <- array( data = runif(n =  n_populations * n_weeks * n_years, min=1,max=5),

@@ -41,7 +41,6 @@ Make three fake data arrays: (1) proportions and (2) SD from genetic mixture ana
 and (3) test fishery Chinook catch by week and year.
 }
 \examples{
-library(rrandvec)
 res <- make_P_G()
 P <- res$P
 sigma_P <- res$sigma_P

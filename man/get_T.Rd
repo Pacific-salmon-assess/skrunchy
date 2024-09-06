@@ -38,6 +38,7 @@ Third element: dataframe with T, sigma_T, and year merged for plotting and repor
 Calculate returns to Terrace of adult Chinook salmon for population i and year y. Uses pooled genetic proportions and the number of Chinook returns to the Kitsumkalum River.
 }
 \examples{
+library(abind)
 d <- make_P_G(start_year = 2000, end_year = 2001)
 res <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
 k <- data.frame( year = c(2000, 2001),
