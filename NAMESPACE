@@ -2,4 +2,5 @@
 
 export(get_P_tilde)
 export(get_T)
+export(get_sigma_T)
 export(make_P_G)

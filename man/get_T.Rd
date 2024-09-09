@@ -45,7 +45,7 @@ k <- data.frame( year = c(2000, 2001),
                 kitsumkalum_escapement = c(5000, 6000),
                 sd = c(500, 400))
 T <- get_T(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement,
-          y = k$year)
+          sigma_K = k$sd, y = k$year)
 T
 
 }

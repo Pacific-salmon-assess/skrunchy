@@ -7,8 +7,8 @@ test_that("Populations sum to aggregate", {
   known_population <-  "Kitsumkalum"
   aggregate_population <- "Skeena"
   T <- get_T(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement,
-             y = k$year, known_population = known_population,
-             aggregate_population = aggregate_population)
+             sigma_K = k$sd,
+             y = k$year, known_population = known_population)
   not_aggregate <- dimnames(T$T)$i[ !dimnames(T$T)$i %in% aggregate_population]
   expect_equal( sum( T$T[ not_aggregate, 1] )  ,  T$T[aggregate_population, 1]  )
 })

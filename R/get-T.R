@@ -21,7 +21,7 @@
 #'                 kitsumkalum_escapement = c(5000, 6000),
 #'                 sd = c(500, 400))
 #' T <- get_T(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement,
-#'           y = k$year)
+#'           sigma_K = k$sd, y = k$year)
 #' T
 #'
 #' @export
@@ -30,24 +30,37 @@ get_T <- function(P_tilde, sigma_P_tilde, K, sigma_K, y, known_population = "Kit
   stopifnot("Years do not match between data" = all.equal(unique(dimnames(P_tilde)$y),unique(dimnames(sigma_P_tilde)$y), unique(y)))
   n_years <- length(y)
   n_populations <- length(dimnames(P_tilde)$i) + 1
-  T <- array(data = seq(1, length.out = n_populations* n_years), dim = c(n_populations, n_years),
-             dimnames = list( i = unlist(c( aggregate_population, as.vector(dimnames(P_tilde)["i"]))), y = dimnames(P_tilde)$y ))
+  start_array <- array(data = seq(1, length.out = n_populations* n_years), dim = c(n_populations, n_years),
+                       dimnames = list( i = unlist(c( aggregate_population, as.vector(dimnames(P_tilde)["i"]))), y = dimnames(P_tilde)$y ))
+  T <- start_array
+  sigma_T <- start_array
   unknown_populations <- dimnames(T)$i[ !dimnames(T)$i %in% c(known_population, aggregate_population)]
   for(j in 1:n_years) {
           # expand Kitsumkalum estimate by Kitsumkalum proportion to get aggregate
           T[aggregate_population, j] <- K[j] / P_tilde[known_population, j]
-          # fill in Return to Terrace for Kitsumkalum with K
+          # fill in Return to Terrace for Kitsumkalum with K, mark-recapture estimate
           T[known_population, j ] <- K[j]
           # Populations to fill in with proportion of aggregate
           # multiply proportion by aggregate to get estimate for populations without counts
           T[unknown_populations, j] <- T[aggregate_population,j] * P_tilde[unknown_populations, j]
   }
-  T
   # sigma_T
+  for(j in 1:n_years) {
+    # sigma_T for return to Terrace, Skeena aggregate
+     sigma_T[aggregate_population, j] <- get_sigma_T( T = T[aggregate_population, j],
+                                                      K = K[j], sigma_K = sigma_K[j],
+                                                      P_tilde = P_tilde[known_population, j],
+                                                      sigma_P_tilde = sigma_P_tilde[known_population, j],
+                                                      aggregate_population = TRUE)
+     sigma_T[known_population, j] <- sigma_K[j] # fill in with SE for Kitsumkalum mark recapture estimate
+     sigma_T[unknown_populations, j] <- NA # Leave as 0 for now, waiting to hear from Ivan
+  }
 
-  d <- as.data.frame.table(T, responseName = "T")
-  # df_merged <- merge()
-  df_merged <- d
-  df_merged$y <- as.integer(as.character(df_merged$y))
-  res <- list( T = T, sigma_T = NULL, df_merged = df_merged )
+
+  dt <- as.data.frame.table( T, responseName = "T")
+  dst <- as.data.frame.table( sigma_T, responseName = "sigma_T")
+  df_merged <- merge(dt, dst, by= c( "i", "y"))
+  #df_merged <- d
+  df_merged$y <- as.integer( as.character( df_merged$y ))
+  res <- list( T = T, sigma_T = sigma_T, df_merged = df_merged )
 }

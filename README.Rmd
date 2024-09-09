@@ -62,7 +62,8 @@ Now do expansions to get returns to Terrace for each population plus the aggrega
 ```{r example_T }
 k <- read.csv(here("data/kitsumkalum-escapement.csv"))
 head(k)
-T <- get_T(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement,
+T <- get_T(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement, 
+           sigma_K = k$sd,
            y = k$year)
 dt <- T$df_merged
 
@@ -70,11 +71,13 @@ ggplot(dt, aes(y = T, x = y, group = i)) +
   #geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde ), colour="dodgerblue") +
   geom_point() +
   geom_line() +
-  facet_wrap(~i, ncol=2) +
+  geom_errorbar( aes( ymin = T - sigma_T, ymax = T + sigma_T), colour="dodgerblue") +
+  facet_wrap(~i, ncol=2, scales = "free_y") +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
   
 ```
+
 
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 
