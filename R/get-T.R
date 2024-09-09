@@ -30,6 +30,7 @@ get_T <- function(P_tilde, sigma_P_tilde, K, sigma_K, y, known_population = "Kit
   stopifnot("Years do not match between data" = all.equal(unique(dimnames(P_tilde)$y),unique(dimnames(sigma_P_tilde)$y), unique(y)))
   n_years <- length(y)
   n_populations <- length(dimnames(P_tilde)$i) + 1
+  # make an array with bogus values to fill in with correct dimensions and names
   start_array <- array(data = seq(1, length.out = n_populations* n_years), dim = c(n_populations, n_years),
                        dimnames = list( i = unlist(c( aggregate_population, as.vector(dimnames(P_tilde)["i"]))), y = dimnames(P_tilde)$y ))
   T <- start_array
