@@ -33,7 +33,7 @@ pak::pak("Pacific-salmon-assess/skrunchy")
 ```
 
 ```{r load-libraries}
-#library(skrunchy)
+library(skrunchy)
 library(ggplot2)
 ```
 

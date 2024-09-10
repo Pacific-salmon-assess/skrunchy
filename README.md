@@ -64,22 +64,22 @@ head(k)
 #> 4 1987                  15549  991
 #> 5 1988                  15853  804
 #> 6 1989                  17823 1046
-T <- get_T(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement, 
+X <- get_X(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement, 
            sigma_K = k$sd,
            y = k$year)
-dt <- T$df_merged
+dt <- X$df_merged
 
-ggplot(dt, aes(y = T, x = y, group = i)) +
+ggplot(dt, aes(y = X, x = y, group = i)) +
   #geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde ), colour="dodgerblue") +
   geom_point() +
   geom_line() +
-  geom_errorbar( aes( ymin = T - sigma_T, ymax = T + sigma_T), colour="dodgerblue") +
+  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X), colour="dodgerblue") +
   facet_wrap(~i, ncol=2, scales = "free_y") +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
 ```
 
-<img src="man/figures/README-example_T-1.png" width="100%" />
+<img src="man/figures/README-example_X-1.png" width="100%" />
 
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 <!-- ```{r cars} -->
