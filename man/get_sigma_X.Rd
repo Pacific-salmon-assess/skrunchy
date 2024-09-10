@@ -2,7 +2,7 @@
 % Please edit documentation in R/get-sigma-X.R
 \name{get_sigma_X}
 \alias{get_sigma_X}
-\title{Get standard error for X, return to Terrace}
+\title{Get standard error for X, returns to Terrace}
 \usage{
 get_sigma_X(X, K, sigma_K, P_tilde, sigma_P_tilde, aggregate_population = TRUE)
 }
@@ -23,7 +23,7 @@ get_sigma_X(X, K, sigma_K, P_tilde, sigma_P_tilde, aggregate_population = TRUE)
 Array, numeric, SE of returns to Terrace of Chinook, with two dimensions: population (i) and year (y).
 }
 \description{
-Get standard error for X, return to Terrace
+Calculate the standard error for X, returns to Terrace of Chinook.
 }
 \examples{
 

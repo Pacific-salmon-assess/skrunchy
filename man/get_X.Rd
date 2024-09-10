@@ -25,9 +25,9 @@ get_X(
 
 \item{y}{Integer, vector of years for Kitsumkalum Chinook spawners K and sigma_K.}
 
-\item{known_population}{Population i with known or estimated escapement. Defaults to Kitsumkalum.}
+\item{known_population}{Name if population i with known or estimated escapement. Defaults to Kitsumkalum.}
 
-\item{aggregate_population}{Population i that is the sum of the other populations. Defaults to Skeena.}
+\item{aggregate_population}{Name of population i that is the sum of the other populations. Defaults to Skeena.}
 }
 \value{
 A list with three elements. First element: Numeric, X which is an array of returns to Terrace with two dimensions: population (i) and year (y).

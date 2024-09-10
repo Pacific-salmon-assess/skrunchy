@@ -1,4 +1,6 @@
-#' Get standard error for X, return to Terrace
+#' Get standard error for X, returns to Terrace
+#'
+#' Calculate the standard error for X, returns to Terrace of Chinook.
 #'
 #' @param X Array of returns to Terrace with two dimensions: population (i) and year (y).
 #' @param K Numeric, vector of estimates of Kitsumkalum Chinook spawners (ages 4, 5, 6, and 7, no jacks) based on a mark-recapture study and open population mark-recapture model (POPAN). One dimension: y (year). For more on POPAN models, see Cooch & White 2024 Chapter 12: http://www.phidot.org/software/mark/docs/book/pdf/chap12.pdf

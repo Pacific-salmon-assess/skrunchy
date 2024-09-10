@@ -7,8 +7,8 @@
 #' @param K Numeric, vector of estimates of Kitsumkalum Chinook spawners (ages 4, 5, 6, and 7, no jacks) based on a mark-recapture study and open population mark-recapture model (POPAN). One dimension: y (year). For more on POPAN models, see Cooch & White 2024 Chapter 12: http://www.phidot.org/software/mark/docs/book/pdf/chap12.pdf
 #' @param sigma_K Numeric, vector of standard error (SE) of K. One dimension: y (year).
 #' @param y Integer, vector of years for Kitsumkalum Chinook spawners K and sigma_K.
-#' @param known_population Population i with known or estimated escapement. Defaults to Kitsumkalum.
-#' @param aggregate_population Population i that is the sum of the other populations. Defaults to Skeena.
+#' @param known_population Name if population i with known or estimated escapement. Defaults to Kitsumkalum.
+#' @param aggregate_population Name of population i that is the sum of the other populations. Defaults to Skeena.
 #'
 #' @return A list with three elements. First element: Numeric, X which is an array of returns to Terrace with two dimensions: population (i) and year (y).
 #' Second element: numeric, sigma_X which is an array of SE of returns to Terrace of Chinook, with two dimensions: population (i) and year (y).
@@ -31,7 +31,7 @@ get_X <- function(P_tilde, sigma_P_tilde, K, sigma_K, y, known_population = "Kit
   n_years <- length(y)
   n_populations <- length(dimnames(P_tilde)$i) + 1
   # make an array with bogus values to fill in with correct dimensions and names
-  start_array <- array(data = seq(1, length.out = n_populations* n_years), dim = c(n_populations, n_years),
+  start_array <- array(data = rep(NA, n = n_populations* n_years), dim = c(n_populations, n_years),
                        dimnames = list( i = unlist(c( aggregate_population, as.vector(dimnames(P_tilde)["i"]))), y = dimnames(P_tilde)$y ))
   X <- start_array
   sigma_X <- start_array
