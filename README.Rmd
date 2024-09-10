@@ -33,7 +33,7 @@ pak::pak("Pacific-salmon-assess/skrunchy")
 ```
 
 ```{r load-libraries}
-library(skrunchy)
+#library(skrunchy)
 library(ggplot2)
 ```
 
@@ -59,19 +59,19 @@ ggplot(dp, aes(y = P_tilde, x = y, group = i)) +
 
 Now do expansions to get returns to Terrace for each population plus the aggregate
 
-```{r example_T }
+```{r example_X }
 k <- read.csv(here("data/kitsumkalum-escapement.csv"))
 head(k)
-T <- get_T(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement, 
+X <- get_X(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement, 
            sigma_K = k$sd,
            y = k$year)
-dt <- T$df_merged
+dt <- X$df_merged
 
-ggplot(dt, aes(y = T, x = y, group = i)) +
+ggplot(dt, aes(y = X, x = y, group = i)) +
   #geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde ), colour="dodgerblue") +
   geom_point() +
   geom_line() +
-  geom_errorbar( aes( ymin = T - sigma_T, ymax = T + sigma_T), colour="dodgerblue") +
+  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X), colour="dodgerblue") +
   facet_wrap(~i, ncol=2, scales = "free_y") +
   geom_hline(aes(yintercept=0)) +
   theme_classic()

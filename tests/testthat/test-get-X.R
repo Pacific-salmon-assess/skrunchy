@@ -6,9 +6,9 @@ test_that("Populations sum to aggregate", {
                   sd = c(500, 400))
   known_population <-  "Kitsumkalum"
   aggregate_population <- "Skeena"
-  T <- get_T(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement,
+  X <- get_X(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement,
              sigma_K = k$sd,
              y = k$year, known_population = known_population)
-  not_aggregate <- dimnames(T$T)$i[ !dimnames(T$T)$i %in% aggregate_population]
-  expect_equal( sum( T$T[ not_aggregate, 1] )  ,  T$T[aggregate_population, 1]  )
+  not_aggregate <- dimnames(X$X)$i[ !dimnames(X$X)$i %in% aggregate_population]
+  expect_equal( sum( X$X[ not_aggregate, 1] )  ,  X$X[aggregate_population, 1]  )
 })

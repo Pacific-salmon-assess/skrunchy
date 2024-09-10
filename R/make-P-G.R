@@ -37,18 +37,18 @@ make_P_G <- function( catch_range = c(0,100), n_weeks = 12, n_years = NA, start_
 # Make array of genetic mixture proportions (add to 100)
 # for each year, make a matrix of n_weeks random vectors of length n_populations, that add to 100.
 # Then put the matrix for each year together into an array.
-P <- sapply(1:n_years, FUN = function(x) {
-    fdat <- replicate(n_weeks, sample( 3:5, size = n_populations, replace=TRUE ))
-    fdat1 <- apply(fdat, 2, FUN = function(x) { x / sum(x)} * 100)
-    mdat <- matrix(data = fdat1, nrow = n_populations, ncol =  n_weeks, byrow=FALSE )
+P <- sapply( 1:n_years, FUN = function(x) {
+    fdat <- replicate( n_weeks, sample( 3:5, size = n_populations, replace=TRUE ))
+    fdat1 <- apply( fdat, 2, FUN = function(x) { x / sum(x)} * 100)
+    mdat <- matrix( data = fdat1, nrow = n_populations, ncol =  n_weeks, byrow=FALSE )
     mdat
   }, simplify = "array"
 )
 
 # Make array of SD for genetic mixture proportions
-sigma_P <- array( data = runif(n =  n_populations * n_weeks * n_years, min=1,max=5),
+sigma_P <- array( data = runif( n =  n_populations * n_weeks * n_years, min = 1, max = 5 ),
                   dim = c(  n_populations, n_weeks, n_years),
-                  dimnames = list(i = populations, w = 1:n_weeks,  y = years))
+                  dimnames = list( i = populations, w = 1:n_weeks,  y = years ))
 
 # make array of weekly catches
 G <- array(sample(catch_values, n_weeks*n_years, replace=TRUE), dim=c(n_weeks, n_years),
@@ -56,7 +56,7 @@ G <- array(sample(catch_values, n_weeks*n_years, replace=TRUE), dim=c(n_weeks, n
 
 
 # name array dimensions
-  dimnames(P) <- list(i = populations, w = 1:n_weeks,  y = years)
-  res <- list(P = P, sigma_P = sigma_P, G = G)
+  dimnames(P) <- list( i = populations, w = 1:n_weeks,  y = years )
+  res <- list( P = P, sigma_P = sigma_P, G = G )
   res
 }
