@@ -35,7 +35,7 @@ Second element: numeric, sigma_X which is an array of SE of returns to Terrace o
 Third element: dataframe with X, sigma_X, and year merged for plotting and reporting.
 }
 \description{
-Calculate returns to Terrace of adult Chinook salmon for population i and year y. Uses pooled genetic proportions and the number of Chinook returns to the Kitsumkalum River.
+Calculate returns to Terrace of adult Chinook salmon (X) for population i and year y. Uses pooled genetic proportions and the number of Chinook returns to the Kitsumkalum River.
 }
 \examples{
 library(abind)

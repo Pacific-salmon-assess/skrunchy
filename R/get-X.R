@@ -1,6 +1,6 @@
 #' Calculate Chinook returns to Terrace
 #'
-#' Calculate returns to Terrace of adult Chinook salmon for population i and year y. Uses pooled genetic proportions and the number of Chinook returns to the Kitsumkalum River.
+#' Calculate returns to Terrace of adult Chinook salmon (X) for population i and year y. Uses pooled genetic proportions and the number of Chinook returns to the Kitsumkalum River.
 #'
 #' @param P_tilde Numeric, array of genetic proportions at Skeena Tyee test fishery with 2 dimensions: i (population) and year (y).
 #' @param sigma_P_tilde Numeric, array of SD of pooled genetic proportions with 2 dimensions: i (population) and y (year).
@@ -64,4 +64,5 @@ get_X <- function(P_tilde, sigma_P_tilde, K, sigma_K, y, known_population = "Kit
   #df_merged <- d
   df_merged$y <- as.integer( as.character( df_merged$y ))
   res <- list( X = X, sigma_X = sigma_X, df_merged = df_merged )
+  res
 }

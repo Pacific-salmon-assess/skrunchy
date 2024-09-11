@@ -31,7 +31,7 @@ get_E(
 }
 \value{
 List with two elements. First element: numeric, matrix of escapement values for Chinook with two dimensions: population (i), and year (y).
-Second element: data frame version of matrix, for plotting.
+Second element: data frame version of matrix, for plotting and tables.
 }
 \description{
 Calculates E, escapement by population by subtracting freshwater terminal mortality from returns to Terrace if appropriate.
@@ -46,8 +46,11 @@ k <- data.frame( year = c(2000, 2001),
                 sd = c(500, 400))
 X <- get_X(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement,
           sigma_K = k$sd, y = k$year)
-tau_F_U <- sample(50:100, n = length(k$year), replace=TRUE)
+tau_F_U <- sample(50:100, size = length(k$year), replace=TRUE)
 E <- get_E(K = k$kitsumkalum_escapement, X = X$X, tau_F_U = tau_F_U,
    known_population = "Kitsumkalum",
+    aggregate_population = "Skeena",
+    lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
+    upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"))
 
 }
