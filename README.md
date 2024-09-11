@@ -13,6 +13,23 @@ for Skeena River (summer run timing) Chinook upstream of Tyee test
 fishery, as documented in [Winther et
 al. 2024](https://publications.gc.ca/site/eng/9.901355/publication.html "An assessment of Skeena River Chinook salmon using genetic stock identification 1984 to 2020")
 
+## General methods
+
+Here, we take a known abundance of population $K$ and expand it to
+estimate an aggregate population size $X_{aggregate}$ using the
+proportion of fish from population $K$ in a mixed genetic sample, $P_K$:
+
+$$X_{aggregate} = \frac{K}{P_K}$$ Further, the abundance of other
+populations $X_i$ can be estimated using their genetic proportion $P_i$
+and the aggregate abundance $X_{aggregate}$:
+
+$$X_i = X_{aggregate} \cdot P_i$$ After that, the run is
+“reconstructed”, i.e., from the time the fish are age 3 ocean fish, all
+mortalities (fishery, incidental mortality, brood stock) are added to
+the estimate of spawners to estimate total recruits produced by each
+cohort. This produces estimates of spawners and recruits by brood year,
+which can then be use to model productivity.
+
 ## Installation
 
 You can install the development version of skrunchy from
@@ -89,7 +106,7 @@ ggplot(dt, aes(y = X, x = y, group = i)) +
   geom_line() +
   geom_line(data = de, aes(y = E, x = y, group=i), colour="red") +
   facet_wrap(~i, ncol=2, scales = "free_y") +
-  ylab("Return to Terrace (X) in black, escapement (E) in red.") +
+  ylab("Return to Terrace (X) in black, escapement (E) in red") +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
 ```
