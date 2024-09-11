@@ -32,16 +32,16 @@ install.packages("pak")
 pak::pak("Pacific-salmon-assess/skrunchy")
 ```
 
-```{r load-libraries}
+```{r load-libraries, include = FALSE, echo = FALSE }
 library(skrunchy)
 library(ggplot2)
 ```
 
-## Example
+## Examples
 
 Make some fake genetic proportion and catch data, expand to estimates of annual proportions, and plot:
 
-```{r example_P_tilde }
+```{r example_P_tilde, dpi = 300}
 
 d <- make_P_G()
 res <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
@@ -59,18 +59,17 @@ ggplot(dp, aes(y = P_tilde, x = y, group = i)) +
 
 Now do expansions to get returns to Terrace for each population plus the aggregate
 
-```{r example_X }
+```{r example_X, dpi = 300 }
 k <- read.csv(here("data/kitsumkalum-escapement.csv"))
-head(k)
 X <- get_X(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement, 
            sigma_K = k$sd,
            y = k$year)
 dt <- X$df_merged
 
 ggplot(dt, aes(y = X, x = y, group = i)) +
+  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X), colour="dodgerblue") +
   geom_point() +
   geom_line() +
-  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X), colour="dodgerblue") +
   facet_wrap(~i, ncol=2, scales = "free_y") +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
@@ -78,7 +77,7 @@ ggplot(dt, aes(y = X, x = y, group = i)) +
 ```
 Get escapement for each population, plot with returns to Terrace (note, will only be different for Skeena aggregate and the three upper populations)
 
-```{r example_E }
+```{r example_E, dpi = 300 }
 tau_F_U <- sample(5000:10000, size=length(k$y), replace=TRUE)
 E <- get_E(K = k$kitsumkalum_escapement, X = X$X, tau_F_U = tau_F_U,
      known_population = "Kitsumkalum",
@@ -96,9 +95,9 @@ de <- E$df
 #   
 
 ggplot(dt, aes(y = X, x = y, group = i)) +
+  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X), colour="dodgerblue") +
   geom_point() +
   geom_line() +
-  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X), colour="dodgerblue") +
   geom_line(data = de, aes(y = E, x = y, group=i), colour="red") +
   facet_wrap(~i, ncol=2, scales = "free_y") +
   ylab("Return to Terrace (X) in black, escapement (E) in red.") +

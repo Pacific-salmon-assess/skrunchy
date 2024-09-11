@@ -21,15 +21,7 @@ You can install the development version of skrunchy from
     install.packages("pak")
     pak::pak("Pacific-salmon-assess/skrunchy")
 
-``` r
-library(skrunchy)
-#> Loading required package: abind
-#> Loading required package: here
-#> here() starts at C:/github/skrunchy
-library(ggplot2)
-```
-
-## Example
+## Examples
 
 Make some fake genetic proportion and catch data, expand to estimates of
 annual proportions, and plot:
@@ -56,30 +48,53 @@ aggregate
 
 ``` r
 k <- read.csv(here("data/kitsumkalum-escapement.csv"))
-head(k)
-#>   year kitsumkalum_escapement   sd
-#> 1 1984                   9569 1644
-#> 2 1985                   9081  409
-#> 3 1986                   8080  354
-#> 4 1987                  15549  991
-#> 5 1988                  15853  804
-#> 6 1989                  17823 1046
 X <- get_X(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement, 
            sigma_K = k$sd,
            y = k$year)
 dt <- X$df_merged
 
 ggplot(dt, aes(y = X, x = y, group = i)) +
-  #geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde ), colour="dodgerblue") +
+  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X), colour="dodgerblue") +
   geom_point() +
   geom_line() +
-  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X), colour="dodgerblue") +
   facet_wrap(~i, ncol=2, scales = "free_y") +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
 ```
 
-<img src="man/figures/README-example_X-1.png" width="100%" />
+<img src="man/figures/README-example_X-1.png" width="100%" /> Get
+escapement for each population, plot with returns to Terrace (note, will
+only be different for Skeena aggregate and the three upper populations)
+
+``` r
+tau_F_U <- sample(5000:10000, size=length(k$y), replace=TRUE)
+E <- get_E(K = k$kitsumkalum_escapement, X = X$X, tau_F_U = tau_F_U,
+     known_population = "Kitsumkalum",
+     aggregate_population = "Skeena",
+     lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
+     upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"))
+de <- E$df
+
+# ggplot(data = de, aes(y = E, x = y, group = i)) +
+#   geom_point() +
+#   geom_line() +
+#   facet_wrap(~i, ncol=2, scales = "free_y") +
+#   geom_hline(aes(yintercept=0)) +
+#   theme_classic()
+#   
+
+ggplot(dt, aes(y = X, x = y, group = i)) +
+  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X), colour="dodgerblue") +
+  geom_point() +
+  geom_line() +
+  geom_line(data = de, aes(y = E, x = y, group=i), colour="red") +
+  facet_wrap(~i, ncol=2, scales = "free_y") +
+  ylab("Return to Terrace (X) in black, escapement (E) in red.") +
+  geom_hline(aes(yintercept=0)) +
+  theme_classic()
+```
+
+<img src="man/figures/README-example_E-1.png" width="100%" />
 
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 <!-- ```{r cars} -->
