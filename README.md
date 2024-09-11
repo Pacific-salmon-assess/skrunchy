@@ -31,10 +31,11 @@ $X_{aggregate}$:
 $$X_i = X_{aggregate} \cdot P_i$$
 
 After that, the run is “reconstructed”, i.e., from the time the fish are
-age 3 ocean fish, all mortalities (fishery, incidental mortality, brood
-stock) are added to the estimate of spawners to estimate total recruits
-produced by each cohort. This produces estimates of spawners and
-recruits by brood year, which can then be use to model productivity.
+approximately age 3 ocean fish, all mortalities (fishery, incidental
+mortality, brood stock) are added to the estimate of spawners to
+estimate total recruits produced by each cohort. This produces estimates
+of spawners and recruits by brood year, which can then be use to model
+productivity.
 
 ## Installation
 
