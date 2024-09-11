@@ -54,7 +54,7 @@ library(ggplot2)
 
 ## Examples
 
-Make some fake genetic proportion and catch data, expand to estimates of annual proportions, and plot:
+Make some fake genetic proportion and catch data (by week), expand to estimates of annual proportions, and plot:
 
 ```{r example_P_tilde, dpi = 300}
 
