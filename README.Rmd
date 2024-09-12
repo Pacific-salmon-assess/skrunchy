@@ -82,7 +82,7 @@ X <- get_X(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsum
 dt <- X$df_merged
 
 ggplot(dt, aes(y = X, x = y, group = i)) +
-  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X), colour="dodgerblue") +
+  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
   geom_point() +
   geom_line() +
   facet_wrap(~i, ncol=2, scales = "free_y") +
@@ -101,25 +101,46 @@ E <- get_E(K = k$kitsumkalum_escapement, X = X$X, tau_F_U = tau_F_U,
      upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"))
 de <- E$df
 
-# ggplot(data = de, aes(y = E, x = y, group = i)) +
-#   geom_point() +
-#   geom_line() +
-#   facet_wrap(~i, ncol=2, scales = "free_y") +
-#   geom_hline(aes(yintercept=0)) +
-#   theme_classic()
-#   
 
 ggplot(dt, aes(y = X, x = y, group = i)) +
-  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X), colour="dodgerblue") +
+  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
   geom_point() +
   geom_line() +
-  geom_line(data = de, aes(y = E, x = y, group=i), colour="firebrick") +
+  geom_line(data = de, aes(y = E, x = y, group=i), colour="gray") +
   facet_wrap(~i, ncol=2, scales = "free_y") +
-  ylab("Return to Terrace (X) in black, escapement (E) in red") +
+  ylab("Return to Terrace (X) in black, escapement (E) in gray") +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
 
 ```
+
+Get spawners for each population, plot with returns to Terrace and escapement (note, will only be different for Skeena aggregate and Kitsumkalum, since brood removals are only for Kitsumkalum).
+
+```{r example_S, dpi = 300 }
+# make up brood removal data. Much larger than actual values, so that it is visible on plots. 
+B <- sample(2000:3000, size=length(k$y), replace=TRUE)
+S <- get_S(E = E$E, B = B, 
+     brood_population = "Kitsumkalum",
+     aggregate_population = "Skeena")
+ds <- S$df
+
+
+ggplot(dt, aes(y = X, x = y, group = i)) +
+  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
+  geom_point() +
+  geom_line() +
+  geom_line(data = de, aes(y = E, x = y, group=i), colour="gray") +
+  geom_line(data = ds, aes(y = S, x = y, group=i), colour="dodgerblue", linetype=2) +
+  facet_wrap(~i, ncol=2, scales = "free_y") +
+  ylab("Return to Terrace (X) in black, escapement (E) in gray,/nandspawners (S) in blue") +
+  geom_hline(aes(yintercept=0)) +
+  theme_classic()
+
+```
+
+
+
+
 
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 
