@@ -36,6 +36,7 @@ get_X <- function(P_tilde, sigma_P_tilde, K, sigma_K, y, known_population = "Kit
   X <- start_array
   sigma_X <- start_array
   unknown_populations <- dimnames(X)$i[ !dimnames(X)$i %in% c(known_population, aggregate_population)]
+  # X
   for(j in 1:n_years) {
           # expand Kitsumkalum estimate by Kitsumkalum proportion to get aggregate
           X[aggregate_population, j] <- K[j] / P_tilde[known_population, j]

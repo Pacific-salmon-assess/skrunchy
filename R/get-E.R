@@ -45,17 +45,17 @@ get_E <- function( K, X, tau_F_U,
   start_array <- array(data = sample(c(777,888,999), size = n_populations* n_years, replace=TRUE), dim = c(n_populations, n_years),
                        dimnames = list( i =  populations, y = years))
   E <- start_array
-  for(j in 1:n_years) {
+  for(y in 1:n_years) {
     # fill in Return to Terrace for Kitsumkalum with K, mark-recapture estimate
-    E[known_population, j ] <- K[j]
+    E[known_population, y ] <- K[y]
     # Lower populations
-    E[ lower_populations, j] <- X[lower_populations, j]
+    E[ lower_populations, y] <- X[lower_populations, y]
     # Upper populations
-    for(k in 1:length(upper_populations)) {
-      E[ upper_populations[k], j ] <-   X[ upper_populations[k], j ] -  tau_F_U[j] * X[ upper_populations[k], j ] / X_U[j]
+    for(i in upper_populations) { # FLAG: think this for loop works with the character vector. need to double check the populations work
+      E[ i, y] <-   X[ i, y ] -  tau_F_U[y] * X[ i, y ] / X_U[y]
     }
     # Skeena aggregate escapement
-    E[aggregate_population, j] <- X[aggregate_population,j] - tau_F_U[j]
+    E[aggregate_population, y] <- X[aggregate_population,y] - tau_F_U[y]
   }
 
   de <- as.data.frame.table(E, responseName = "E")
