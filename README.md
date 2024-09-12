@@ -113,9 +113,10 @@ ggplot(dt, aes(y = X, x = y, group = i)) +
 
 <img src="man/figures/README-example_E-1.png" width="100%" />
 
-Get spawners for each population, plot with returns to Terrace and
-escapement (note, will only be different for Skeena aggregate and
-Kitsumkalum, since brood removals are only for Kitsumkalum).
+Get spawners for each population (accounts for brood stock removals),
+plot with returns to Terrace and escapement. Spawners should only be
+different from escapement for Skeena aggregate and Kitsumkalum, since
+brood removals are only for Kitsumkalum).
 
 ``` r
 # make up brood removal data. Much larger than actual values, so that it is visible on plots. 
