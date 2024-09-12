@@ -113,7 +113,7 @@ ggplot(dt, aes(y = X, x = y, group = i)) +
   geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X), colour="dodgerblue") +
   geom_point() +
   geom_line() +
-  geom_line(data = de, aes(y = E, x = y, group=i), colour="red") +
+  geom_line(data = de, aes(y = E, x = y, group=i), colour="firebrick") +
   facet_wrap(~i, ncol=2, scales = "free_y") +
   ylab("Return to Terrace (X) in black, escapement (E) in red") +
   geom_hline(aes(yintercept=0)) +
