@@ -169,6 +169,27 @@ ggplot(dt, aes(y = X, x = y, group = i)) +
 
 <img src="man/figures/README-example_W-1.png" width="100%" />
 
+Get proportion wild spawners for each population and plot. Should only
+be \<1 for Skeena aggregate and Kitsumkalum, since hatchery origin
+spawners only occur for Kitsumkalum. Note this is not real data, p is
+very high for Kitsumkalum across years.
+
+``` r
+p <- get_p(W = W$W, E = E$E)
+dp <- p$df
+
+
+ggplot(dp, aes(y = p, x = y, group = i)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~i, ncol=2) +
+  ylab("Proportion wild spawners") +
+  geom_hline(aes(yintercept=0)) +
+  theme_classic()
+```
+
+<img src="man/figures/README-example_p-1.png" width="100%" />
+
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 <!-- ```{r cars} -->
 <!-- #summary(cars) -->
