@@ -114,7 +114,7 @@ ggplot(dt, aes(y = X, x = y, group = i)) +
 
 ```
 
-Get spawners for each population (accounts for brood stock removals), plot with returns to Terrace and escapement. Spawners should only be different from escapement for Skeena aggregate and Kitsumkalum, since brood removals are only for Kitsumkalum).
+Get spawners for each population (accounts for brood stock removals), plot with returns to Terrace and escapement. Spawners should only be different from escapement for Skeena aggregate and Kitsumkalum, since brood removals are only for Kitsumkalum.
 
 ```{r example_S, dpi = 300 }
 # make up brood removal data. Much larger than actual values, so that it is visible on plots. 
@@ -138,7 +138,30 @@ ggplot(dt, aes(y = X, x = y, group = i)) +
 
 ```
 
+Get wild spawners for each population (accounts for hatchery origin spawners), plot with returns to Terrace, escapement, and spawners. Wild spawners should only be different from spawners for Skeena aggregate and Kitsumkalum, since hatchery origin spawners only occur for Kitsumkalum.
 
+
+```{r example_W, dpi = 300 }
+# make up hatchery spawners data. Larger than actual values, so that it is visible on plots. 
+H <- sample(600:1000, size=length(k$y), replace=TRUE)
+# get Wild spawners
+W <- get_W( S = S$S, H = H) 
+dw <- W$df
+
+
+ggplot(dt, aes(y = X, x = y, group = i)) +
+  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
+  geom_point() +
+  geom_line() +
+  geom_line(data = de, aes(y = E, x = y, group=i), colour="gray") +
+  geom_line(data = ds, aes(y = S, x = y, group=i), colour="dodgerblue", linetype=2) +
+  geom_line(data = dw, aes(y = W, x = y, group=i), colour="orange", linetype=2) +
+  facet_wrap(~i, ncol=2, scales = "free_y") +
+  ylab("Return to Terrace (X) in black, escapement (E) in gray,/nspawners (S) in blue, and wild spawners in orange") +
+  geom_hline(aes(yintercept=0)) +
+  theme_classic()
+
+```
 
 
 

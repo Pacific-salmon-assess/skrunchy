@@ -16,7 +16,7 @@ get_S(E, B, brood_population = "Kitsumkalum", aggregate_population = "Skeena")
 \item{aggregate_population}{Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.}
 }
 \value{
-List with two elements. First element: numeric, matrix of escapement values for Chinook with two dimensions: population (i), and year (y).
+List with two elements. First element: numeric, matrix of spawner values for Chinook with two dimensions: population (i), and year (y).
 Second element: data frame version of matrix, for plotting and tables.
 }
 \description{

@@ -7,7 +7,7 @@
 #' @param brood_population Character, name of population i with where brood removals occurred. Defaults to Kitsumkalum.
 #' @param aggregate_population Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.
 #'
-#' @return List with two elements. First element: numeric, matrix of escapement values for Chinook with two dimensions: population (i), and year (y).
+#' @return List with two elements. First element: numeric, matrix of spawner values for Chinook with two dimensions: population (i), and year (y).
 #'         Second element: data frame version of matrix, for plotting and tables.
 #'
 #' @examples
