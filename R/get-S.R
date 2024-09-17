@@ -33,12 +33,12 @@ get_S <- function( E, B,
   start_array <- array(data = sample(c(999), size = n_populations* n_years, replace=TRUE), dim = c(n_populations, n_years),
                        dimnames = list( i =  populations, y = years))
   S <- start_array
-  for(j in 1:n_years) {
+  for(y in 1:n_years) {
     # Get Spawners for brood population and aggregate population. Escapement minus brood stock.
-    S[brood_population, j ] <- E[ brood_population, j] - B[j]
-    S[ aggregate_population, j] <- E[aggregate_population, j] - B[j]
+    S[brood_population, y ] <- E[ brood_population, y] - B[y]
+    S[ aggregate_population, y] <- E[aggregate_population, y] - B[y]
     # All other populations, spawners = escapement (no brood)
-    S[ no_brood_populations, j ] <- E[ no_brood_populations, j]
+    S[ no_brood_populations, y ] <- E[ no_brood_populations, y]
   }
 
   ds <- as.data.frame.table(S, responseName = "S")
