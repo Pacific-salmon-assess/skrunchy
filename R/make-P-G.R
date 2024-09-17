@@ -25,7 +25,7 @@
 #' @export
 make_P_G <- function( catch_range = c(0,100), n_weeks = 12, n_years = NA, start_year = 1984, end_year = 2023,
                       population_names = c("Kitsumkalum", "Lower Skeena", "Middle Skeena", "Zymoetz-Fiddler", "Large Lakes", "Upper Skeena"),
-                      seed = TRUE, save_csv = TRUE) {
+                      seed = TRUE) {
   if(seed == TRUE) set.seed(1)
   catch_values <- seq( catch_range[1], catch_range[2], 1) # fake weekly catch values
   if(is.na(n_years)) years <- seq(start_year, end_year, 1)

@@ -12,8 +12,7 @@ make_P_G(
   end_year = 2023,
   population_names = c("Kitsumkalum", "Lower Skeena", "Middle Skeena", "Zymoetz-Fiddler",
     "Large Lakes", "Upper Skeena"),
-  seed = TRUE,
-  save_csv = TRUE
+  seed = TRUE
 )
 }
 \arguments{
