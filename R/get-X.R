@@ -37,25 +37,25 @@ get_X <- function(P_tilde, sigma_P_tilde, K, sigma_K, y, known_population = "Kit
   sigma_X <- start_array
   unknown_populations <- dimnames(X)$i[ !dimnames(X)$i %in% c(known_population, aggregate_population)]
   # X
-  for(j in 1:n_years) {
+  for(y in 1:n_years) {
           # expand Kitsumkalum estimate by Kitsumkalum proportion to get aggregate
-          X[aggregate_population, j] <- K[j] / P_tilde[known_population, j]
+          X[aggregate_population, y] <- K[y] / P_tilde[known_population, y]
           # fill in Return to Terrace for Kitsumkalum with K, mark-recapture estimate
-          X[known_population, j ] <- K[j]
+          X[known_population, y ] <- K[y]
           # Populations to fill in with proportion of aggregate
           # multiply proportion by aggregate to get estimate for populations without counts
-          X[unknown_populations, j] <- X[aggregate_population,j] * P_tilde[unknown_populations, j]
+          X[unknown_populations, y] <- X[aggregate_population,y] * P_tilde[unknown_populations, y]
   }
   # sigma_X
-  for(j in 1:n_years) {
+  for(y in 1:n_years) {
     # sigma_X for return to Terrace, Skeena aggregate
-     sigma_X[aggregate_population, j] <- get_sigma_X( X = X[aggregate_population, j],
-                                                      K = K[j], sigma_K = sigma_K[j],
-                                                      P_tilde = P_tilde[known_population, j],
-                                                      sigma_P_tilde = sigma_P_tilde[known_population, j],
+     sigma_X[aggregate_population, y] <- get_sigma_X( X = X[aggregate_population, y],
+                                                      K = K[y], sigma_K = sigma_K[y],
+                                                      P_tilde = P_tilde[known_population, y],
+                                                      sigma_P_tilde = sigma_P_tilde[known_population, y],
                                                       aggregate_population = TRUE)
-     sigma_X[known_population, j] <- sigma_K[j] # fill in with SE for Kitsumkalum mark recapture estimate
-     sigma_X[unknown_populations, j] <- NA # Leave as 0 for now, waiting to hear from Ivan
+     sigma_X[known_population, y] <- sigma_K[y] # fill in with SE for Kitsumkalum mark recapture estimate
+     sigma_X[unknown_populations, y] <- NA # Leave as 0 for now, waiting to hear from Ivan
   }
 
 
