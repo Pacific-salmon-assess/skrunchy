@@ -52,7 +52,7 @@ library(skrunchy)
 library(ggplot2)
 ```
 
-## Examples (currently use fake genetic and catch data - not accurate)
+## Examples (currently use fake data for several data sources - not accurate)
 
 Make some **fake** genetic proportion and catch data (by week), expand to estimates of annual proportions, and plot:
 

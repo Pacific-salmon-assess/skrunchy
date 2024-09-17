@@ -45,7 +45,7 @@ You can install the development version of skrunchy from
     install.packages("pak")
     pak::pak("Pacific-salmon-assess/skrunchy")
 
-## Examples (currently use fake genetic and catch data - not accurate)
+## Examples (currently use fake data for several data sources - not accurate)
 
 Make some **fake** genetic proportion and catch data (by week), expand
 to estimates of annual proportions, and plot:
