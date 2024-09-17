@@ -33,31 +33,31 @@ get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE) {
   years <- dimnames(P)$y
   n_years <- length(dimnames(P)$y)
   P_tilde_list <- list() # make empty list to store results for each year
-  for(i in 1: n_years) { # cycle through years
+  for(y in 1: n_years) { # cycle through years
     # multiply arrays to get weekly expansions. P is divided by 100 because it comes
     # from the Molecular Genetics Lab in proportions of 100.
     # Matrix multiplication, multiplies the proportion for each population and week by the catch for that week.
     # Then gets an annual sum for each population (sums rows, across weeks)
     # FLAG: this might need to be adjsuted to remove non-summer run, upstream of Tyee populations.
-    expand_weeks <- (P[ , , i] / 100) %*% G[ , i] # see https://mbernste.github.io/posts/matrix_vector_mult/
+    expand_weeks <- (P[ , , y] / 100) %*% G[ , y] # see https://mbernste.github.io/posts/matrix_vector_mult/
     # Make into proportion of yearly catch by dividing expansions for each population
     # by the total yearly catch.
-    P_tilde_list[[i]] <- expand_weeks / sum(G[ , i]) # test that these all add to 1 within each year.
+    P_tilde_list[[y]] <- expand_weeks / sum(G[ , y]) # test that these all add to 1 within each year.
   }
   P_tilde <- abind( P_tilde_list, along=2) # bind list into array
   dimnames(P_tilde) <- list(i = populations, y = years) # fix names of dimensions
 
   # sigma for P_tilde
   sigma_P_tilde_list <- list() # make empty list to store results for each year
-  for(i in 1: n_years) { # cycle through years
+  for(y in 1: n_years) { # cycle through years
     # multiply arrays to get weekly expansions. sigma_P is divided by 100 because it comes
     # from the Molecular Genetics Lab in proportions of 100.
     # FLAG: this might need to be adjsuted to remove non-summer run, upstream of Tyee populations.
-    expand_weeks <- t(t((sigma_P[,,i] / 100)) * G[,i]) # Have to transpose to get rows and columns of results right. Checked by hand in excel.
+    expand_weeks <- t(t((sigma_P[,,y] / 100)) * G[,y]) # Have to transpose to get rows and columns of results right. Checked by hand in excel.
     sum_sd <- apply(expand_weeks, 1, function(y) { sqrt(sum(y^2)) }) # Add SD by squaring, adding, then square root.
     # Make into proportion of yearly catch by dividing expansions for each population
     # by the total yearly catch.
-    sigma_P_tilde_list[[i]] <- sum_sd / sum(G[ ,i]) # Divide by total catch for year
+    sigma_P_tilde_list[[y]] <- sum_sd / sum(G[ ,y]) # Divide by total catch for year
   }
   sigma_P_tilde <- abind( sigma_P_tilde_list, along=2) # bind list into array
   dimnames(sigma_P_tilde) <- list(i = populations, y = years) # fix names of dimensions
