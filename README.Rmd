@@ -132,7 +132,7 @@ ggplot(dt, aes(y = X, x = y, group = i)) +
   geom_line(data = de, aes(y = E, x = y, group=i), colour="gray") +
   geom_line(data = ds, aes(y = S, x = y, group=i), colour="dodgerblue", linetype=2) +
   facet_wrap(~i, ncol=2, scales = "free_y") +
-  ylab("Return to Terrace (X) in black, escapement (E) in gray,/nandspawners (S) in blue") +
+  ylab("Return to Terrace (X) in black, escapement (E) in gray,\nandspawners (S) in blue") +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
 
@@ -157,7 +157,7 @@ ggplot(dt, aes(y = X, x = y, group = i)) +
   geom_line(data = ds, aes(y = S, x = y, group=i), colour="dodgerblue", linetype=2) +
   geom_line(data = dw, aes(y = W, x = y, group=i), colour="orange", linetype=2) +
   facet_wrap(~i, ncol=2, scales = "free_y") +
-  ylab("Return to Terrace (X) in black, escapement (E) in gray,/nspawners (S) in blue, and wild spawners in orange") +
+  ylab("Return to Terrace (X) in black, escapement (E) in gray,\nspawners (S) in blue, and wild spawners in orange") +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
 
