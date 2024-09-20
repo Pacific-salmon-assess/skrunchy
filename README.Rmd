@@ -180,9 +180,16 @@ ggplot(dp, aes(y = p, x = y, group = i)) +
   theme_classic()
 
 ```
+
+
+Get age proportions by age, population and year (fake data).
+
+
 ```{r example_omega, dpi = 300 }
  populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
   n_populations <- length(populations)
+  years <- k$year
+  n_years <- length(years)
   ages <- c(3,4,5,6,7)
   p_ages <- c(20,30,40,40,1)
   n_ages <- length(ages)
@@ -192,7 +199,7 @@ ggplot(dp, aes(y = p, x = y, group = i)) +
   omega <- get_omega(n)
 do <- omega$df
 
-ggplot( do, aes(y = omega, x = y)) +
+ggplot( do, aes(y = omega, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   facet_grid( i ~ a) + 

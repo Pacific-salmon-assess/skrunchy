@@ -190,6 +190,31 @@ ggplot(dp, aes(y = p, x = y, group = i)) +
 
 <img src="man/figures/README-example_p-1.png" width="100%" />
 
+Get age proportions by age, population and year (fake data).
+
+``` r
+ populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
+  n_populations <- length(populations)
+  years <- k$year
+  n_years <- length(years)
+  ages <- c(3,4,5,6,7)
+  p_ages <- c(20,30,40,40,1)
+  n_ages <- length(ages)
+  # Make up some age data
+  d <- sapply(p_ages, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
+  n <- array( d,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
+  omega <- get_omega(n)
+do <- omega$df
+
+ggplot( do, aes(y = omega, x = y, group = i)) +
+  geom_point() + 
+  geom_line() + 
+  facet_grid( i ~ a) + 
+  theme_bw()
+```
+
+<img src="man/figures/README-example_omega-1.png" width="100%" />
+
 <!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 <!-- ```{r cars} -->
 <!-- #summary(cars) -->
