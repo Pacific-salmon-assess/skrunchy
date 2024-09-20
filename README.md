@@ -209,8 +209,9 @@ do <- omega$df
 ggplot( do, aes(y = omega, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
+  geom_hline(aes(yintercept=0)) + 
   facet_grid( i ~ a) + 
-  theme_bw()
+  theme_classic()
 ```
 
 <img src="man/figures/README-example_omega-1.png" width="100%" />
