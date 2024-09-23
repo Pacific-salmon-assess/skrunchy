@@ -39,6 +39,7 @@ get_omega <- function(n) {
   omega
   # make data frame for plotting and tables
   d <- as.data.frame.table(omega, responseName = "omega")
+  d$y <- as.integer(as.character(d$y))
   res <- list( omega = omega, df = d )
   res
 }

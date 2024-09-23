@@ -7,7 +7,7 @@
 get_E(
   K,
   X,
-  tau_F_U,
+  Tau_U,
   known_population = "Kitsumkalum",
   aggregate_population = "Skeena",
   lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
@@ -19,7 +19,7 @@ get_E(
 
 \item{X}{Numeric, array of returns to Terrace with two dimensions: population (i) and year (y).}
 
-\item{tau_F_U}{Integer, Chinook terminal mortalities from freshwater fisheries upsteam of Terrace. Includes catch and incidental mortality estimate.}
+\item{Tau_U}{Integer, Chinook terminal mortalities from freshwater fisheries upsteam of Terrace, by year. Includes catch and incidental mortality estimate.}
 
 \item{known_population}{Character, name of population i with known or estimated escapement. Defaults to Kitsumkalum.}
 
@@ -45,8 +45,8 @@ k <- data.frame( year = c(2000, 2001),
                 sd = c(500, 400))
 X <- get_X(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement,
           sigma_K = k$sd, y = k$year)
-tau_F_U <- sample(50:100, size = length(k$year), replace=TRUE)
-E <- get_E(K = k$kitsumkalum_escapement, X = X$X, tau_F_U = tau_F_U,
+Tau_U <- sample(50:100, size = length(k$year), replace=TRUE)
+E <- get_E(K = k$kitsumkalum_escapement, X = X$X, Tau_U = Tau_U,
    known_population = "Kitsumkalum",
     aggregate_population = "Skeena",
     lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
