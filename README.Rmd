@@ -198,13 +198,15 @@ Get age proportions by age, population and year (fake data).
   n <- array( d,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
   omega <- get_omega(n)
 do <- omega$df
+do$y <- as.integer(as.character(do$y))
 
 ggplot( do, aes(y = omega, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
   facet_grid( i ~ a) + 
-  theme_classic()
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
 
 
 ```
