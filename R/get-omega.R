@@ -25,14 +25,19 @@
 #'
 #' @export
 get_omega <- function(n) {
-  sum_n_year <- apply(n, c(1,2), sum)
-  omega <- array( rep(99, length(n)), dim=c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
+  sum_n_year <- apply(n, c(1,2), sum) # sum number of aged fish by year.
+  n_ages <- dim(n)[3]
+  n_years <- dim(n)[2]
+  # make array to fill in with age proportion values
+  omega <- array( rep(99, length(n)), dim=dim(n), dimnames = dimnames(n))
   for(a in 1:n_ages) {
     for(y in 1:n_years) {
+      # divide number of aged fish of each age by total aged in each year.
       omega[ ,y,a] <- n[ ,y,a] / sum_n_year[ ,y]
     }
   }
   omega
+  # make data frame for plotting and tables
   d <- as.data.frame.table(omega, responseName = "omega")
   res <- list( omega = omega, df = d )
   res

@@ -60,6 +60,7 @@ Make some **fake** genetic proportion and catch data (by week), expand to estima
 
 d <- make_P_G()
 res <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
+P_tilde <- res$P_tilde
 dp <- res$df_merged
 
 ggplot(dp, aes(y = P_tilde, x = y, group = i)) +
@@ -191,9 +192,9 @@ Get age proportions by age, population and year (fake data).
   years <- k$year
   n_years <- length(years)
   ages <- c(3,4,5,6,7)
-  p_ages <- c(20,30,40,40,1)
+  p_ages <- c(20,30,40,40,1) # make up relative frequency of different ages
   n_ages <- length(ages)
-  # Make up some age data
+  # Make up some age data - number of aged fish of each age
   d <- sapply(p_ages, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
   n <- array( d,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
   omega <- get_omega(n)
@@ -211,19 +212,23 @@ ggplot( do, aes(y = omega, x = y, group = i)) +
 
 ```
 
+Estimate terminal total mortalities by population, year, and age. 
 
-<!-- What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so: -->
 
-<!-- ```{r cars} -->
-<!-- #summary(cars) -->
-<!-- ``` -->
+```{r example_tau_L, dpi = 300 }
+Tau_L <- sample(500:1000, size = length(k$year))
+tau_L <- get_tau_L(Tau_L = Tau_L, omega = omega, P_tilde = P_tilde, aggregate_population = "Skeena")
+dtauL <- tau_L$df 
+dtauL$y <- as.integer(as.character(dtauL$y))
 
-<!-- You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. -->
+ggplot( dtauL, aes(y =tau_L, x = y, group = i)) +
+  geom_point() + 
+  geom_line() + 
+  geom_hline(aes(yintercept=0)) + 
+  facet_grid( i ~ a, scales="free_y") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
 
-<!-- You can also embed plots, for example: -->
 
-<!-- ```{r pressure, echo = FALSE} -->
-<!-- #plot(pressure) -->
-<!-- ``` -->
 
-<!-- In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN. -->
