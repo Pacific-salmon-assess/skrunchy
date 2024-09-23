@@ -92,8 +92,8 @@ escapement for each population, plot with returns to Terrace (note, will
 only be different for Skeena aggregate and the three upper populations)
 
 ``` r
-tau_F_U <- sample(5000:10000, size=length(k$y), replace=TRUE)
-E <- get_E(K = k$kitsumkalum_escapement, X = X$X, tau_F_U = tau_F_U,
+Tau_U <- sample(5000:10000, size=length(k$y), replace=TRUE)
+E <- get_E(K = k$kitsumkalum_escapement, X = X$X, Tau_U = Tau_U,
      known_population = "Kitsumkalum",
      aggregate_population = "Skeena",
      lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
@@ -206,26 +206,25 @@ Get age proportions by age, population and year (fake data).
   n <- array( d,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
   omega <- get_omega(n)
 do <- omega$df
-do$y <- as.integer(as.character(do$y))
 
 ggplot( do, aes(y = omega, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
-  facet_grid( i ~ a) + 
+  facet_grid( i ~ a ) + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 ```
 
 <img src="man/figures/README-example_omega-1.png" width="100%" />
 
-Estimate terminal total mortalities by population, year, and age.
+Estimate terminal total mortalities in the lower Skeena by population,
+year, and age.
 
 ``` r
-Tau_L <- sample(500:1000, size = length(k$year))
+Tau_L <- sample(1000:2000, size = length(k$year))
 tau_L <- get_tau_L(Tau_L = Tau_L, omega = omega$omega, P_tilde = P_tilde, aggregate_population = "Skeena")
 dtauL <- tau_L$df 
-dtauL$y <- as.integer(as.character(dtauL$y))
 
 ggplot( dtauL, aes(y =tau_L, x = y, group = i)) +
   geom_point() + 
@@ -237,3 +236,25 @@ ggplot( dtauL, aes(y =tau_L, x = y, group = i)) +
 ```
 
 <img src="man/figures/README-example_tau_L-1.png" width="100%" />
+
+Estimate terminal total mortalities in the upper Skeena by population,
+year, and age. Should be 0 for Kitsumkalum, Lower Skeena, and
+Zymoetz-Fiddler.
+
+``` r
+tau_U <- get_tau_U(Tau_U = Tau_U, omega = omega$omega, P_tilde = P_tilde, aggregate_population = "Skeena",
+                   upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
+    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler") )
+
+dtauU <- tau_U$df 
+
+ggplot( dtauU, aes(y =tau_U, x = y, group = i)) +
+  geom_point() + 
+  geom_line() + 
+  geom_hline(aes(yintercept=0)) + 
+  facet_grid( i ~ a) + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_tau_U-1.png" width="100%" />

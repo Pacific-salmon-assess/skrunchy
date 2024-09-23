@@ -204,14 +204,14 @@ ggplot( do, aes(y = omega, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
-  facet_grid( i ~ a) + 
+  facet_grid( i ~ a ) + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 
 
 ```
 
-Estimate terminal total mortalities by population, year, and age. 
+Estimate terminal total mortalities in the lower Skeena by population, year, and age. 
 
 
 ```{r example_tau_L, dpi = 300 }
@@ -228,6 +228,9 @@ ggplot( dtauL, aes(y =tau_L, x = y, group = i)) +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 ```
 
+Estimate terminal total mortalities in the upper Skeena by population, year, and age. Should be 0 for Kitsumkalum, Lower Skeena, and Zymoetz-Fiddler. 
+
+
 ```{r example_tau_U, dpi = 300 }
 tau_U <- get_tau_U(Tau_U = Tau_U, omega = omega$omega, P_tilde = P_tilde, aggregate_population = "Skeena",
                    upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
@@ -235,11 +238,11 @@ tau_U <- get_tau_U(Tau_U = Tau_U, omega = omega$omega, P_tilde = P_tilde, aggreg
 
 dtauU <- tau_U$df 
 
-ggplot( dtauL, aes(y =tau_L, x = y, group = i)) +
+ggplot( dtauU, aes(y =tau_U, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
-  facet_grid( i ~ a, scales="free_y") + 
+  facet_grid( i ~ a) + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 ```
