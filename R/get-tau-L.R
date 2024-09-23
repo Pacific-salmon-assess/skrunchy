@@ -2,6 +2,7 @@
 #'
 #' Calculates the total terminal mortalities of Chinook salmon in the lower Skeena River
 #' (downstream of Terrace), by population, year, and age. Includes fishing plus incidental mortality.
+#' Uses genetic data from Skeena Tyee test fishery, not CTC model outputs.
 #'
 #' @param Tau_L Numeric, vector of total terminal mortalities in the lower Skeena (downstream of Terrace), by year. Combination of FSC and recreational. Note uppercase Tau denotes total not broken out by population or age.
 #' @param omega Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).

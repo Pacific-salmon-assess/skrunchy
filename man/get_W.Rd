@@ -21,7 +21,7 @@ get_W(
 \item{aggregate_population}{Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.}
 }
 \value{
-List with two elements. First element: numeric, matrix of wild spanwer values for Chinook with two dimensions: population (i), and year (y).
+List with two elements. First element: numeric, matrix of wild spawner values for Chinook with two dimensions: population (i), and year (y).
 Second element: data frame version of matrix, for plotting and tables.
 }
 \description{

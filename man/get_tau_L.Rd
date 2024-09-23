@@ -22,6 +22,7 @@ Second object: data frame with same data in long format (columns for population,
 \description{
 Calculates the total terminal mortalities of Chinook salmon in the lower Skeena River
 (downstream of Terrace), by population, year, and age. Includes fishing plus incidental mortality.
+Uses genetic data from Skeena Tyee test fishery, not CTC model outputs.
 }
 \examples{
 populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
