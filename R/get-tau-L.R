@@ -6,7 +6,7 @@
 #' @param Tau_L Numeric, vector of total terminal mortalities in the lower Skeena (downstream of Terrace), by year. Combination of FSC and recreational. Note uppercase Tau denotes total not broken out by population or age.
 #' @param omega Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).
 #' @param P_tilde Numeric, array of genetic proportions at Skeena Tyee test fishery with 2 dimensions: i (population) and year (y).
-#' @param aggregate_population
+#' @param aggregate_population Character, name of aggregate population
 #'
 #' @return A list with two objects. First object: numeric, array of total terminal mortalities in the lower Skeena with three dimensions: population (i), year (y), and age (a).
 #'        Second object: data frame with same data in long format (columns for population, year, and age) for plotting.

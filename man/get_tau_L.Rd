@@ -13,7 +13,7 @@ get_tau_L(Tau_L, omega, P_tilde, aggregate_population = "Skeena")
 
 \item{P_tilde}{Numeric, array of genetic proportions at Skeena Tyee test fishery with 2 dimensions: i (population) and year (y).}
 
-\item{aggregate_population}{}
+\item{aggregate_population}{Character, name of aggregate population}
 }
 \value{
 A list with two objects. First object: numeric, array of total terminal mortalities in the lower Skeena with three dimensions: population (i), year (y), and age (a).
