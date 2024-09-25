@@ -22,8 +22,8 @@ Calculate age proportions (age at return) for populations, based on age data fro
   n_populations <- length(populations)
   years <- 2000:2001
   n_years <- length(years)
-  ages <- c(3,4,5,6,7)
-  p_ages <- c(20,30,40,40,1)
+  ages <- c(4,5,6,7)
+  p_ages <- c(30,40,40,1)
   n_ages <- length(ages)
   # Make up some age data
   d <- sapply(p_ages, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })

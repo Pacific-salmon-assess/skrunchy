@@ -14,14 +14,14 @@ get_W(
 \arguments{
 \item{S}{numeric, matrix of spawner values for Chinook with two dimensions: population (i), and year (y). Chinook that spawned (doesn't include brood stock removals).}
 
-\item{H}{Numeric, vector of number of hatchery origin spawners in hatchery population (i.e., Kitsumkalum River), by year (y).}
+\item{H}{Numeric, vector of number of hatchery origin spawners returning to the population with a hatchery (e.g., Kitsumkalum River), by year (y).}
 
 \item{hatchery_population}{Character, name of population i with where brood removals occurred. Defaults to Kitsumkalum.}
 
 \item{aggregate_population}{Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.}
 }
 \value{
-List with two elements. First element: numeric, matrix of wild spawner values for Chinook with two dimensions: population (i), and year (y).
+List with two elements. First element: numeric, array of wild spawner values for Chinook with two dimensions: population (i), and year (y).
 Second element: data frame version of matrix, for plotting and tables.
 }
 \description{

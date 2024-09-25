@@ -3,11 +3,11 @@
 #' Calculates W, wild spawners by population by subtracting hatchery-origin spawners from Kitsumkalum and Skeena aggregate populations. All other populations, wild spawners = spawners.
 #'
 #' @param S  numeric, matrix of spawner values for Chinook with two dimensions: population (i), and year (y). Chinook that spawned (doesn't include brood stock removals).
-#' @param H Numeric, vector of number of hatchery origin spawners in hatchery population (i.e., Kitsumkalum River), by year (y).
+#' @param H Numeric, vector of number of hatchery origin spawners returning to the population with a hatchery (e.g., Kitsumkalum River), by year (y).
 #' @param hatchery_population Character, name of population i with where brood removals occurred. Defaults to Kitsumkalum.
 #' @param aggregate_population Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.
 #'
-#' @return List with two elements. First element: numeric, matrix of wild spawner values for Chinook with two dimensions: population (i), and year (y).
+#' @return List with two elements. First element: numeric, array of wild spawner values for Chinook with two dimensions: population (i), and year (y).
 #'         Second element: data frame version of matrix, for plotting and tables.
 #'
 #' @examples
