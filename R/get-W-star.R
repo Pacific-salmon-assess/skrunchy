@@ -54,9 +54,9 @@ get_W_star <- function(S_star, H_star, aggregate_population = "Skeena",
     W_star <- array( data = NA, dim = dim(S_star), dimnames = dimnames(S_star))
       for(y in 1:n_years) {
         for(a in 1:n_ages){
-          W_star[aggregate_population,y,a] = S_star[aggregate_population,y,a] - H_star[y,a] # aggregate
-          W_star[hatchery_population,y,a] = S_star[hatchery_population,y,a] - H_star[y,a] # Kitsumkalum
-          W_star[no_hatchery_populations ,y,a] = S_star[no_hatchery_populations,y,a]   # all others
+          W_star[aggregate_population,y,a] <- S_star[aggregate_population,y,a] - H_star[y,a] # aggregate
+          W_star[hatchery_population,y,a] <- S_star[hatchery_population,y,a] - H_star[y,a] # Kitsumkalum
+          W_star[no_hatchery_populations ,y,a] <- S_star[no_hatchery_populations,y,a]   # all others
         }
       }
     d <- as.data.frame.table(W_star, responseName = "W_star", stringsAsFactors = FALSE)
