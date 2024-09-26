@@ -280,6 +280,20 @@ ggplot( tau_M$df, aes(y =tau_M, x = y, group = i)) +
 Get total terminal mortality 
 
 ```{r example_tau, dpi=300}
+tau <- get_tau(tau_U = tau_U$tau_U, tau_L = tau_L$tau_L, tau_M= tau_M$tau_M)
+
+ggplot( tau$df, aes(y =tau, x = y, group = i)) +
+  geom_line() +
+  geom_point() +
+  geom_line( data = tau_L$df, aes(y =tau_L, x = y), colour="goldenrod") +
+  geom_line( data = tau_U$df, aes(y =tau_U, x = y), colour="aquamarine") +
+  geom_line( data = tau_M$df, aes(y =tau_M, x = y), colour="blue") +
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$\\tau$")) +
+  facet_grid( i ~ a, scales="free_y") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+
 ```
 
 
