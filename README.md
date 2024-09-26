@@ -341,7 +341,7 @@ ggplot( TermRun$df, aes(y =TermRun, x = y, group = i)) +
   geom_line( data = tau_W$df, aes(y =tau_W, x = y), colour="darkorange3") +
   geom_line( data = W_star$df, aes(y =W_star, x = y), colour="firebrick") +
   geom_hline(aes(yintercept=0)) + 
-  ylab(TeX("$TermRun$ in black, $\\tau_W$ in orange, and $W_star$ in red")) +
+  ylab(TeX("$TermRun$ in black, $\\tau_W$ in orange, and $W_{star}$ in red")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
@@ -350,3 +350,21 @@ ggplot( TermRun$df, aes(y =TermRun, x = y, group = i)) +
 <img src="man/figures/README-example_TermRun-1.png" width="100%" />
 
 Get mature run
+
+``` r
+use_arr <- TermRun$TermRun["Kitsumkalum",,]
+phi_dot_M <- array(runif(length(use_arr), 0.01, 0.3), dim = dim(use_arr), dimnames = dimnames(use_arr))
+MatureRun <- get_MatureRun(TermRun = TermRun$TermRun, phi_dot_M = phi_dot_M)
+
+ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
+  geom_line(colour="darkgreen") +
+  geom_point(colour ="darkgreen") +
+  geom_line( data = TermRun$df, aes(y =TermRun, x = y, group = i), colour="black") +
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$MatureRun$ in green, $TermRun$ in black")) +
+  facet_grid( i ~ a, scales="free_y") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_MatureRun-1.png" width="100%" />
