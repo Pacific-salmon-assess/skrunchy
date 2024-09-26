@@ -63,9 +63,9 @@
 #' @export
 get_MatureRun <- function(TermRun, phi_dot_M) {
   # check dimensions are the same
-  if(! dim(TermRun)[2] == dim(phi_dot_M)[1])  {
+  if(! dim(TermRun)[2] == dim(phi_dot_M)[1])  { # Note year is second dimension of TermRun and first dimension of phi_dot_M
     stop("Length of year (y) dimensions not equal.") }
-  if(!dim(TermRun)[3] == dim(phi_dot_M)[2])  {
+  if(!dim(TermRun)[3] == dim(phi_dot_M)[2])  {  # Note age is third dimension of TermRun and second dimension of phi_dot_M
     stop("Length of age (a) dimensions not equal.") }
   if(!all(dimnames(TermRun)$y %in% dimnames(phi_dot_M)$y)) {
     stop("Year (y) values are not equal.")    }
