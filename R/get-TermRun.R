@@ -1,0 +1,97 @@
+#' Get terminal run size (wild)
+#'
+#' Calculate the the terminal run size of wild Chinook by population, year, and age.
+#' The terminal run is the number of wild Chinook that made it back to the terminal marine area, and thus
+#' includes the wild total terminal mortalities (fish harvested in terminal areas including marine and river),
+#' the wild spawners, and any wild fish removed for brood stock. Calculated by population (i), year (y) and age (a).
+#'
+#' @param tau_W Numeric, array of wild terminal mortalities with three dimensions:  population (i), year (y), and age (a).
+#' @param W_star Numeric, array of wild spawner values with three dimensions:  population (i), year (y), and age (a).
+#' @param B_star Numeric, array of number of brood stock adult Chinook taken from the Kitsumkalum river, by year (y) and age (a).
+#' @param brood_population Character, name of population i with where brood removals occurred. Defaults to Kitsumkalum.
+#' @param aggregate_population Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.
+#'
+#' @return List with two elements. First element: numeric, array of wild terminal run abundance, with dimensions population (i), year (y), and age (a).
+#' Second element: data frame version of first element for plotting and tables.
+#'
+#'
+#' @examples
+#' library(abind)
+#' d <- make_P_G(start_year = 2000, end_year = 2001)
+#' res <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
+#' k <- data.frame( year = c(2000, 2001),
+#'                 kitsumkalum_escapement = c(5000, 6000),
+#'                 sd = c(500, 400))
+#' X <- get_X(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement,
+#'           sigma_K = k$sd, y = k$year)
+#' Tau_U <- sample(50:100, size = length(k$year), replace=TRUE)
+#' E <- get_E(K = k$kitsumkalum_escapement, X = X$X, Tau_U = Tau_U,
+#'    known_population = "Kitsumkalum",
+#'     aggregate_population = "Skeena",
+#'     lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
+#'     upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"))
+#'   populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
+#'   n_populations <- length(populations)
+#'   years <- 2000:2001
+#'   n_years <- length(years)
+#'   ages <- c(4,5,6,7)
+#'   p_ages <- c(30,40,40,1)
+#'   n_ages <- length(ages)
+#'   # Make up some age data
+#'   d <- sapply(p_ages, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
+#'   n <- array( d,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
+#'   omega <- get_omega(n)
+#'   E_star <- get_E_star(E = E$E, omega = omega$omega)
+#'   B_star <- array(sample(1:50, size= n_years*n_ages), dim = c(n_years, n_ages), dimnames = list( y = years, a = ages))
+#'   B_star[,4] <- 0 # make age 7 brood = 0 so you don't get negative fish in S_star
+#'   S_star <- get_S_star(E_star = E_star$E_star, B_star = B_star)
+#'   H_star <- array(sample(10:40, size=n_years*n_ages), dim = c(n_years, n_ages), dimnames = list( y = years, a = ages))
+#'   W_star <- get_W_star(S_star = S_star$S_star, H_star = H_star,
+#'     aggregate_population = "Skeena", hatchery_population = "Kitsumkalum")
+#' n_obs <- n_populations * n_years * n_ages
+#' com_dims <- c(n_populations, n_years, n_ages)
+#' com_dimnames <- list( i = populations, y= years, a = ages)
+#' tau_U <- array( sample(0:1000, size = n_obs, replace=TRUE), dim = com_dims, dimnames = com_dimnames )
+#' tau_L <- array( sample(0:500, size = n_obs, replace=TRUE), dim = com_dims, dimnames = com_dimnames)
+#' tau_M <- array( sample(0:2000, size = n_obs, replace=TRUE), dim = com_dims, dimnames = com_dimnames)
+#' tau <- get_tau( tau_U = tau_U, tau_L =tau_L, tau_M = tau_M)
+#' p <- array( runif(length(tau$tau), 0.8, 1), dim= dim(tau$tau), dimnames = dimnames(tau$tau))
+#' tau_W <- get_tau_W(tau = tau$tau, p = p)
+#' TermRun <- get_TermRun(tau_W = tau_W$tau_W, W_star = W_star$W_star, B_star=B_star)
+#'
+#'
+#' @export
+get_TermRun <- function(tau_W, W_star, B_star,
+                        brood_population = "Kitsumkalum",
+                        aggregate_population = "Skeena") {
+    # check dimensions and dimension names
+  if(! dim(tau_W)[1] == dim(W_star)[1])  {
+    stop("Length of population (i) dimensions not equal.") }
+  if(!all( dim(tau_W)[2] == dim(W_star)[2] , dim(tau_W)[2] == dim(B_star)[1]))  { # note year is second dimension of tau_W and first dimension of B_star
+    stop("Length of year (y) dimensions not equal.") }
+  if(!all( dim(tau_W)[3] == dim(W_star)[3] , dim(tau_W)[3] == dim(B_star)[2]))  { # note age is third dimension of tau_W and second dimension of B_star
+    stop("Length of age (a) dimensions not equal.") }
+  if(!all(dimnames(tau_W)$i %in% dimnames(W_star)$i )) {
+    stop("Population (i) values are not equal.")    }
+  if(!all(dimnames(tau_W)$y %in% dimnames(W_star)$y , dimnames(tau_W)$y %in% dimnames(B_star)$y )) {
+    stop("Year (y) values are not equal.")    }
+  if(!all(dimnames(tau_W)$a %in% dimnames(W_star)$a , dimnames(tau_W)$a %in% dimnames(B_star)$a )) {
+    stop("Age (a) values are not equal.")    }
+
+  no_brood_populations <- dimnames(W_star)$i[ !dimnames(W_star)$i %in% c(brood_population, aggregate_population)]
+  years <- dimnames(W_star)$y
+  ages <- dimnames(W_star)$a
+  TermRun <- array(NA, dim= dim(W_star), dimnames = dimnames(W_star))
+    for(y in years) {
+      for(a in ages) {
+        TermRun[brood_population,y,a] <- tau_W[brood_population,y,a] + W_star[brood_population,y,a] + B_star[y,a]
+        TermRun[aggregate_population,y,a] <- tau_W[aggregate_population,y,a] + W_star[aggregate_population,y,a] + B_star[y,a]
+        TermRun[no_brood_populations,y,a] <- tau_W[no_brood_populations,y,a] + W_star[no_brood_populations,y,a]
+      }
+    }
+  d <- as.data.frame.table(TermRun, responseName = "TermRun", stringsAsFactors = FALSE)
+  d$y <- as.integer(d$y)
+  res <- list(TermRun = TermRun, df = d)
+  res
+
+}
