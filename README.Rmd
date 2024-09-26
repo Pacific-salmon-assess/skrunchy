@@ -327,7 +327,7 @@ ggplot( TermRun$df, aes(y =TermRun, x = y, group = i)) +
   geom_line( data = tau_W$df, aes(y =tau_W, x = y), colour="darkorange3") +
   geom_line( data = W_star$df, aes(y =W_star, x = y), colour="firebrick") +
   geom_hline(aes(yintercept=0)) + 
-  ylab(TeX("$TermRun$ in black, $\\tau_W$ in orange, and $W*$ in red")) +
+  ylab(TeX("$TermRun$ in black, $\\tau_W$ in orange, and $W^*$ in red")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
