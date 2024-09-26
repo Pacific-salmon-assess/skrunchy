@@ -152,8 +152,8 @@ Get age-specific escapement by using age proportions.
 E_star <- get_E_star(E = E$E, omega = omega$omega)
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
-  geom_point() + 
-  geom_line() + 
+  geom_point( colour="gray") + 
+  geom_line( colour="gray") + 
   geom_hline(aes(yintercept=0)) + 
   facet_grid( i ~ a , scales = "free_y") + 
   ylab("Escapement (E*)") +
@@ -170,12 +170,12 @@ B_star[,4] <- 0 # make age 7 brood = 0 so you don't get negative fish in S_star
 S_star <- get_S_star(E_star = E_star$E_star, B_star = B_star)
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
-  geom_point() + 
-  geom_line() + 
-  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="gray") +
+  geom_point(colour="gray") + 
+  geom_line(colour="gray") + 
+  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="dodgerblue") +
   geom_hline(aes(yintercept=0)) + 
   facet_grid( i ~ a , scales = "free_y") + 
-  ylab("Escapement (E*) in black and spawners (S*) in gray") +
+  ylab("Escapement (E*) in gray and spawners (S*) in blue") +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 
@@ -192,13 +192,13 @@ H_star[,4] <- 0 # make age 7 hatchery 0 to avoid negative wild spawner values.
 W_star <- get_W_star( S_star = S_star$S_star, H_star = H_star) 
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
-  geom_point() + 
-  geom_line() + 
-  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="gray") +
-  geom_line(data = W_star$df, aes(y = W_star, x = y, group = i), colour="dodgerblue") +
+  geom_point(colour="gray") + 
+  geom_line(colour="gray") + 
+  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="dodgerblue") +
+  geom_line(data = W_star$df, aes(y = W_star, x = y, group = i), colour="firebrick") +
   geom_hline(aes(yintercept=0)) + 
   facet_grid( i ~ a , scales = "free_y") + 
-  ylab("Escapement (E*) in black, spawners (S*) in gray\n, and wild spawners (W*) in blue.") +
+  ylab("Escapement (E*) in gray, spawners (S*) in blue\n, and wild spawners (W*) in red.") +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 
