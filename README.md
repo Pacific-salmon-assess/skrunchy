@@ -320,9 +320,9 @@ tau_W <- get_tau_W(tau= tau$tau, p = p$p)
 ggplot( tau$df, aes(y =tau, x = y, group = i)) +
   geom_line() +
   geom_point() +
-  geom_line( data = tau_W$df, aes(y =tau_W, x = y), colour="dodgerblue") +
+  geom_line( data = tau_W$df, aes(y =tau_W, x = y), colour="darkorange3") +
   geom_hline(aes(yintercept=0)) + 
-  ylab(TeX("$\\tau_W$ in blue, and $\\tau$ in black")) +
+  ylab(TeX("$\\tau_W$ in orange, and $\\tau$ in black")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
@@ -331,5 +331,22 @@ ggplot( tau$df, aes(y =tau, x = y, group = i)) +
 <img src="man/figures/README-example_tau_W-1.png" width="100%" />
 
 Get wild terminal run
+
+``` r
+TermRun <- get_TermRun(tau_W = tau_W$tau_W, W_star = W_star$W_star, B_star = B_star)
+
+ggplot( TermRun$df, aes(y =TermRun, x = y, group = i)) +
+  geom_line() +
+  geom_point() +
+  geom_line( data = tau_W$df, aes(y =tau_W, x = y), colour="darkorange3") +
+  geom_line( data = W_star$df, aes(y =W_star, x = y), colour="firebrick") +
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$TermRun$ in black, $\\tau_W$ in orange, and $W_star$ in red")) +
+  facet_grid( i ~ a, scales="free_y") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_TermRun-1.png" width="100%" />
 
 Get mature run
