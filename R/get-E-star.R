@@ -50,6 +50,7 @@ get_E_star <- function(E, omega) {
       }
     }
     d <- as.data.frame.table(E_star, responseName = "E_star", stringsAsFactors = FALSE)
+    d$y <- as.integer(d$y)
     res <- list(E_star = E_star, df = d)
     res
 }

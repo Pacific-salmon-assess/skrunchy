@@ -40,6 +40,7 @@
 #'   omega <- get_omega(n)
 #'   E_star <- get_E_star(E = E$E, omega = omega$omega)
 #'   B_star <- array(sample(1:50, size= n_years*n_ages), dim = c(n_years, n_ages), dimnames = list( y = years, a = ages))
+#'   B_star[,4] <- 0 # make age 7 brood = 0 so you don't get negative fish in S_star
 #'   S_star <- get_S_star(E_star = E_star$E_star, B_star = B_star)
 #'   H_star <- array(sample(10:40, size=n_years*n_ages), dim = c(n_years, n_ages), dimnames = list( y = years, a = ages))
 #'   W_star <- get_W_star(S_star = S_star$S_star, H_star = H_star,
@@ -60,6 +61,7 @@ get_W_star <- function(S_star, H_star, aggregate_population = "Skeena",
         }
       }
     d <- as.data.frame.table(W_star, responseName = "W_star", stringsAsFactors = FALSE)
+    d$y <- as.integer(d$y)
     res <- list(W_star = W_star, df = d)
     res
 }

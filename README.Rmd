@@ -145,53 +145,59 @@ ggplot( do, aes(y = omega, x = y, group = i)) +
 
 Get age-specific escapement by using age proportions. 
 
+```{r example_E_star, dpi=300}
+E_star <- get_E_star(E = E$E, omega = omega$omega)
+
+ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
+  geom_point() + 
+  geom_line() + 
+  geom_hline(aes(yintercept=0)) + 
+  facet_grid( i ~ a , scales = "free_y") + 
+  ylab("Escapement (E*)") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
 
 Get spawners for each population (accounts for brood stock removals), plot with returns to Terrace and escapement. Spawners should only be different from escapement for Skeena aggregate and Kitsumkalum, since brood removals are only for Kitsumkalum.
 
-```{r example_S, dpi = 300 }
+```{r example_S_star, dpi = 300 }
 # make up brood removal data. Much larger than actual values, so that it is visible on plots. 
-B <- sample(2000:3000, size=length(k$y), replace=TRUE)
-S <- get_S(E = E$E, B = B, 
-     brood_population = "Kitsumkalum",
-     aggregate_population = "Skeena")
-ds <- S$df
+B_star <- E_star$E_star["Kitsumkalum",,] * runif(n = length(E_star$E_star["Kitsumkalum",,] ), 0.1, 0.2 )
+B_star[,4] <- 0 # make age 7 brood = 0 so you don't get negative fish in S_star
+S_star <- get_S_star(E_star = E_star$E_star, B_star = B_star)
 
-
-ggplot(dt, aes(y = X, x = y, group = i)) +
-  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
-  geom_point() +
-  geom_line() +
-  geom_line(data = de, aes(y = E, x = y, group=i), colour="gray") +
-  geom_line(data = ds, aes(y = S, x = y, group=i), colour="dodgerblue", linetype=2) +
-  facet_wrap(~i, ncol=2, scales = "free_y") +
-  ylab("Return to Terrace (X) in black, escapement (E) in gray,\nandspawners (S) in blue") +
-  geom_hline(aes(yintercept=0)) +
-  theme_classic()
+ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
+  geom_point() + 
+  geom_line() + 
+  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="gray") +
+  geom_hline(aes(yintercept=0)) + 
+  facet_grid( i ~ a , scales = "free_y") + 
+  ylab("Escapement (E*) in black and spawners (S*) in gray") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
 
 ```
 
 Get wild spawners for each population (accounts for hatchery origin spawners), plot with returns to Terrace, escapement, and spawners. Wild spawners should only be different from spawners for Skeena aggregate and Kitsumkalum, since hatchery origin spawners only occur for Kitsumkalum.
 
 
-```{r example_W, dpi = 300 }
+```{r example_W_star, dpi = 300 }
 # make up hatchery spawners data. Larger than actual values, so that it is visible on plots. 
-H <- sample(600:1000, size=length(k$y), replace=TRUE)
-# get Wild spawners
-W <- get_W( S = S$S, H = H) 
-dw <- W$df
+H_star <- W_star$W_star["Kitsumkalum",,] * runif(n = length(W_star$W_star["Kitsumkalum",,] ), 0.1, 0.5 )
+H_star[,4] <- 0 # make age 7 hatchery 0 to avoid negative wild spawner values.
+## get Wild spawners
+W_star <- get_W_star( S_star = S_star$S_star, H_star = H_star) 
 
-
-ggplot(dt, aes(y = X, x = y, group = i)) +
-  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
-  geom_point() +
-  geom_line() +
-  geom_line(data = de, aes(y = E, x = y, group=i), colour="gray") +
-  geom_line(data = ds, aes(y = S, x = y, group=i), colour="dodgerblue", linetype=2) +
-  geom_line(data = dw, aes(y = W, x = y, group=i), colour="orange", linetype=2) +
-  facet_wrap(~i, ncol=2, scales = "free_y") +
-  ylab("Return to Terrace (X) in black, escapement (E) in gray,\nspawners (S) in blue, and wild spawners in orange") +
-  geom_hline(aes(yintercept=0)) +
-  theme_classic()
+ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
+  geom_point() + 
+  geom_line() + 
+  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="gray") +
+  geom_line(data = W_star$df, aes(y = W_star, x = y, group = i), colour="dodgerblue") +
+  geom_hline(aes(yintercept=0)) + 
+  facet_grid( i ~ a , scales = "free_y") + 
+  ylab("Escapement (E*) in black, spawners (S*) in gray\n, and wild spawners (W*) in blue.") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
 
 ```
 
@@ -199,14 +205,12 @@ Get proportion wild spawners for each population and plot. Should only be <1 for
 
 
 ```{r example_p, dpi = 300 }
-p <- get_p(W = W$W, E = E$E)
-dp <- p$df
+p <- get_p(W_star = W_star$W_star, E_star = E_star$E_star)
 
-
-ggplot(dp, aes(y = p, x = y, group = i)) +
+ggplot(p$df, aes(y = p, x = y, group = i)) +
   geom_point() +
   geom_line() +
-  facet_wrap(~i, ncol=2) +
+  facet_grid(i~a, scales="free_y") +
   ylab("Proportion wild spawners") +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
@@ -245,7 +249,7 @@ ggplot( dtauU, aes(y =tau_U, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
-  facet_grid( i ~ a) + 
+  facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 ```

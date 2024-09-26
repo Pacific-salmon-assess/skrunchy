@@ -4,9 +4,21 @@
 \alias{get_S}
 \title{Get spawners by population}
 \usage{
-get_S(E, B, brood_population = "Kitsumkalum", aggregate_population = "Skeena")
+get_S(
+  method = "sum_ages",
+  S_star,
+  E,
+  B,
+  brood_population = "Kitsumkalum",
+  aggregate_population = "Skeena"
+)
 }
 \arguments{
+\item{method}{How to calcute spawners (S)? If "sum_ages", take the sum across ages of S_star (age-specific spawner array).
+If "subtract_brood", uses non-age-specific escapement (E) and subtracts non-age-specific brood stock removals (B). Defaults to sum_ages.}
+
+\item{S_star}{Numeric, array of spawner values with three dimensions:  population (i), year (y), and age (a).}
+
 \item{E}{numeric, matrix of escapement values for Chinook with two dimensions: population (i), and year (y). Chinook that 'escaped' fisheries en route to spawning river.}
 
 \item{B}{Numeric, vector of number of brood stock adult Chinook taken from the Kitsumkalum river, by year (y).}
@@ -20,9 +32,43 @@ List with two elements. First element: numeric, matrix of spawner values for Chi
 Second element: data frame version of matrix, for plotting and tables.
 }
 \description{
-Calculates S, spawners by population by subtracting brood stock removals from Kitsumkalum and Skeena aggregate populations. All other populations, spawners = escapement.
+Calculates spawners (S,  not age-specific) by population by either summing S_star by ages, or subtracting brood stock removals (B) from escapement (E) of Kitsumkalum and Skeena aggregate populations.
+All other populations, spawners (S) = escapement (E).
 }
 \examples{
+# Sum ages method
+library(abind)
+d <- make_P_G(start_year = 2000, end_year = 2001)
+res <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
+k <- data.frame( year = c(2000, 2001),
+                 kitsumkalum_escapement = c(5000, 6000),
+                 sd = c(500, 400))
+X <- get_X(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement,
+           sigma_K = k$sd, y = k$year)
+Tau_U <- sample(50:100, size = length(k$year), replace=TRUE)
+E <- get_E(K = k$kitsumkalum_escapement, X = X$X, Tau_U = Tau_U,
+           known_population = "Kitsumkalum",
+           aggregate_population = "Skeena",
+           lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
+           upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"))
+populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
+n_populations <- length(populations)
+years <- 2000:2001
+n_years <- length(years)
+ages <- c(4,5,6,7)
+p_ages <- c(30,40,40,1)
+n_ages <- length(ages)
+# Make up some age data
+d <- sapply(p_ages, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
+n <- array( d,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
+omega <- get_omega(n)
+E_star <- get_E_star(E = E$E, omega = omega$omega)
+B_star <- array(sample(1:10, size= n_years*n_ages), dim = c(n_years, n_ages), dimnames = list( y = years, a = ages))
+B_star[,4] <- 0 # make age 7 brood = 0 so you don't get negative fish in S_star
+S_star <- get_S_star(E_star = E_star$E_star, B_star = B_star)
+S <- get_S(method="sum_ages", S_star = S_star$S_star)
+
+# Subtract brood method
   populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
   n_populations <- length(populations)
   years <- 2000:2001
@@ -31,6 +77,6 @@ Calculates S, spawners by population by subtracting brood stock removals from Ki
                        dimnames = list( i =  populations, y = years))
  E["Skeena", ] <- apply(E[!dimnames(E)$i=="Skeena", ], 2, sum)
  B <- sample(50:100, size=n_years)
- S <- get_S( E = E, B = B)
+ S <- get_S( method= "subtract_brood", E = E, B = B)
 
 }
