@@ -203,7 +203,7 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   geom_line(data = W_star$df, aes(y = W_star, x = y, group = i), colour="firebrick") +
   geom_hline(aes(yintercept=0)) + 
   facet_grid( i ~ a , scales = "free_y") + 
-  ylab("Escapement (E*) in gray, spawners (S*) in blue\n, and wild spawners (W*) in red.") +
+  ylab("Escapement (E*) in gray, spawners (S*) in blue,\nand wild spawners (W*) in red.") +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 ```
