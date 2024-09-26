@@ -314,6 +314,22 @@ ggplot( tau$df, aes(y =tau, x = y, group = i)) +
 
 Get wild total terminal mortality
 
+``` r
+tau_W <- get_tau_W(tau= tau$tau, p = p$p)
+
+ggplot( tau$df, aes(y =tau, x = y, group = i)) +
+  geom_line() +
+  geom_point() +
+  geom_line( data = tau_W$df, aes(y =tau_W, x = y), colour="dodgerblue") +
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$\\tau_W$ in blue, and $\\tau$ in black")) +
+  facet_grid( i ~ a, scales="free_y") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_tau_W-1.png" width="100%" />
+
 Get wild terminal run
 
 Get mature run
