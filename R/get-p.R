@@ -65,6 +65,7 @@ get_p <- function( W_star, E_star, hatchery_population = "Kitsumkalum",
   p1 <- p
   p1[ is.nan(p1)] <- 1 # replace NaN from 0/0 with 1. This is for cases where there were 0 spawners and 0 wild spawners.
   d <- as.data.frame.table(p1, responseName = "p", stringsAsFactors = FALSE)
+  d$y <- as.integer(d$y)
   res <- list(p = p1, df = d)
   res
 }

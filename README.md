@@ -62,6 +62,7 @@ ggplot(dp, aes(y = P_tilde, x = y, group = i)) +
   geom_point() +
   geom_line() +
   facet_wrap(~i, ncol=2) +
+  ylab(TeX("$\\tilde{P}$")) +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
 ```
@@ -114,83 +115,6 @@ ggplot(dt, aes(y = X, x = y, group = i)) +
 
 <img src="man/figures/README-example_E-1.png" width="100%" />
 
-Get spawners for each population (accounts for brood stock removals),
-plot with returns to Terrace and escapement. Spawners should only be
-different from escapement for Skeena aggregate and Kitsumkalum, since
-brood removals are only for Kitsumkalum.
-
-``` r
-# make up brood removal data. Much larger than actual values, so that it is visible on plots. 
-B <- sample(2000:3000, size=length(k$y), replace=TRUE)
-S <- get_S(E = E$E, B = B, 
-     brood_population = "Kitsumkalum",
-     aggregate_population = "Skeena")
-ds <- S$df
-
-
-ggplot(dt, aes(y = X, x = y, group = i)) +
-  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
-  geom_point() +
-  geom_line() +
-  geom_line(data = de, aes(y = E, x = y, group=i), colour="gray") +
-  geom_line(data = ds, aes(y = S, x = y, group=i), colour="dodgerblue", linetype=2) +
-  facet_wrap(~i, ncol=2, scales = "free_y") +
-  ylab("Return to Terrace (X) in black, escapement (E) in gray,\nandspawners (S) in blue") +
-  geom_hline(aes(yintercept=0)) +
-  theme_classic()
-```
-
-<img src="man/figures/README-example_S-1.png" width="100%" />
-
-Get wild spawners for each population (accounts for hatchery origin
-spawners), plot with returns to Terrace, escapement, and spawners. Wild
-spawners should only be different from spawners for Skeena aggregate and
-Kitsumkalum, since hatchery origin spawners only occur for Kitsumkalum.
-
-``` r
-# make up hatchery spawners data. Larger than actual values, so that it is visible on plots. 
-H <- sample(600:1000, size=length(k$y), replace=TRUE)
-# get Wild spawners
-W <- get_W( S = S$S, H = H) 
-dw <- W$df
-
-
-ggplot(dt, aes(y = X, x = y, group = i)) +
-  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
-  geom_point() +
-  geom_line() +
-  geom_line(data = de, aes(y = E, x = y, group=i), colour="gray") +
-  geom_line(data = ds, aes(y = S, x = y, group=i), colour="dodgerblue", linetype=2) +
-  geom_line(data = dw, aes(y = W, x = y, group=i), colour="orange", linetype=2) +
-  facet_wrap(~i, ncol=2, scales = "free_y") +
-  ylab("Return to Terrace (X) in black, escapement (E) in gray,\nspawners (S) in blue, and wild spawners in orange") +
-  geom_hline(aes(yintercept=0)) +
-  theme_classic()
-```
-
-<img src="man/figures/README-example_W-1.png" width="100%" />
-
-Get proportion wild spawners for each population and plot. Should only
-be \<1 for Skeena aggregate and Kitsumkalum, since hatchery origin
-spawners only occur for Kitsumkalum. Note this is not real data, p is
-very high for Kitsumkalum across years.
-
-``` r
-p <- get_p(W = W$W, E = E$E)
-dp <- p$df
-
-
-ggplot(dp, aes(y = p, x = y, group = i)) +
-  geom_point() +
-  geom_line() +
-  facet_wrap(~i, ncol=2) +
-  ylab("Proportion wild spawners") +
-  geom_hline(aes(yintercept=0)) +
-  theme_classic()
-```
-
-<img src="man/figures/README-example_p-1.png" width="100%" />
-
 Get age proportions by age, population and year (fake data).
 
 ``` r
@@ -198,8 +122,8 @@ Get age proportions by age, population and year (fake data).
   n_populations <- length(populations)
   years <- k$year
   n_years <- length(years)
-  ages <- c(3,4,5,6,7)
-  p_ages <- c(20,30,40,40,1) # make up relative frequency of different ages
+  ages <- c(4,5,6,7)
+  p_ages <- c(30,40,40,1) # make up relative frequency of different ages
   n_ages <- length(ages)
   # Make up some age data - number of aged fish of each age
   d <- sapply(p_ages, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
@@ -211,12 +135,99 @@ ggplot( do, aes(y = omega, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$\\Omega$") )+
   facet_grid( i ~ a ) + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 ```
 
 <img src="man/figures/README-example_omega-1.png" width="100%" />
+
+Get age-specific escapement by using age proportions.
+
+``` r
+E_star <- get_E_star(E = E$E, omega = omega$omega)
+
+ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
+  geom_point() + 
+  geom_line() + 
+  geom_hline(aes(yintercept=0)) + 
+  facet_grid( i ~ a , scales = "free_y") + 
+  ylab("Escapement (E*)") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_E_star-1.png" width="100%" />
+
+Get spawners for each population (accounts for brood stock removals),
+plot with returns to Terrace and escapement. Spawners should only be
+different from escapement for Skeena aggregate and Kitsumkalum, since
+brood removals are only for Kitsumkalum.
+
+``` r
+# make up brood removal data. Much larger than actual values, so that it is visible on plots. 
+B_star <- E_star$E_star["Kitsumkalum",,] * runif(n = length(E_star$E_star["Kitsumkalum",,] ), 0.1, 0.2 )
+B_star[,4] <- 0 # make age 7 brood = 0 so you don't get negative fish in S_star
+S_star <- get_S_star(E_star = E_star$E_star, B_star = B_star)
+
+ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
+  geom_point() + 
+  geom_line() + 
+  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="gray") +
+  geom_hline(aes(yintercept=0)) + 
+  facet_grid( i ~ a , scales = "free_y") + 
+  ylab("Escapement (E*) in black and spawners (S*) in gray") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_S_star-1.png" width="100%" />
+
+Get wild spawners for each population (accounts for hatchery origin
+spawners), plot with returns to Terrace, escapement, and spawners. Wild
+spawners should only be different from spawners for Skeena aggregate and
+Kitsumkalum, since hatchery origin spawners only occur for Kitsumkalum.
+
+``` r
+# make up hatchery spawners data. Larger than actual values, so that it is visible on plots. 
+H_star <- S_star$S_star["Kitsumkalum",,] * runif(n = length(S_star$S_star["Kitsumkalum",,] ), 0.1, 0.5 )
+H_star[,4] <- 0 # make age 7 hatchery 0 to avoid negative wild spawner values.
+## get Wild spawners
+W_star <- get_W_star( S_star = S_star$S_star, H_star = H_star) 
+
+ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
+  geom_point() + 
+  geom_line() + 
+  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="gray") +
+  geom_line(data = W_star$df, aes(y = W_star, x = y, group = i), colour="dodgerblue") +
+  geom_hline(aes(yintercept=0)) + 
+  facet_grid( i ~ a , scales = "free_y") + 
+  ylab("Escapement (E*) in black, spawners (S*) in gray\n, and wild spawners (W*) in blue.") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_W_star-1.png" width="100%" />
+
+Get proportion wild spawners for each population and plot. Should only
+be \<1 for Skeena aggregate and Kitsumkalum, since hatchery origin
+spawners only occur for Kitsumkalum. Note this is not real data, p is
+very high for Kitsumkalum across years.
+
+``` r
+p <- get_p(W_star = W_star$W_star, E_star = E_star$E_star)
+
+ggplot(p$df, aes(y = p, x = y, group = i)) +
+  geom_point() +
+  geom_line() +
+  facet_grid(i~a, scales="free_y") +
+  ylab("Proportion wild spawners, p") +
+  geom_hline(aes(yintercept=0)) +
+  theme_classic()
+```
+
+<img src="man/figures/README-example_p-1.png" width="100%" />
 
 Estimate terminal total mortalities in the lower Skeena by population,
 year, and age.
@@ -230,6 +241,7 @@ ggplot( dtauL, aes(y =tau_L, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$\\tau_L$")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
@@ -252,9 +264,38 @@ ggplot( dtauU, aes(y =tau_U, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
-  facet_grid( i ~ a) + 
+  ylab(TeX("$\\tau_U$")) +
+  facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 ```
 
 <img src="man/figures/README-example_tau_U-1.png" width="100%" />
+
+Estimate terminal total mortalities in the marine area by population,
+year, and age.
+
+``` r
+use_arr <- W_star$W_star["Kitsumkalum",,]
+tau_dot_M <- array(runif(length(use_arr), 0.01, 0.2), dim = dim(use_arr), dimnames = dimnames(use_arr))
+tau_M <- get_tau_M( W_star = W_star$W_star, tau_dot_M = tau_dot_M)
+
+ggplot( tau_M$df, aes(y =tau_M, x = y, group = i)) +
+  geom_point() + 
+  geom_line() + 
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$\\tau_M$")) +
+  facet_grid( i ~ a, scales="free_y") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_tau_M-1.png" width="100%" />
+
+Get total terminal mortality
+
+Get wild total terminal mortality
+
+Get wild terminal run
+
+Get mature run

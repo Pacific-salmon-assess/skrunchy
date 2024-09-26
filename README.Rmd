@@ -50,6 +50,7 @@ pak::pak("Pacific-salmon-assess/skrunchy")
 ```{r load-libraries, include = FALSE, echo = FALSE }
 library(skrunchy)
 library(ggplot2)
+library(latex2exp)
 ```
 
 ## Examples (currently use fake data for several data sources - not accurate)
@@ -68,6 +69,7 @@ ggplot(dp, aes(y = P_tilde, x = y, group = i)) +
   geom_point() +
   geom_line() +
   facet_wrap(~i, ncol=2) +
+  ylab(TeX("$\\tilde{P}$")) +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
   
@@ -136,6 +138,7 @@ ggplot( do, aes(y = omega, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$\\Omega$") )+
   facet_grid( i ~ a ) + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
@@ -183,7 +186,7 @@ Get wild spawners for each population (accounts for hatchery origin spawners), p
 
 ```{r example_W_star, dpi = 300 }
 # make up hatchery spawners data. Larger than actual values, so that it is visible on plots. 
-H_star <- W_star$W_star["Kitsumkalum",,] * runif(n = length(W_star$W_star["Kitsumkalum",,] ), 0.1, 0.5 )
+H_star <- S_star$S_star["Kitsumkalum",,] * runif(n = length(S_star$S_star["Kitsumkalum",,] ), 0.1, 0.5 )
 H_star[,4] <- 0 # make age 7 hatchery 0 to avoid negative wild spawner values.
 ## get Wild spawners
 W_star <- get_W_star( S_star = S_star$S_star, H_star = H_star) 
@@ -211,7 +214,7 @@ ggplot(p$df, aes(y = p, x = y, group = i)) +
   geom_point() +
   geom_line() +
   facet_grid(i~a, scales="free_y") +
-  ylab("Proportion wild spawners") +
+  ylab("Proportion wild spawners, p") +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
 
@@ -230,6 +233,7 @@ ggplot( dtauL, aes(y =tau_L, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$\\tau_L$")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
@@ -249,10 +253,50 @@ ggplot( dtauU, aes(y =tau_U, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$\\tau_U$")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 ```
 
+Estimate terminal total mortalities in the marine area by population, year, and age. 
+
+
+```{r example_tau_M, dpi = 300 }
+use_arr <- W_star$W_star["Kitsumkalum",,]
+tau_dot_M <- array(runif(length(use_arr), 0.01, 0.2), dim = dim(use_arr), dimnames = dimnames(use_arr))
+tau_M <- get_tau_M( W_star = W_star$W_star, tau_dot_M = tau_dot_M)
+
+ggplot( tau_M$df, aes(y =tau_M, x = y, group = i)) +
+  geom_point() + 
+  geom_line() + 
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$\\tau_M$")) +
+  facet_grid( i ~ a, scales="free_y") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+Get total terminal mortality 
+
+```{r example_tau, dpi=300}
+```
+
+
+Get wild total terminal mortality 
+
+```{r example_tau_W, dpi=300}
+```
+
+
+Get wild terminal run 
+
+```{r example_TermRun, dpi=300}
+```
+
+Get mature run 
+
+```{r example_MatureRun, dpi=300}
+```
 
 
