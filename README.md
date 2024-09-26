@@ -221,7 +221,7 @@ p <- get_p(W_star = W_star$W_star, E_star = E_star$E_star)
 ggplot(p$df, aes(y = p, x = y, group = i)) +
   geom_point() +
   geom_line() +
-  facet_grid(i~a, scales="free_y") +
+  facet_grid(i~a) +
   ylab("Proportion wild spawners, p") +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
@@ -265,7 +265,7 @@ ggplot( dtauU, aes(y =tau_U, x = y, group = i)) +
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
   ylab(TeX("$\\tau_U$")) +
-  facet_grid( i ~ a, scales="free_y") + 
+  facet_grid( i ~ a) + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 ```
