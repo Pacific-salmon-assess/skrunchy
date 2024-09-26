@@ -6,7 +6,7 @@
 #' @param tau_L Numeric, array of total terminal mortalities in the lower Skeena with three dimensions: population (i), year (y), and age (a).
 #' @param tau_M Numeric, array of total terminal mortalities in marine fisheries, with three dimensions: population (i), year (y), and age (a).
 #'
-#' @return List with two elements. First element: numeric, array with three dimensions: population (i), year (y), and age (a).
+#' @return List with two elements. First element: numeric, array of total terminal mortalities, with three dimensions: population (i), year (y), and age (a).
 #' Second element: data frame version of first element, for plotting and tables.
 #'
 #'
