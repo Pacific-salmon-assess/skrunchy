@@ -71,7 +71,7 @@ get_MatureRun <- function(TermRun, phi_dot_M) {
     stop("Year (y) values are not equal.")    }
   if(!all(dimnames(TermRun)$a %in% dimnames(phi_dot_M)$a)) {
     stop("Age (a) values are not equal.")    }
-
+  populations <- dimnames(TermRun)$i
   years <- dimnames(TermRun)$y
   ages <- dimnames(TermRun)$a
   MatureRun <- array(NA, dim= dim(TermRun), dimnames = dimnames(TermRun))

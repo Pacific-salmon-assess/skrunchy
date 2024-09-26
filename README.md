@@ -9,9 +9,9 @@
 **Sk**eena River **Run** Reconstruction for **Ch**inook Salmon
 
 The goal of skrunchy is to recreate and update the run reconstruction
-for Skeena River (summer run timing) Chinook upstream of Tyee test
-fishery, as documented in [Winther et
-al. 2024](https://publications.gc.ca/site/eng/9.901355/publication.html "An assessment of Skeena River Chinook salmon using genetic stock identification 1984 to 2020")
+for Skeena River summer run timing Chinook upstream of Tyee test fishery
+(aggregate plus six Conservation Units), as documented in [Winther et
+al. 2024](https://publications.gc.ca/site/eng/9.901355/publication.html "An assessment of Skeena River Chinook salmon using genetic stock identification 1984 to 2020").
 
 Detailed methods with variables and equations matching (as much as
 possible) this package will be added in the file: `methods.PDF`.
@@ -30,10 +30,10 @@ $X_{aggregate}$:
 
 $$X_i = X_{aggregate} \cdot P_i$$
 
-After that, the run is “reconstructed”, i.e., from the time the fish are
-approximately age 3 ocean fish, all mortalities (fishery, incidental
-mortality, brood stock) are added to the estimate of spawners to
-estimate total recruits produced by each cohort. This produces estimates
+After that, the run is “reconstructed”: working backwards from
+age-specific wild spawner abundance, all mortalities (brood stock
+removals, fishery harvest, incidental mortality) are added back in, to
+estimate total recruits produced by brood year. This produces estimates
 of spawners and recruits by brood year, which can then be use to model
 productivity.
 
