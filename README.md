@@ -390,3 +390,23 @@ ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
 ```
 
 <img src="man/figures/README-example_A_phi-1.png" width="100%" />
+Pre-fishery ocean abundance.
+
+``` r
+use_arr <-A_phi$A_phi["Kitsumkalum",,]
+# Make up some preterminal total mortality exploitation rate (non-net fisheries, e.g., troll) data
+phi_dot_E <- array(runif(length(use_arr), 0.01, 0.3), dim = dim(use_arr), dimnames = dimnames(use_arr))
+A_P <- get_A_P( A_phi = A_phi$A_phi, phi_dot_E = phi_dot_E)
+
+ggplot( A_phi$df, aes(y = A_phi, x = y, group = i)) +
+  geom_line(colour="dodgerblue") +
+  #geom_point(colour ="dodgerblue") +
+  geom_line( data = A_P$df, aes(y =A_P, x = y, group = i), colour="darkorange") +
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("Pre-fishery ocean abundance $A_P$ in orange, $A_\\varphi$ in blue")) +
+  facet_grid( i ~ a, scales="free_y") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_A_P-1.png" width="100%" />
