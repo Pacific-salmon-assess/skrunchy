@@ -47,8 +47,8 @@ You can install the development version of skrunchy from
 
 ## Examples (currently use fake data for several data sources - not accurate)
 
-Make some **fake** genetic proportion and catch data (by week), expand
-to estimates of annual proportions, and plot:
+Make some **fake** genetic proportion and catch data (by week),
+aggregate into estimates of annual proportions, and plot:
 
 ``` r
 
