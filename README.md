@@ -450,3 +450,51 @@ ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
 ```
 
 <img src="man/figures/README-example_phi_Q-1.png" width="100%" />
+
+Recruits by return year
+
+``` r
+R_star <- get_R_star( MatureRun = MatureRun$MatureRun, phi_Q = phi_Q$phi_Q)
+
+ggplot( R_star$df, aes(y = R_star, x = y, group = i)) +
+  geom_line() +
+  geom_point() +
+  geom_line(data = phi_Q$df, aes( y= phi_Q, x = y), colour="darkorchid1")+
+  geom_line(data = MatureRun$df, aes(y = MatureRun, x = y), colour = "darkgreen") +
+  geom_hline(aes(yintercept=0)) +
+  ylab(TeX("$R^*$ in black, $MatureRun$ in pink, $\\varphi_Q$ in green")) +
+  facet_grid( i ~ a, scales="free_y") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+#> Warning: Combining variables of class <integer> and <character> was deprecated in
+#> ggplot2 3.4.0.
+#> ℹ Please ensure your variables are compatible before plotting (location:
+#>   `combine_vars()`)
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
+#> Warning: Combining variables of class <character> and <integer> was deprecated in
+#> ggplot2 3.4.0.
+#> ℹ Please ensure your variables are compatible before plotting (location:
+#>   `combine_vars()`)
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
+```
+
+<img src="man/figures/README-example_R_star-1.png" width="100%" />
+
+``` r
+
+ggplot( R_star$df, aes(y = R_star, x = b, group = i)) +
+  geom_line() +
+  geom_point() +
+  geom_hline(aes(yintercept=0)) +
+  xlab("Brood year") +
+  ylab(TeX("$R^*$ in black")) +
+  facet_grid( i ~ a, scales="free_y") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_R_star-2.png" width="100%" />
