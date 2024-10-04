@@ -416,17 +416,23 @@ ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
 
 Preterminal fishing mortality in adult equivalents. 
 ```{r example_phi_Q, dpi=300}
-#phi_Q <- get_phi_Q( )
-# 
-# ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
-#   geom_line() +
-#   geom_point() +
-#   geom_hline(aes(yintercept=0)) + 
-#   ylab(TeX("Preterminal fishing mortality in nominal fish, $\\varphi_N$")) +
-#   facet_grid( i ~ a, scales="free_y") + 
-#   theme_classic() +
-#   theme(axis.text.x = element_text(angle=90, vjust=0.5))
-# 
-# 
+use_arr <- phi_N$phi_N["Kitsumkalum",,]
+# Make up some adult equivalents data
+Q <- array(runif(length(use_arr), 0.5, 0.9), dim = dim(use_arr), dimnames = dimnames(use_arr))
+Q[, dimnames(r)$a %in% c(6,7) ] <- 1 # make maturation rate = 1 for age 6 and 7 fish
+
+phi_Q <- get_phi_Q( phi_N = phi_N$phi_N, Q = Q)
+
+ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
+  geom_line() +
+  geom_point() +
+  geom_line(data = phi_Q$df, aes( y= phi_Q, x = y), colour="darkorchid1")+
+  geom_hline(aes(yintercept=0)) +
+  ylab(TeX("Preterminal fishing mortality in adults equivalents $\\varphi_Q$ in purple. $\\varphi_N$ in black")) +
+  facet_grid( i ~ a, scales="free_y") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+
+
 ```
 
