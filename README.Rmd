@@ -355,4 +355,22 @@ ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
 
 ```
 
+Pre-terminal post fishery abundance. 
 
+```{r example_MatureRun, dpi=300}
+use_arr <- TermRun$TermRun["Kitsumkalum",,]
+phi_dot_M <- array(runif(length(use_arr), 0.01, 0.3), dim = dim(use_arr), dimnames = dimnames(use_arr))
+MatureRun <- get_MatureRun(TermRun = TermRun$TermRun, phi_dot_M = phi_dot_M)
+
+ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
+  geom_line(colour="darkgreen") +
+  geom_point(colour ="darkgreen") +
+  geom_line( data = TermRun$df, aes(y =TermRun, x = y, group = i), colour="black") +
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$MatureRun$ in green, $TermRun$ in black")) +
+  facet_grid( i ~ a, scales="free_y") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+
+
+```

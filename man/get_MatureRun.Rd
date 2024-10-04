@@ -13,7 +13,8 @@ get_MatureRun(TermRun, phi_dot_M)
 Preterminal net total mortality harvest rate on mature fish: seine and gillnet catch and incidental mortalities of mature fish.}
 }
 \value{
-List with two elements. First element:
+List with two elements. First element: numeric, array of mature run size by population (i), year (y), and age (a).
+Second element: data frame version of first element, for plotting and tables.
 }
 \description{
 Calculates the mature run size abundance, by population, year, and age. The mature run is equal to the wild terminal run plus
