@@ -451,7 +451,7 @@ ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
 
 <img src="man/figures/README-example_phi_Q-1.png" width="100%" />
 
-Recruits by return year
+Recruits by return year and brood year.
 
 ``` r
 R_star <- get_R_star( MatureRun = MatureRun$MatureRun, phi_Q = phi_Q$phi_Q)
@@ -491,10 +491,28 @@ ggplot( R_star$df, aes(y = R_star, x = b, group = i)) +
   geom_point() +
   geom_hline(aes(yintercept=0)) +
   xlab("Brood year") +
-  ylab(TeX("$R^*$ in black")) +
+  ylab(TeX("$R^*$ by brood year.")) +
   facet_grid( i ~ a, scales="free_y") +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 ```
 
 <img src="man/figures/README-example_R_star-2.png" width="100%" />
+
+Get recruits by brood year, summed across ages.
+
+``` r
+R <- get_R( R_star_b = R_star$R_star_b)
+
+ggplot( R$df, aes(y = R, x = b, group = i)) +
+  geom_line() +
+  geom_point() +
+  geom_hline(aes(yintercept=0)) +
+  ylab(TeX("Recruits, $R$")) +
+  xlab("Brood year") +
+  facet_wrap( ~i , scales="free_y") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_R```````````````````````````````````````````````````````````````````````````````````````-1.png" width="100%" />
