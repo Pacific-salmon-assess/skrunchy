@@ -368,3 +368,25 @@ ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
 ```
 
 <img src="man/figures/README-example_MatureRun-1.png" width="100%" />
+
+Pre-terminal post fishery abundance.
+
+``` r
+use_arr <- MatureRun$MatureRun["Kitsumkalum",,]
+# Make up some maturation rate data
+r <- array(runif(length(use_arr), 0.5, 0.99), dim = dim(use_arr), dimnames = dimnames(use_arr))
+r[, dimnames(r)$a %in% c(6,7) ] <- 1 # make maturation rate = 1 for age 6 and 7 fish
+A_phi <- get_A_phi( MatureRun = MatureRun$MatureRun, r = r)
+
+ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
+  geom_line(colour="darkgreen") +
+  geom_point(colour ="darkgreen") +
+  geom_line( data = A_phi$df, aes(y =A_phi, x = y, group = i), colour="dodgerblue") +
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$MatureRun$ in green, $A_\\varphi$ in blue")) +
+  facet_grid( i ~ a, scales="free_y") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_A_phi-1.png" width="100%" />
