@@ -410,3 +410,37 @@ ggplot( A_phi$df, aes(y = A_phi, x = y, group = i)) +
 ```
 
 <img src="man/figures/README-example_A_P-1.png" width="100%" />
+
+Preterminal fishing mortality in nominal fish.
+
+``` r
+phi_N <- get_phi_N( A_P = A_P$A_P, A_phi = A_phi$A_phi)
+
+ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
+  geom_line() +
+  geom_point() +
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("Preterminal fishing mortality in nominal fish, $\\varphi_N$")) +
+  facet_grid( i ~ a, scales="free_y") + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+```
+
+<img src="man/figures/README-example_phi_N-1.png" width="100%" />
+
+Preterminal fishing mortality in adult equivalents.
+
+``` r
+#phi_Q <- get_phi_Q( )
+# 
+# ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
+#   geom_line() +
+#   geom_point() +
+#   geom_hline(aes(yintercept=0)) + 
+#   ylab(TeX("Preterminal fishing mortality in nominal fish, $\\varphi_N$")) +
+#   facet_grid( i ~ a, scales="free_y") + 
+#   theme_classic() +
+#   theme(axis.text.x = element_text(angle=90, vjust=0.5))
+# 
+# 
+```
