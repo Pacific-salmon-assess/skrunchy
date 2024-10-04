@@ -436,3 +436,11 @@ ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
 
 ```
 
+Recruits by return year
+
+```{r example_R_star, dpi=300}
+#R_star <- get_R_star()
+
+
+
+```
