@@ -13,8 +13,8 @@ get_R_star(MatureRun, phi_Q)
 adult equivalents, with three dimensions: population (i), year (y), and age (a).}
 }
 \value{
-List with three elements. First element: numeric, array of recruits with three dimensions: population (i), return year (y), and
-age (a). Second element: numeric, array of recruits with three dimensions: population (i), brood year (b), and
+List with three elements. First element: numeric, array of recruits by return year with three dimensions: population (i), return year (y), and
+age (a). Second element: numeric, array of recruits by brood year with three dimensions: population (i), brood year (b), and
 age (a). Third element: data frame version of first and second elements, for plotting and tables.
 }
 \description{

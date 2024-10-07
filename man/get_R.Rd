@@ -4,7 +4,7 @@
 \alias{get_R}
 \title{Get recruits by brood year}
 \usage{
-get_R(R_star_b)
+get_R(R_star_b, R_star_df)
 }
 \arguments{
 \item{R_star_b}{Numeric, array of recruits by brood year, with three dimensions: population (i), brood year (b), and age (a).}

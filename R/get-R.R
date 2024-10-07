@@ -24,9 +24,10 @@
 #'   R <- get_R(R_star_b = R_star$R_star_b)
 #'
 #' @export
-get_R <- function(R_star_b) {
+get_R <- function(R_star_b, R_star_df) {
       R <- apply(R_star_b, c(1,2), sum, na.rm=TRUE)
-      d <- as.data.frame.table( R, responseName = "R", stringsAsFactors = FALSE)
+      d <- aggregate( R_star ~ i + b + complete_brood, data = R_star_df, FUN = sum)
+      names(d)[grep("R_star", names(d))] <- "R" # rename as R
       d$b <- as.integer(d$b)
       res <- list(R = R, df = d)
       res
