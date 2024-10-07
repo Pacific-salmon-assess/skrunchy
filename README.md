@@ -493,6 +493,7 @@ ggplot( R_star$df, aes(y = R_star, x = b, group = i, colour= complete_brood)) +
   xlab("Brood year") +
   ylab(TeX("$R^*$ by brood year.")) +
   facet_grid( i ~ a, scales="free_y") +
+  scale_colour_manual(values = c("gray", "black")) +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 ```
@@ -511,6 +512,7 @@ ggplot( R$df, aes(y = R, x = b, group = i, colour = complete_brood)) +
   ylab(TeX("Recruits, $R$")) +
   xlab("Brood year") +
   facet_wrap( ~i , scales="free_y") +
+  scale_colour_manual(values = c("gray", "black")) +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 ```
