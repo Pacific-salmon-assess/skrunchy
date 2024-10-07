@@ -15,7 +15,7 @@
 #' @examples
 #'   populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
 #'   n_populations <- length(populations)
-#'   years <- 2000:2001
+#'   years <- 2000:2010
 #'   n_years <- length(years)
 #'   ages <- c(4,5,6,7)
 #'   p_ages <- c(30,40,40,1)
@@ -67,6 +67,14 @@ get_R_star <- function(MatureRun, phi_Q) {
   d$y <- as.integer(d$y)
   d$a <- as.integer(d$a)
   d$b <- d$y - d$a # make brood year variable for data frame
+  first_complete_brood <- min(as.integer(years)) - min(as.integer(ages))
+  last_complete_brood <- max(as.integer(years)) - max(as.integer(ages))
+  if(first_complete_brood <= last_complete_brood)
+  complete_brood_years <- seq(first_complete_brood, last_complete_brood, by=1)
+  # if first complete brood year is greater than last complete brood year, then there are no complete brood years.
+  if(first_complete_brood > last_complete_brood )
+  complete_brood_years <- NA
+  d$complete_brood <- ifelse(d$b %in% complete_brood_years, TRUE, FALSE) # make complete brood cohort variable
   res <- list(R_star = R_star, R_star_b = R_star_b, df = d)
   res
 }

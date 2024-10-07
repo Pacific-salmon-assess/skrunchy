@@ -504,15 +504,14 @@ Get recruits by brood year, summed across ages.
 ``` r
 R <- get_R( R_star_b = R_star$R_star_b)
 
-ggplot( R$df, aes(y = R, x = b, group = i)) +
-  geom_line() +
-  geom_point() +
-  geom_hline(aes(yintercept=0)) +
-  ylab(TeX("Recruits, $R$")) +
-  xlab("Brood year") +
-  facet_wrap( ~i , scales="free_y") +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+# ggplot( R$df, aes(y = R, x = b, group = i, colour = complete_brood_year)) +
+#   geom_line() +
+#   geom_point() +
+#   geom_hline(aes(yintercept=0)) +
+#   ylab(TeX("Recruits, $R$")) +
+#   xlab("Brood year") +
+#   facet_wrap( ~i , scales="free_y") +
+#   theme_classic() +
+#   theme(axis.text.x = element_text(angle=90, vjust=0.5))
+# 
 ```
-
-<img src="man/figures/README-example_R```````````````````````````````````````````````````````````````````````````````````````-1.png" width="100%" />

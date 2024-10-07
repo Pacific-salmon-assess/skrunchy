@@ -24,7 +24,7 @@ in adult equivalents. Produces an array by return year, an array by brood year, 
 \examples{
   populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
   n_populations <- length(populations)
-  years <- 2000:2001
+  years <- 2000:2010
   n_years <- length(years)
   ages <- c(4,5,6,7)
   p_ages <- c(30,40,40,1)
