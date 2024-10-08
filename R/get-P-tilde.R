@@ -38,7 +38,7 @@ get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE) {
     # from the Molecular Genetics Lab in proportions of 100.
     # Matrix multiplication, multiplies the proportion for each population and week by the catch for that week.
     # Then gets an annual sum for each population (sums rows, across weeks)
-    # FLAG: this might need to be adjsuted to remove non-summer run, upstream of Tyee populations.
+    # FLAG: this might need to be adjusted to remove non-summer run, upstream of Tyee populations.
     expand_weeks <- (P[ , , y] / 100) %*% G[ , y] # see https://mbernste.github.io/posts/matrix_vector_mult/
     # Make into proportion of yearly catch by dividing expansions for each population
     # by the total yearly catch.

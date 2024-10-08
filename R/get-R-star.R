@@ -63,6 +63,7 @@ get_R_star <- function(MatureRun, phi_Q) {
       }
     }
   }
+
   d <- as.data.frame.table( R_star, responseName = "R_star", stringsAsFactors = FALSE)
   d$y <- as.integer(d$y)
   d$a <- as.integer(d$a)
