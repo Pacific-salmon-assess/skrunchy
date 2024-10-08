@@ -98,7 +98,7 @@ P_tilde$df_merged
 View(P_tilde$df_merged)
 
 # Preliminary look at values, they are exactly the same as in "1AB Skeena Esc 1979 to 2020 POPAN 2023-11-13 to LW&CM .xlsx"
-# tab "CU esc calc POPAN". That is fantastic!
+# tab "CU esc calc POPAN". That is fantastic! Only found one minor difference in Large Lakes percent for 2019.
 
 library(ggplot2)
 names(P_tilde$df_merged)[2] <- "year"
@@ -106,6 +106,9 @@ names(P_tilde$df_merged)[2] <- "year"
 ggplot(P_tilde$df_merged, aes(x = y , y = P_tilde)) +
   geom_point() +
   geom_line() +
+  geom_errorbar(aes( ymin = P_tilde - sigma_P_tilde, ymax= P_tilde + sigma_P_tilde)) +
   facet_wrap(~i) +
-  theme_classic()
+  #geom_hline(aes(yintercept=0)) +
+  coord_cartesian(expand=FALSE, clip="off") +
+  theme_bw()
 
