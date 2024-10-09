@@ -99,6 +99,8 @@ P_tilde$df
 # tab "CU esc calc POPAN". That is fantastic! Most differences small enough to be rounding errors since
 # excel column values look like they were copy pasted from formula cells in another tab.
 
+# Difference in SD for 2009 for Kitsumkalum.
+
 ggplot(P_tilde$df, aes(x = y , y = P_tilde)) +
   geom_point() +
   geom_line() +
@@ -115,7 +117,6 @@ head(kd)
 X <- get_X(P_tilde = P_tilde$P_tilde, sigma_P_tilde = P_tilde$sigma_P_tilde, K = kd$spawners, sigma_K = kd$SE, y = kd$year,
            known_population = "Kitsumkalum", aggregate_population = "Skeena",
            save_csv = TRUE)
-View(X$df)
 
 ggplot(X$df, aes(y = X, x = y, group = i)) +
   geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
@@ -125,6 +126,45 @@ ggplot(X$df, aes(y = X, x = y, group = i)) +
   geom_hline(aes(yintercept=0)) +
   theme_classic()
 
-# Differences in 2009, 2016. Otherwise perfect for Skeena aggregate.
+# Differences in 2009, 2016, 2019. Otherwise perfect for Skeena aggregate.
 
 
+# Read in total terminal mortality upstream of Terrace
+Tau_U_d <- read.csv(here("data-old", "Tau_U.csv"))
+Tau_U_d <- Tau_U_d[Tau_U_d$y >=1984, ]
+
+
+E <- get_E( K = kd$spawners, X = X$X, Tau_U = Tau_U_d$Tau_U)
+
+View(E$df)
+ggplot(X$df, aes(y = X, x = y, group = i)) +
+  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
+  geom_point() +
+  geom_line() +
+  geom_line(data = E$df, aes(y = E, x = y, group=i), colour="gray") +
+  facet_wrap(~i, ncol=2, scales = "free_y") +
+  ylab("Return to Terrace (X) in black, escapement (E) in gray") +
+  geom_hline(aes(yintercept=0)) +
+  theme_classic()
+
+# get age proportions from age data
+ad <- read.csv(here("data-old", "ages-with-genetics-individual.csv"))
+table(ad$y, ad$a)
+
+names(ad)
+names(ad)[names(ad) %in%  key$msat_collection ]
+key$msat_collection
+al <- pivot_longer(ad, cols = names(ad)[names(ad) %in%  key$msat_collection ],
+                   values_to = "p", names_to = "msat_collection")
+am <- merge( al, key[ , names(key) %in% c("msat_collection", "cu_name_match_report")], by = "msat_collection" )
+
+names(am)[grep("cu_name_match_report", names(am))] <- "i"
+as <- am %>% group_by(JD, Fish, y, i, SEX, a, NOSE.FORK.LENGTH..mm.) %>%
+  summarise(p = sum(p, na.rm=TRUE)) %>%
+  group_by(JD, Fish, y, SEX, a, NOSE.FORK.LENGTH..mm.) %>%
+  slice_max(p)
+as
+at <- table(as$i, as$y, as$a)
+aarr <- as.array(at)
+dim(aarr)
+dimnames(aarr)
