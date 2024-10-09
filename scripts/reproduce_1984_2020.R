@@ -87,9 +87,9 @@ P_tilde <- get_P_tilde( P = P, sigma_P = sigma_P, G = G, save_csv = TRUE)
 
 P_tilde$df
 
-# Preliminary look at values, they are exactly the same as in "1AB Skeena Esc 1979 to 2020 POPAN 2023-11-13 to LW&CM .xlsx"
-# tab "CU esc calc POPAN". That is fantastic! Only found one minor difference in Large Lakes percent for 2019.
-
+# Preliminary look at values, they extremely close to "1AB Skeena Esc 1979 to 2020 POPAN 2023-11-13 to LW&CM .xlsx"
+# tab "CU esc calc POPAN". That is fantastic! Most differences small enough to be rounding errors since
+# excel column values look like they were copy pasted from formula cells in another tab.
 
 ggplot(P_tilde$df, aes(x = y , y = P_tilde)) +
   geom_point() +
