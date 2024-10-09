@@ -1,8 +1,9 @@
-# Reproduce 2024 report analysis
+# Reproduce Winther et al. 2024 report analysis
 
 library(here)
-library(dplyr)
+library(ggplot2)
 library(tidyr)
+
 # read in key of genetic baseline collections and Conservation Unit names.
 key <- read.csv(here ("data", "population-key.csv"))
 # read in data with GSI mixture analysis by week for Tyee
@@ -77,8 +78,6 @@ View(P_tilde$df_merged)
 # Preliminary look at values, they are exactly the same as in "1AB Skeena Esc 1979 to 2020 POPAN 2023-11-13 to LW&CM .xlsx"
 # tab "CU esc calc POPAN". That is fantastic! Only found one minor difference in Large Lakes percent for 2019.
 
-library(ggplot2)
-names(P_tilde$df_merged)[2] <- "year"
 
 ggplot(P_tilde$df_merged, aes(x = y , y = P_tilde)) +
   geom_point() +
