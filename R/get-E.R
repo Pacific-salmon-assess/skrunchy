@@ -57,8 +57,8 @@ get_E <- function( K, X, Tau_U,
     E[aggregate_population, y] <- X[aggregate_population,y] - Tau_U[y]
   }
 
-  d <- as.data.frame.table(E, responseName = "E")
-  d$y <- as.integer(as.character(d$y))
+  d <- as.data.frame.table(E, responseName = "E", stringsAsFactors = FALSE)
+  d$y <- as.integer(d$y)
   res <- list(E = E, df = d)
   res
 }

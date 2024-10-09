@@ -3,97 +3,74 @@
 library(here)
 library(dplyr)
 library(tidyr)
-
+# read in key of genetic baseline collections and Conservation Unit names.
 key <- read.csv(here ("data", "population-key.csv"))
-
+# read in data with GSI mixture analysis by week for Tyee
 d <- read.csv(here("data-old", "tyee-genetics-weekly-catch.csv"))
+# rename columns to match skrunchy package conventions
 names(d) <- sub("YEAR", "y", names(d))
 names(d) <- sub("WEEK", "w", names(d))
-
+# which columns are GSI proportions?
 p_cols <- grep("^P\\.(?!SD\\.).*", names(d), perl=TRUE)
-p_sd_cols <- grep("^P\\.(?=SD\\.).*", names(d), perl=TRUE)
-
-names(d)
-
-names(d)[p_cols]
-names(d)[p_sd_cols]
-
-P_df <- d[ ,c(1,2,p_cols) ]
-P_df1 <- pivot_longer( P_df, names(d)[p_cols], values_to = "P", names_to = "i" )
-P_df1$i <- sub("P\\.", "", P_df1$i)
-
-
-P_df1m <- merge(P_df1, key[ , names(key) %in% c("msat_collection", "cu_name")], by.x= "i", by.y="msat_collection" )
-
-P_df1s <- P_df1m %>% group_by(cu_name,w,y) %>% summarise( P = sum(P, na.rm=TRUE)) %>% ungroup()
-names(P_df1s)[grep("cu_name", names(P_df1s))] <- "i"
-
-# get complete observations, to construct array
-P_df2 <- complete(P_df1s, y, w, i, fill = list(P = 0))
-
-
-
-P_df2[ order(P_df2$y, P_df2$w, P_df2$i), ]$P
-# order P by year, week, and population, then construct array, Note that the ordering variables in data
-#   argument need to be the opposite order of the dims and dimnames, because the data fills in the
-#   array according to i, w, then y.
-P <-  array(data =   P_df2[ order(P_df2$y, P_df2$w, P_df2$i), ]$P ,
-            dim=c(length(unique(P_df2$i)),
-                  length(unique(P_df2$w)),
-                  length(unique(P_df2$y))),
-            dimnames=list(i = unique(P_df2$i), w = unique(P_df2$w), y = unique(P_df2$y))
-)
+# which columns are GSI proportion SD?
+sd_cols <- grep("^P\\.(?=SD\\.).*", names(d), perl=TRUE)
+# get just proportions
+dp <- d[ ,c(1,2,p_cols) ]
+# pivot to long format
+dpl <- pivot_longer( dp, names(d)[p_cols], values_to = "P", names_to = "msat_collection" )
+# remove P from in front of population names
+dpl$msat_collection <- sub("P\\.", "", dpl$msat_collection)
+# merge with conservation unit groupings
+dpm <- merge(dpl, key[ , names(key) %in% c("msat_collection", "cu_name")], by="msat_collection" )
+# change CU name to i, skrunchy package convention
+names(dpm)[grep("cu_name", names(dpm))] <- "i"
+# Convert dataframe to array with tapply, sum by Conservation Unit i, fill missing values with 0
+# what order dims to use
+dim_order <- c("i","w","y")
+dim_position <- sapply(dim_order, function(x) grep( paste0("^", x, "$"), names(dpm)))
+P <- tapply(dpm$P, dpm[ , dim_position], FUN = sum, na.rm=TRUE, default = 0 )
 P
 dim(P)
 dimnames(P)
-
-P_SD_df <- d[ ,c(1,2,p_sd_cols)]
-sigma_P_df1 <- pivot_longer( P_SD_df, names(d)[p_sd_cols], values_to = "sigma_P", names_to = "i" )
-sigma_P_df1$i <- sub("P\\.SD\\.", "", sigma_P_df1$i)
-
-sigma_P_df1m <- merge(sigma_P_df1, key[ , names(key) %in% c("msat_collection", "cu_name")], by.x= "i", by.y="msat_collection" )
-
-
+# Get just SD columns
+dsd <- d[ ,c(1,2, sd_cols)]
+# convert to long format
+dsd <- pivot_longer( dsd, names(d)[sd_cols], values_to = "sigma_P", names_to = "msat_collection" )
+# remove P.SD. from in front of CU name
+dsd$msat_collection <- sub("P\\.SD\\.", "", dsd$msat_collection)
+# merge with CU names
+dsdm <- merge(dsd, key[ , names(key) %in% c("msat_collection", "cu_name")], by = "msat_collection" )
+# change CU to i, skrunchy convention
+names(dsdm)[grep("cu_name", names(dsdm))] <- "i"
+# function to add standard deviations
 add_sd <- function(x) { sqrt( sum(x^2, na.rm=TRUE) )}
-sigma_P_df1s <- sigma_P_df1m %>% group_by(cu_name,w,y) %>% summarise( sigma_P = add_sd(sigma_P)) %>% ungroup()
-names(sigma_P_df1s)[grep("cu_name", names(sigma_P_df1s))] <- "i"
-
-# get complete observations, to construct array
-sigma_P_df2 <- complete(sigma_P_df1s, y, w, i, fill = list(sigma_P = 0))
-
-
-
-sigma_P_df2[ order(sigma_P_df2$y, sigma_P_df2$w, sigma_P_df2$i), ]$sigma_P
-# order P by year, week, and population, then construct array, Note that the ordering variables in data
-#   argument need to be the opposite order of the dims and dimnames, because the data fills in the
-#   array according to i, w, then y.
-sigma_P <-  array(data =   sigma_P_df2[ order(sigma_P_df2$y, sigma_P_df2$w, sigma_P_df2$i), ]$sigma_P ,
-            dim=c(length(unique(sigma_P_df2$i)),
-                  length(unique(sigma_P_df2$w)),
-                  length(unique(sigma_P_df2$y))),
-            dimnames=list( i = unique( sigma_P_df2$i), w = unique(sigma_P_df2$w), y = unique(sigma_P_df2$y))
-)
+# add SD together by Conservation Unit
+# Convert dataframe to array with tapply, sum SD by Conservation Unit, fill missing values with 0
+dim_order_SD <- c("i","w","y")
+dim_position_SD <- sapply(dim_order_SD, function(x) grep( paste0("^", x, "$"), names(dsdm)))
+sigma_P <- tapply(dsdm$sigma_P, dsdm[ , dim_position_SD], FUN = add_sd, default = 0 )
 sigma_P
 dim(sigma_P)
 dimnames(sigma_P)
-
-G_df <- d[ , c(1,2,4)]
-names(G_df)[3] <- "G"
-
-G_df1 <- complete(G_df, y, w, fill = list( G= 0))
-
-G <- array( G_df1[ order(G_df1$y, G_df1$w), ]$G,
-            dim = c(length(unique(G_df1$w)), length(unique(G_df1$y))),
-            dimnames = list( w =  unique(G_df1$w), y = unique(G_df1$y)))
+# pull out Tyee test fishery gillnet revised weekly catch associated with each GSI mixture analysis
+dg <- d[ , c(1,2,4)]
+# rename
+names(dg)[3] <- "G"
+# Convert dataframe to array with tapply, fill missing values with 0
+dim_order_g <- c("w","y")
+dim_position_g <- sapply(dim_order_g, function(x) grep( paste0("^", x, "$"), names(dg)))
+G <- tapply(dg$G, dg[ , dim_position_g], FUN = print, default = 0 )
 G
 dim(G)
 dimnames(G)
-
+# check dimensions equal
 dim(P)
 dim(sigma_P)
 dim(G)
-
+# Expand genetic proportions by week and add together to get annual proportions
+#   corrected for sample size and changing run timing over the year.
 P_tilde <- get_P_tilde( P = P, sigma_P = sigma_P, G = G)
+
 P_tilde$df_merged
 View(P_tilde$df_merged)
 

@@ -62,7 +62,7 @@ Make some **fake** genetic proportion and catch data (by week), aggregate into e
 d <- make_P_G()
 res <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
 P_tilde <- res$P_tilde
-dp <- res$df_merged
+dp <- res$df
 
 ggplot(dp, aes(y = P_tilde, x = y, group = i)) +
   geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde ), colour="dodgerblue") +
@@ -82,7 +82,7 @@ k <- read.csv(here("data/kitsumkalum-escapement.csv"))
 X <- get_X(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement, 
            sigma_K = k$sd,
            y = k$year)
-dt <- X$df_merged
+dt <- X$df
 
 ggplot(dt, aes(y = X, x = y, group = i)) +
   geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +

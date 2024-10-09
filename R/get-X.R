@@ -59,11 +59,11 @@ get_X <- function(P_tilde, sigma_P_tilde, K, sigma_K, y, known_population = "Kit
   }
 
 
-  dt <- as.data.frame.table( X, responseName = "X")
-  dst <- as.data.frame.table( sigma_X, responseName = "sigma_X")
+  dt <- as.data.frame.table( X, responseName = "X", stringsAsFactors = FALSE)
+  dst <- as.data.frame.table( sigma_X, responseName = "sigma_X", stringsAsFactors = FALSE)
   df_merged <- merge(dt, dst, by= c( "i", "y"))
   #df_merged <- d
-  df_merged$y <- as.integer( as.character( df_merged$y ))
-  res <- list( X = X, sigma_X = sigma_X, df_merged = df_merged )
+  df_merged$y <- as.integer(  df_merged$y )
+  res <- list( X = X, sigma_X = sigma_X, df = df_merged )
   res
 }
