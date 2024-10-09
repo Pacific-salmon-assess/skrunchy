@@ -23,7 +23,7 @@
 #' @export
 get_sigma_X <- function( X, K, sigma_K, P_tilde, sigma_P_tilde, aggregate_population = TRUE) {
    if(aggregate_population == TRUE) {
-        variance <- X^2 * ( sigma_K / K^2 + sigma_P_tilde / P_tilde^2 )
+        variance <- X^2 * ( sigma_K^2 / K^2 + sigma_P_tilde^2 / P_tilde^2 )
         SE <- sqrt(variance)
         SE
    } else {

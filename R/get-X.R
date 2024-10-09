@@ -9,6 +9,7 @@
 #' @param y Integer, vector of years for Kitsumkalum Chinook spawners K and sigma_K.
 #' @param known_population Name if population i with known or estimated escapement. Defaults to Kitsumkalum.
 #' @param aggregate_population Name of population i that is the sum of the other populations. Defaults to Skeena.
+#' @param save_csv If TRUE, save a csv of the data frame output.
 #'
 #' @return A list with three elements. First element: Numeric, X which is an array of returns to Terrace with two dimensions: population (i) and year (y).
 #' Second element: numeric, sigma_X which is an array of SE of returns to Terrace of Chinook, with two dimensions: population (i) and year (y).
@@ -26,7 +27,7 @@
 #'
 #' @export
 get_X <- function(P_tilde, sigma_P_tilde, K, sigma_K, y, known_population = "Kitsumkalum",
-                  aggregate_population = "Skeena") {
+                  aggregate_population = "Skeena", save_csv = FALSE) {
   stopifnot("Years do not match between data" = all.equal(unique(dimnames(P_tilde)$y),unique(dimnames(sigma_P_tilde)$y), unique(y)))
   n_years <- length(y)
   n_populations <- length(dimnames(P_tilde)$i) + 1
@@ -64,6 +65,10 @@ get_X <- function(P_tilde, sigma_P_tilde, K, sigma_K, y, known_population = "Kit
   df_merged <- merge(dt, dst, by= c( "i", "y"))
   #df_merged <- d
   df_merged$y <- as.integer(  df_merged$y )
+  if(save_csv == TRUE) {
+    write.csv(df_merged, here("data-out/X.csv"), row.names = FALSE)
+  }
+
   res <- list( X = X, sigma_X = sigma_X, df = df_merged )
   res
 }

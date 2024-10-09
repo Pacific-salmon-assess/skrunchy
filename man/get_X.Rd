@@ -11,7 +11,8 @@ get_X(
   sigma_K,
   y,
   known_population = "Kitsumkalum",
-  aggregate_population = "Skeena"
+  aggregate_population = "Skeena",
+  save_csv = FALSE
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ get_X(
 \item{known_population}{Name if population i with known or estimated escapement. Defaults to Kitsumkalum.}
 
 \item{aggregate_population}{Name of population i that is the sum of the other populations. Defaults to Skeena.}
+
+\item{save_csv}{If TRUE, save a csv of the data frame output.}
 }
 \value{
 A list with three elements. First element: Numeric, X which is an array of returns to Terrace with two dimensions: population (i) and year (y).

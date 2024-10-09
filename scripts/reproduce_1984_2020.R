@@ -9,6 +9,8 @@ library(tidyr)
 # and is included in Middle Skeena groupings for both MSAT and SNP.
 # Need to address for future work.
 
+pops_keep <- c("Kitsumkalum", "Large Lakes", "Lower Skeena", "Middle Skeena",
+               "Upper Skeena", "Zymoetz-Fiddler")
 # read in key of genetic baseline collections and Conservation Unit names.
 key <- read.csv(here ("data", "population-key.csv"))
 # read in data with GSI mixture analysis by week for Tyee
@@ -16,6 +18,7 @@ d <- read.csv(here("data-old", "tyee-genetics-weekly-catch.csv"))
 # rename columns to match skrunchy package conventions
 names(d) <- sub("YEAR", "y", names(d))
 names(d) <- sub("WEEK", "w", names(d))
+d <- d[d$y>=1984, ] # remove years before 1984, we don't have Kitsumkalum estimates before that.
 # which columns are GSI proportions?
 p_cols <- grep("^P\\.(?!SD\\.).*", names(d), perl=TRUE)
 # which columns are GSI proportion SD?
@@ -33,6 +36,8 @@ dpm <- merge(dpl, key[ , names(key) %in% c("msat_collection", "cu_name_match_rep
 # change CU name to i, skrunchy package convention
 #names(dpm)[grep("cu_name", names(dpm))] <- "i"
 names(dpm)[grep("cu_name_match_report", names(dpm))] <- "i"
+# only keep CUs to use for run reconstruction
+dpm <- dpm[  dpm$i  %in% pops_keep, ]
 
 # Convert dataframe to array with tapply, sum by Conservation Unit i, fill missing values with 0
 # what order dims to use
@@ -48,6 +53,7 @@ dsd <- d[ ,c(1,2, sd_cols)]
 dsd <- pivot_longer( dsd, names(d)[sd_cols], values_to = "sigma_P", names_to = "msat_collection" )
 # remove P.SD. from in front of CU name
 dsd$msat_collection <- sub("P\\.SD\\.", "", dsd$msat_collection)
+
 # merge with CU names
 #dsdm <- merge(dsd, key[ , names(key) %in% c("msat_collection", "cu_name")], by = "msat_collection" )
 dsdm <- merge(dsd, key[ , names(key) %in% c("msat_collection", "cu_name_match_report")], by = "msat_collection" )
@@ -55,6 +61,8 @@ dsdm <- merge(dsd, key[ , names(key) %in% c("msat_collection", "cu_name_match_re
 # change CU to i, skrunchy convention
 #names(dsdm)[grep("cu_name", names(dsdm))] <- "i"
 names(dsdm)[grep("cu_name_match_report", names(dsdm))] <- "i"
+# only keep CUs to use for run reconstruction
+dsdm <- dsdm[  dsdm$i  %in% pops_keep, ]
 
 # function to add standard deviations
 add_sd <- function(x) { sqrt( sum(x^2, na.rm=TRUE) )}
@@ -87,7 +95,7 @@ P_tilde <- get_P_tilde( P = P, sigma_P = sigma_P, G = G, save_csv = TRUE)
 
 P_tilde$df
 
-# Preliminary look at values, they extremely close to "1AB Skeena Esc 1979 to 2020 POPAN 2023-11-13 to LW&CM .xlsx"
+# Preliminary look at values, they are extremely close to "1AB Skeena Esc 1979 to 2020 POPAN 2023-11-13 to LW&CM .xlsx"
 # tab "CU esc calc POPAN". That is fantastic! Most differences small enough to be rounding errors since
 # excel column values look like they were copy pasted from formula cells in another tab.
 
@@ -99,4 +107,24 @@ ggplot(P_tilde$df, aes(x = y , y = P_tilde)) +
   #geom_hline(aes(yintercept=0)) +
   coord_cartesian(expand=FALSE, clip="off") +
   theme_bw()
+
+# Read in Kitsumkalum data
+kd <- read.csv(here("data-old", "kitsumkalum.csv"))
+head(kd)
+
+X <- get_X(P_tilde = P_tilde$P_tilde, sigma_P_tilde = P_tilde$sigma_P_tilde, K = kd$spawners, sigma_K = kd$SE, y = kd$year,
+           known_population = "Kitsumkalum", aggregate_population = "Skeena",
+           save_csv = TRUE)
+View(X$df)
+
+ggplot(X$df, aes(y = X, x = y, group = i)) +
+  geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~i, ncol=2, scales = "free_y") +
+  geom_hline(aes(yintercept=0)) +
+  theme_classic()
+
+# Differences in 2009, 2016. Otherwise perfect for Skeena aggregate.
+
 
