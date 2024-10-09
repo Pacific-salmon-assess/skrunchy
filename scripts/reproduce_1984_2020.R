@@ -4,6 +4,11 @@ library(here)
 library(ggplot2)
 library(tidyr)
 
+# Note: Winther et al. 2024  report included Kuldo Creek in Middle Skeena (which makes sense geographically),
+# But on the dendodgrams for MSAT and SNP it is more closely related to Middle Skeena
+# and is included in Middle Skeena groupings for both MSAT and SNP.
+# Need to address for future work.
+
 # read in key of genetic baseline collections and Conservation Unit names.
 key <- read.csv(here ("data", "population-key.csv"))
 # read in data with GSI mixture analysis by week for Tyee
@@ -22,9 +27,13 @@ dpl <- pivot_longer( dp, names(d)[p_cols], values_to = "P", names_to = "msat_col
 # remove P from in front of population names
 dpl$msat_collection <- sub("P\\.", "", dpl$msat_collection)
 # merge with conservation unit groupings
-dpm <- merge(dpl, key[ , names(key) %in% c("msat_collection", "cu_name")], by="msat_collection" )
+#dpm <- merge(dpl, key[ , names(key) %in% c("msat_collection", "cu_name")], by="msat_collection" )
+dpm <- merge(dpl, key[ , names(key) %in% c("msat_collection", "cu_name_match_report")], by="msat_collection" )
+
 # change CU name to i, skrunchy package convention
-names(dpm)[grep("cu_name", names(dpm))] <- "i"
+#names(dpm)[grep("cu_name", names(dpm))] <- "i"
+names(dpm)[grep("cu_name_match_report", names(dpm))] <- "i"
+
 # Convert dataframe to array with tapply, sum by Conservation Unit i, fill missing values with 0
 # what order dims to use
 dim_order <- c("i","w","y")
@@ -40,9 +49,13 @@ dsd <- pivot_longer( dsd, names(d)[sd_cols], values_to = "sigma_P", names_to = "
 # remove P.SD. from in front of CU name
 dsd$msat_collection <- sub("P\\.SD\\.", "", dsd$msat_collection)
 # merge with CU names
-dsdm <- merge(dsd, key[ , names(key) %in% c("msat_collection", "cu_name")], by = "msat_collection" )
+#dsdm <- merge(dsd, key[ , names(key) %in% c("msat_collection", "cu_name")], by = "msat_collection" )
+dsdm <- merge(dsd, key[ , names(key) %in% c("msat_collection", "cu_name_match_report")], by = "msat_collection" )
+
 # change CU to i, skrunchy convention
-names(dsdm)[grep("cu_name", names(dsdm))] <- "i"
+#names(dsdm)[grep("cu_name", names(dsdm))] <- "i"
+names(dsdm)[grep("cu_name_match_report", names(dsdm))] <- "i"
+
 # function to add standard deviations
 add_sd <- function(x) { sqrt( sum(x^2, na.rm=TRUE) )}
 # add SD together by Conservation Unit
@@ -70,16 +83,15 @@ dim(sigma_P)
 dim(G)
 # Expand genetic proportions by week and add together to get annual proportions
 #   corrected for sample size and changing run timing over the year.
-P_tilde <- get_P_tilde( P = P, sigma_P = sigma_P, G = G)
+P_tilde <- get_P_tilde( P = P, sigma_P = sigma_P, G = G, save_csv = TRUE)
 
-P_tilde$df_merged
-View(P_tilde$df_merged)
+P_tilde$df
 
 # Preliminary look at values, they are exactly the same as in "1AB Skeena Esc 1979 to 2020 POPAN 2023-11-13 to LW&CM .xlsx"
 # tab "CU esc calc POPAN". That is fantastic! Only found one minor difference in Large Lakes percent for 2019.
 
 
-ggplot(P_tilde$df_merged, aes(x = y , y = P_tilde)) +
+ggplot(P_tilde$df, aes(x = y , y = P_tilde)) +
   geom_point() +
   geom_line() +
   geom_errorbar(aes( ymin = P_tilde - sigma_P_tilde, ymax= P_tilde + sigma_P_tilde)) +

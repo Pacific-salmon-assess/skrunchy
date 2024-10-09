@@ -23,11 +23,6 @@
 #'
 #' @export
 get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE) {
-  if(save_csv == TRUE) {
-    write.csv( P[,,1], here("data-out/test-P.csv"))
-    write.csv( sigma_P[,,1], here("data-out/test-sigma-P.csv"))
-    write.csv( t(G[,1]), here("data-out/test-G.csv"))
-  }
   populations <- dimnames(P)$i
   stopifnot( "Years are not equal for genetic and catch data" = all.equal(unique(dimnames(P)$y), unique(dimnames(G)$y)))
   years <- dimnames(P)$y
@@ -67,7 +62,13 @@ get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE) {
   dt <- merge(d, ds, by = c("i", "y"))
   dt$y <- as.integer(dt$y)
 
-  res <- list(P_tilde = P_tilde, sigma_P_tilde = sigma_P_tilde, df  = d)
+  if(save_csv == TRUE) {
+    #write.csv( P[,,1], here("data-out/test-P.csv"))
+    #write.csv( sigma_P[,,1], here("data-out/test-sigma-P.csv"))
+    #write.csv( t(G[,1]), here("data-out/test-G.csv"))
+    write.csv(dt, here("data-out/P_tilde.csv"), row.names = FALSE)
+  }
+  res <- list(P_tilde = P_tilde, sigma_P_tilde = sigma_P_tilde, df  = dt)
   res
 }
 
