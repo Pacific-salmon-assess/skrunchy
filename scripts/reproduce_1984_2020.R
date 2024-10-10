@@ -5,7 +5,7 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(latex2exp)
-
+options(scipen = 999)
 # Note: Winther et al. 2024  report included Kuldo Creek in Middle Skeena (which makes sense geographically),
 # But on the dendodgrams for MSAT and SNP it is more closely related to Middle Skeena
 # and is included in Middle Skeena groupings for both MSAT and SNP.
@@ -139,6 +139,20 @@ Tau_U_d <- Tau_U_d[Tau_U_d$y >=1984, ]
 E <- get_E( K = kd$spawners, X = X$X, Tau_U = Tau_U_d$Tau_U)
 
 View(E$df)
+
+#png(here("fig/reproduce_report_X_E.png"), width=8, height=4, units="in", res=600)
+ggplot(data = E$df, aes(y = E, x = y, group=i)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~factor(i, levels = c("Skeena", pops_keep)), ncol=3, scales = "free_y") +
+  ylab("Escapement") +
+  xlab("Year") +
+  coord_cartesian() +
+  geom_hline(aes(yintercept=0)) +
+  theme_classic() +
+  theme(axis.line.x = element_blank())
+#dev.off()
+
 ggplot(X$df, aes(y = X, x = y, group = i)) +
   geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
   geom_point() +

@@ -9,6 +9,7 @@
 #' @param aggregate_population Character, name of population i that is the sum of the other populations. Defaults to Skeena.
 #' @param lower_populations Character vector, names of populations i downstream of Terrace. Defaults to Lower Skeena and Zymoetz-Fiddler.
 #' @param upper_populations Character vector, names of populations i upstream of Terrace. Defaults to Upper Skeena, Middle Skeena, and Large Lakes.
+#' @param save_csv If TRUE, save a csv of the data frame output.
 #'
 #' @return List with two elements. First element: numeric, matrix of escapement values for Chinook with two dimensions: population (i), and year (y).
 #'         Second element: data frame version of matrix, for plotting and tables.
@@ -34,7 +35,8 @@ get_E <- function( K, X, Tau_U,
                    known_population = "Kitsumkalum",
                    aggregate_population = "Skeena",
                    lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
-                   upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes")) {
+                   upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"),
+                   save_csv=FALSE) {
   populations <- dimnames(X)$i
   n_populations <- length(dimnames(X)$i)
   years <- dimnames(X)$y
@@ -59,6 +61,9 @@ get_E <- function( K, X, Tau_U,
 
   d <- as.data.frame.table(E, responseName = "E", stringsAsFactors = FALSE)
   d$y <- as.integer(d$y)
+  if(save_csv == TRUE) {
+    write.csv(d, here("data-out/E.csv"), row.names = FALSE)
+  }
   res <- list(E = E, df = d)
   res
 }

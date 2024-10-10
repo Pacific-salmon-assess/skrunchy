@@ -48,6 +48,9 @@ po/*~
 # RStudio Connect folder
 rsconnect/
 
+# Figures (for now)
+fig/
+
 # Data
 data/
 data/*.csv
