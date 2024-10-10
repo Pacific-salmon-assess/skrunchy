@@ -3,6 +3,8 @@
 library(here)
 library(ggplot2)
 library(tidyr)
+library(dplyr)
+library(latex2exp)
 
 # Note: Winther et al. 2024  report included Kuldo Creek in Middle Skeena (which makes sense geographically),
 # But on the dendodgrams for MSAT and SNP it is more closely related to Middle Skeena
@@ -163,8 +165,51 @@ as <- am %>% group_by(JD, Fish, y, i, SEX, a, NOSE.FORK.LENGTH..mm.) %>%
   summarise(p = sum(p, na.rm=TRUE)) %>%
   group_by(JD, Fish, y, SEX, a, NOSE.FORK.LENGTH..mm.) %>%
   slice_max(p)
+# Why does as have more fish than ad? Should be the same. Maybe there are ties for probability?
+hist(as$p)
 as
-at <- table(as$i, as$y, as$a)
-aarr <- as.array(at)
+# how many age samples for each population*year
+n_age_samples <- as %>% group_by(i, y) %>% summarise(n = n())
+
+as$aggregate <- "Skeena"
+at <- table(as$i, as$y, as$a, dnn = c("i", "y", "a"))
+atskeena <- table(as$aggregate, as$y, as$a, dnn = c("i", "y", "a"))
+aarrcu <- as.array(at)
+aarrskeena <- as.array(atskeena)
+aarr <- abind(aarrcu, aarrskeena, along=1, use.dnns = TRUE)
+dimnames(aarr)
+aarr <- aarr[ , as.character(1984:2020), ]
 dim(aarr)
 dimnames(aarr)
+
+aarr
+
+# Get omega age proportions, ages 4-7
+omega <- get_omega( aarr[ c("Skeena", pops_keep), , 3:6] , save_csv = TRUE)
+omega$omega[,,"7"]
+
+# FLAG: need to check omega values against report values
+
+dimnames(omega$omega)
+
+ggplot( omega$df, aes(y = omega, x = y, group = i)) +
+  geom_point() +
+  geom_line() +
+  geom_hline(aes(yintercept=0)) +
+  ylab(TeX("$\\Omega$") )+
+  facet_grid( i ~ a ) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+
+# Age specific escapement
+E_star <- get_E_star(E = E$E, omega = omega$omega)
+
+ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
+  geom_point( colour="gray") +
+  geom_line( colour="gray") +
+  geom_hline(aes(yintercept=0)) +
+  facet_grid( i ~ a , scales = "free_y") +
+  ylab("Escapement (E*)") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+#View(E_star$df)
