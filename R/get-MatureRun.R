@@ -37,7 +37,8 @@
 #'   d <- sapply(p_ages, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
 #'   n <- array( d,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
 #'   omega <- get_omega(n)
-#'   E_star <- get_E_star(E = E$E, omega = omega$omega)
+#'   K_star <- array(runif(n = n_years * n_ages, 5000, 20000), dim = c(n_years, n_ages), dimnames= list(y = years, a = ages))
+#'   E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = K_star)
 #'   B_star <- array(sample(1:50, size= n_years*n_ages), dim = c(n_years, n_ages), dimnames = list( y = years, a = ages))
 #'   #B_star[,4] <- 0 # make age 7 brood = 0 so you don't get negative fish in S_star
 #'   S_star <- get_S_star(E_star = E_star$E_star, B_star = B_star)

@@ -43,7 +43,8 @@
 #'   E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = K_star)
 #'
 #' @export
-get_E_star <- function(E, omega, K_star,
+get_E_star <- function(E, omega,
+                       K_star,
                        population_use_age_from_river_samples = "Kitsumkalum",
                        save_csv = FALSE,
                        add_6_7 = TRUE) {
@@ -64,7 +65,7 @@ get_E_star <- function(E, omega, K_star,
       if(any(dimnames(E_star)$a == "7")) { # only do this if there are actual age 7 fish in the data
         E_star_add_6_7 <- E_star # new array to manipulate
         E_star_add_6_7[,,"6"] <- E_star_add_6_7[,,"6"] + E_star_add_6_7[,,"7"] # add age 7 escapements to age 6
-        E_star_add_6_7 <- E_star_add_6_7[,,1:(n_ages-1)] # remove age 7 escapement dimension
+        E_star_add_6_7 <- E_star_add_6_7[,,-grep("7", dimnames(E_star_add_6_7)$a)] # remove age 7 escapement dimension
         E_star <- E_star_add_6_7
       }
     }
