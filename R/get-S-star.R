@@ -6,6 +6,7 @@
 #' @param B_star Numeric, array of number of brood stock adult Chinook taken from the Kitsumkalum river, by year (y) and age (a).
 #' @param brood_population Character, name of population i with where brood removals occurred. Defaults to Kitsumkalum.
 #' @param aggregate_population Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.
+#' @param save_csv If TRUE, save a csv of the data frame output.
 #'
 #' @return List with two elements. First element: numeric, array of spawner values with three dimensions:  population (i), year (y), and age (a).
 #'          Second element: data frame version of first element in long format, for plotting and tables.
@@ -44,7 +45,8 @@
 #'
 #' @export
 get_S_star <- function(E_star, B_star, aggregate_population = "Skeena",
-                       brood_population = "Kitsumkalum") {
+                       brood_population = "Kitsumkalum",
+                       save_csv = FALSE) {
   no_brood_populations <- dimnames(E_star)$i[ !dimnames(E_star)$i %in% c(brood_population, aggregate_population)]
   n_years <- dim(E_star)[2]
   n_ages <- dim(E_star)[3]
@@ -58,6 +60,9 @@ get_S_star <- function(E_star, B_star, aggregate_population = "Skeena",
   }
   d <- as.data.frame.table(S_star, responseName = "S_star", stringsAsFactors = FALSE)
   d$y <- as.integer(d$y)
+  if(save_csv == TRUE) {
+    write.csv(d, here("data-out/S_star.csv"), row.names = FALSE)
+  }
   res <- list(S_star = S_star, df = d)
   res
 }

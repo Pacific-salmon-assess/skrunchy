@@ -4,12 +4,16 @@
 \alias{get_E_star}
 \title{Get age-specific escapement}
 \usage{
-get_E_star(E, omega)
+get_E_star(E, omega, save_csv = FALSE, add_6_7 = TRUE)
 }
 \arguments{
 \item{E}{Numeric, matrix of escapement values for Chinook with two dimensions: population (i), and year (y).}
 
 \item{omega}{Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).}
+
+\item{save_csv}{If TRUE, save a csv of the data frame output.}
+
+\item{add_6_7}{If TRUE, add age 7 fish to age 6 fish of the same return year (treat age 7 returns as age 6 returns from the age 6 return year).}
 }
 \value{
 List with two elements. First element: numeric, array of escapement values with three dimensions: population (i), year (y), and age (a).

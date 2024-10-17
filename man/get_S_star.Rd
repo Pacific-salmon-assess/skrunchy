@@ -8,7 +8,8 @@ get_S_star(
   E_star,
   B_star,
   aggregate_population = "Skeena",
-  brood_population = "Kitsumkalum"
+  brood_population = "Kitsumkalum",
+  save_csv = FALSE
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ get_S_star(
 \item{aggregate_population}{Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.}
 
 \item{brood_population}{Character, name of population i with where brood removals occurred. Defaults to Kitsumkalum.}
+
+\item{save_csv}{If TRUE, save a csv of the data frame output.}
 }
 \value{
 List with two elements. First element: numeric, array of spawner values with three dimensions:  population (i), year (y), and age (a).

@@ -4,6 +4,8 @@
 #'
 #' @param E Numeric, matrix of escapement values for Chinook with two dimensions: population (i), and year (y).
 #' @param omega Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).
+#' @param save_csv If TRUE, save a csv of the data frame output.
+#' @param add_6_7 If TRUE, add age 7 fish to age 6 fish of the same return year (treat age 7 returns as age 6 returns from the age 6 return year).
 #'
 #' @return List with two elements. First element: numeric, array of escapement values with three dimensions: population (i), year (y), and age (a).
 #'          Second element: data frame version of first element, for plotting and tables.
@@ -37,7 +39,9 @@
 #'   E_star <- get_E_star(E = E$E, omega = omega$omega)
 #'
 #' @export
-get_E_star <- function(E, omega) {
+get_E_star <- function(E, omega,
+                       save_csv = FALSE,
+                       add_6_7 = TRUE) {
     E_star <- array(NA, dim = dim(omega), dimnames = dimnames(omega))
     n_years <- dim(omega)[2]
     populations <- dimnames(omega)$i
@@ -49,8 +53,21 @@ get_E_star <- function(E, omega) {
         }
       }
     }
+    if(add_6_7 == TRUE) {
+      if(any(dimnames(E_star)$a == "7")) {
+        E_star_add_6_7 <- E_star # new array to manipulate
+        E_star_add_6_7[,,"6"] <- E_star[,,"6"] + E_star[,,"7"] # add age 7 escapements to age 6
+        E_star_add_6_7 <- E_star[,,1:(n_ages-1)] # remove age 7 escapement dimension
+        E_star <- E_star_add_6_7
+      }
+    }
     d <- as.data.frame.table(E_star, responseName = "E_star", stringsAsFactors = FALSE)
     d$y <- as.integer(d$y)
+    d$a <- as.integer(d$a)
+    d$b <- d$y - d$a
+    if(save_csv == TRUE) {
+      write.csv(d, here("data-out/E_star.csv"), row.names = FALSE)
+    }
     res <- list(E_star = E_star, df = d)
     res
 }

@@ -140,6 +140,7 @@ E <- get_E( K = kd$spawners, X = X$X, Tau_U = Tau_U_d$Tau_U)
 
 View(E$df)
 
+# Make fig for powerpoint
 #png(here("fig/reproduce_report_X_E.png"), width=8, height=4, units="in", res=600)
 ggplot(data = E$df, aes(y = E, x = y, group=i)) +
   geom_point() +
@@ -153,6 +154,7 @@ ggplot(data = E$df, aes(y = E, x = y, group=i)) +
   theme(axis.line.x = element_blank())
 #dev.off()
 
+# Plot returns to Terrace and escapement
 ggplot(X$df, aes(y = X, x = y, group = i)) +
   geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
   geom_point() +
@@ -216,8 +218,19 @@ ggplot( omega$df, aes(y = omega, x = y, group = i)) +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 
 # Age specific escapement
-E_star <- get_E_star(E = E$E, omega = omega$omega)
+E_star <- get_E_star(E = E$E, omega = omega$omega, save_csv = TRUE, add_6_7 = TRUE)
 
+E_star$df
+E_rep <- read.csv(here("data-old", "E-report.csv"))
+
+E_check <- merge(E_star$df, E_rep, by.x = c("y", "a", "b", "i"),
+                 by.y = c("RY", "Age", "BY", "CU"), all.x = TRUE)
+
+ggplot(E_check, aes(y = E_star, x = E.report)) +
+  geom_point() +
+  facet_wrap(~i, scales= "free")
+
+#View(E_star$df)
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   geom_point( colour="gray") +
   geom_line( colour="gray") +
@@ -226,4 +239,26 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   ylab("Escapement (E*)") +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
-#View(E_star$df)
+
+# Read in brood removals
+brood <- read.csv(here("data-old", "brood.csv"))
+bdims <- c("y", "a")
+bdims_pos <- sapply(bdims, function(x) grep( paste0("^", x, "$"), names(brood)))
+B_star <- tapply(brood$B_star, brood[ ,bdims_pos ], FUN = print, default = 0 )
+
+B_star
+dim(B_star)
+dimnames(B_star)
+
+S_star <- get_S_star(E_star = E_star$E_star, B_star= B_star , save_csv = TRUE)
+S_star$df
+
+ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
+  geom_point(colour="gray") +
+  geom_line(colour="gray") +
+  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="dodgerblue") +
+  geom_hline(aes(yintercept=0)) +
+  facet_grid( i ~ a , scales = "free_y") +
+  ylab("Escapement (E*) in gray and spawners (S*) in blue") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
