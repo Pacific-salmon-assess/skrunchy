@@ -138,7 +138,7 @@ Tau_U_d <- Tau_U_d[Tau_U_d$y >=1984, ]
 
 E <- get_E( K = kd$spawners, X = X$X, Tau_U = Tau_U_d$Tau_U)
 
-View(E$df)
+#View(E$df)
 
 # Make fig for powerpoint
 #png(here("fig/reproduce_report_X_E.png"), width=8, height=4, units="in", res=600)
@@ -217,10 +217,22 @@ ggplot( omega$df, aes(y = omega, x = y, group = i)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
 
+# read in Kitsumkalum age-specific escapement
+ksd <- read.csv(here("data-old", "K_star.csv"))
+ksdl <- ksd %>% pivot_longer(c("X4", "X5", "X6", "X7"), names_to = "a", values_to = "K_star")
+ksdl$a <- sub("X", "", ksdl$a)
+dim_order_K_star <- c("y","a")
+dim_position_K_star<- sapply(dim_order_K_star, function(x) grep( paste0("^", x, "$"), names(ksdl)))
+
+K_star <- tapply(ksdl$K_star, ksdl[ , dim_position_K_star], FUN=print, default = 0)
+K_star
+dim(K_star)
+dimnames(K_star)
 # Age specific escapement
-E_star <- get_E_star(E = E$E, omega = omega$omega, save_csv = TRUE, add_6_7 = TRUE)
+E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = K_star, save_csv = TRUE, add_6_7 = TRUE)
 
 E_star$df
+View(E_star$df)
 E_rep <- read.csv(here("data-old", "E-report.csv"))
 
 E_check <- merge(E_star$df, E_rep, by.x = c("y", "a", "b", "i"),
@@ -230,7 +242,10 @@ ggplot(E_check, aes(y = E_star, x = E.report)) +
   geom_point() +
   facet_wrap(~i, scales= "free")
 
-#View(E_star$df)
+check <- E_check$E.report - E_check$E_star
+hist(check)
+check
+
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   geom_point( colour="gray") +
   geom_line( colour="gray") +

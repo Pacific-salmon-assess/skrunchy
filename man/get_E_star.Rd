@@ -4,16 +4,28 @@
 \alias{get_E_star}
 \title{Get age-specific escapement}
 \usage{
-get_E_star(E, omega, save_csv = FALSE, add_6_7 = TRUE)
+get_E_star(
+  E,
+  omega,
+  K_star,
+  population_use_age_from_river_samples = "Kitsumkalum",
+  save_csv = FALSE,
+  add_6_7 = TRUE
+)
 }
 \arguments{
 \item{E}{Numeric, matrix of escapement values for Chinook with two dimensions: population (i), and year (y).}
 
 \item{omega}{Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).}
 
+\item{K_star}{Numeric, array of Kitsumkalum River escapement with two dimensions: return year (y) and age (a). Calculated using
+age proportion data from spawning grounds (not from Tyee samples) for males and females separately.}
+
+\item{population_use_age_from_river_samples}{Character, name of population to use alternate escapement by age data from sampling on spawning grounds. Defaults to Kitsumkalum.}
+
 \item{save_csv}{If TRUE, save a csv of the data frame output.}
 
-\item{add_6_7}{If TRUE, add age 7 fish to age 6 fish of the same return year (treat age 7 returns as age 6 returns from the age 6 return year).}
+\item{add_6_7}{If TRUE, add age 7 fish to age 6 fish of the same return year (treat age 7 returns as age 6 returns from the age 6 return year). Note that this "modifies" the brood year of age 7 fish (true brood year +1). May be a better way to do this.}
 }
 \value{
 List with two elements. First element: numeric, array of escapement values with three dimensions: population (i), year (y), and age (a).
@@ -41,13 +53,14 @@ E <- get_E(K = k$kitsumkalum_escapement, X = X$X, Tau_U = Tau_U,
   n_populations <- length(populations)
   years <- 2000:2001
   n_years <- length(years)
-  ages <- c(4,5,6,7)
-  p_ages <- c(30,40,40,1)
+  ages <- c(4,5,6)
+  p_ages <- c(30,40,40)
   n_ages <- length(ages)
   # Make up some age data
   d <- sapply(p_ages, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
   n <- array( d,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
   omega <- get_omega(n)
-  E_star <- get_E_star(E = E$E, omega = omega$omega)
+  K_star <- array(runif(n = n_years * n_ages, 5000, 20000), dim = c(n_years, n_ages), dimnames= list(y = years, a = ages))
+  E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = K_star)
 
 }
