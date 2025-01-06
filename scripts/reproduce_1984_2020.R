@@ -5,6 +5,7 @@ library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(latex2exp)
+library(skrunchy)
 options(scipen = 999)
 # Note: Winther et al. 2024  report included Kuldo Creek in Middle Skeena (which makes sense geographically),
 # But on the dendodgrams for MSAT and SNP it is more closely related to Middle Skeena
@@ -117,9 +118,11 @@ kd <- read.csv(here("data-old", "kitsumkalum.csv"))
 head(kd)
 
 X <- get_X(P_tilde = P_tilde$P_tilde, sigma_P_tilde = P_tilde$sigma_P_tilde, K = kd$spawners, sigma_K = kd$SE, y = kd$year,
-           known_population = "Kitsumkalum", aggregate_population = "Skeena",
-           save_csv = TRUE)
-
+           known_population = "Kitsumkalum", aggregate_population = "Skeena"
+           #,
+           #save_csv = TRUE
+           )
+View(X$df)
 ggplot(X$df, aes(y = X, x = y, group = i)) +
   geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
   geom_point() +
@@ -229,7 +232,7 @@ K_star
 dim(K_star)
 dimnames(K_star)
 # Age specific escapement
-E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = K_star, save_csv = TRUE, add_6_7 = TRUE)
+E_star <- get_E_star(E = E$E, omega = omega$omega, use_alternate_escapement_by_age = TRUE, K_star = K_star, save_csv = TRUE, add_6_7 = TRUE)
 
 E_star$df
 View(E_star$df)

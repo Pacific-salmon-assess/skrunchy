@@ -37,6 +37,11 @@ get_E <- function( K, X, Tau_U,
                    lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
                    upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"),
                    save_csv=FALSE) {
+
+  # check that lengths (number of years) are equal in data inputs
+  if(!all( dim(K)[1] == dim(X)[2] , dim(Tau_U)[1] == dim(X)[2]))  {
+    stop("Length of year (y) dimensions not equal.") }
+
   populations <- dimnames(X)$i
   n_populations <- length(dimnames(X)$i)
   years <- dimnames(X)$y

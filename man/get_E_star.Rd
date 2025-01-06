@@ -7,6 +7,7 @@
 get_E_star(
   E,
   omega,
+  use_alternate_escapement_by_age = TRUE,
   K_star,
   population_use_age_from_river_samples = "Kitsumkalum",
   save_csv = FALSE,
@@ -18,6 +19,8 @@ get_E_star(
 
 \item{omega}{Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).}
 
+\item{use_alternate_escapement_by_age}{Logical, should alternate escapement by age data be used for a population? Defaults to TRUE.}
+
 \item{K_star}{Numeric, array of Kitsumkalum River escapement with two dimensions: return year (y) and age (a). Calculated using
 age proportion data from spawning grounds (not from Tyee samples) for males and females separately.}
 
@@ -25,7 +28,7 @@ age proportion data from spawning grounds (not from Tyee samples) for males and 
 
 \item{save_csv}{If TRUE, save a csv of the data frame output.}
 
-\item{add_6_7}{If TRUE, add age 7 fish to age 6 fish of the same return year (treat age 7 returns as age 6 returns from the age 6 return year). Note that this "modifies" the brood year of age 7 fish (true brood year +1). May be a better way to do this.}
+\item{add_6_7}{If TRUE, add age 7 fish to age 6 fish of the same return year (treat age 7 returns as age 6 returns from the age 6 return year). Note that this "modifies" the brood year of age 7 fish (true brood year +1).}
 }
 \value{
 List with two elements. First element: numeric, array of escapement values with three dimensions: population (i), year (y), and age (a).
