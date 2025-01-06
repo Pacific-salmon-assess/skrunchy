@@ -4,7 +4,7 @@
 #'
 #'
 #' @param S_star  Numeric, array of spawner values with three dimensions:  population (i), year (y), and age (a).
-#' @param H_star Numeric, array of number of hatchery origin spawners returning to the population with a hatchery (e.g., Kitsumkalum River), by year (y) and age (a).
+#' @param H_star Numeric, array of number of hatchery origin spawners returning to the population with a hatchery (e.g., Kitsumkalum River), by year (y) and age (a). Excludes age 3 fish (jacks).
 #' @param hatchery_population Character, name of population i with where brood removals occurred. Defaults to Kitsumkalum.
 #' @param aggregate_population Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.
 #'
@@ -39,20 +39,30 @@
 #'   n <- array( d,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
 #'   omega <- get_omega(n)
 #'   K_star <- array(runif(n = n_years * n_ages, 5000, 20000), dim = c(n_years, n_ages), dimnames= list(y = years, a = ages))
-#'   E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = K_star)
-#'   B_star <- array(sample(1:50, size= n_years*n_ages), dim = c(n_years, n_ages), dimnames = list( y = years, a = ages))
-#'   B_star[,4] <- 0 # make age 7 brood = 0 so you don't get negative fish in S_star
+#'   E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = K_star, add_6_7 = TRUE)
+#'   B_star <- array(sample(1:50, size= n_years*(n_ages-1)), dim = c(n_years, n_ages-1), dimnames = list( y = years, a = ages[1:3]))
+#'   #B_star[,4] <- 0 # make age 7 brood = 0 so you don't get negative fish in S_star
 #'   S_star <- get_S_star(E_star = E_star$E_star, B_star = B_star)
-#'   H_star <- array(sample(10:40, size=n_years*n_ages), dim = c(n_years, n_ages), dimnames = list( y = years, a = ages))
+#'   H_star <- array(sample(10:40, size=n_years*(n_ages-1)), dim = c(n_years, n_ages-1), dimnames = list( y = years, a = ages[1:3]))
 #'   W_star <- get_W_star(S_star = S_star$S_star, H_star = H_star,
 #'     aggregate_population = "Skeena", hatchery_population = "Kitsumkalum")
 #'
 #' @export
 get_W_star <- function(S_star, H_star, aggregate_population = "Skeena",
                        hatchery_population = "Kitsumkalum") {
+  # FLAG: the age length check is not working
+    # if(!dim(S_star)[3] == dim(H_star)[2] )  {
+    #  stop("Length of age (a) dimensions not equal.") }
+    if(!all(dimnames(S_star)$a %in% dimnames(H_star)$a )) {
+      stop("Age (a) values are not equal.") }
+    if(!dim(S_star)[2] == dim(H_star)[1] )  {
+      stop("Length of year (y) dimensions not equal.") }
+    if(!all(dimnames(S_star)$y %in% dimnames(H_star)$y )) {
+      stop("Year (y) values are not equal.") }
     no_hatchery_populations <- dimnames(S_star)$i[ !dimnames(S_star)$i %in% c(hatchery_population, aggregate_population)]
     n_years <- dim(S_star)[2]
     n_ages <- dim(S_star)[3]
+    # Flag: make year and age indexing explicit (to avoid mismatching)
     W_star <- array( data = NA, dim = dim(S_star), dimnames = dimnames(S_star))
       for(y in 1:n_years) {
         for(a in 1:n_ages){

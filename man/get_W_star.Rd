@@ -14,7 +14,7 @@ get_W_star(
 \arguments{
 \item{S_star}{Numeric, array of spawner values with three dimensions:  population (i), year (y), and age (a).}
 
-\item{H_star}{Numeric, array of number of hatchery origin spawners returning to the population with a hatchery (e.g., Kitsumkalum River), by year (y) and age (a).}
+\item{H_star}{Numeric, array of number of hatchery origin spawners returning to the population with a hatchery (e.g., Kitsumkalum River), by year (y) and age (a). Excludes age 3 fish (jacks).}
 
 \item{aggregate_population}{Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.}
 
@@ -54,11 +54,11 @@ E <- get_E(K = k$kitsumkalum_escapement, X = X$X, Tau_U = Tau_U,
   n <- array( d,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
   omega <- get_omega(n)
   K_star <- array(runif(n = n_years * n_ages, 5000, 20000), dim = c(n_years, n_ages), dimnames= list(y = years, a = ages))
-  E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = K_star)
-  B_star <- array(sample(1:50, size= n_years*n_ages), dim = c(n_years, n_ages), dimnames = list( y = years, a = ages))
-  B_star[,4] <- 0 # make age 7 brood = 0 so you don't get negative fish in S_star
+  E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = K_star, add_6_7 = TRUE)
+  B_star <- array(sample(1:50, size= n_years*(n_ages-1)), dim = c(n_years, n_ages-1), dimnames = list( y = years, a = ages[1:3]))
+  #B_star[,4] <- 0 # make age 7 brood = 0 so you don't get negative fish in S_star
   S_star <- get_S_star(E_star = E_star$E_star, B_star = B_star)
-  H_star <- array(sample(10:40, size=n_years*n_ages), dim = c(n_years, n_ages), dimnames = list( y = years, a = ages))
+  H_star <- array(sample(10:40, size=n_years*(n_ages-1)), dim = c(n_years, n_ages-1), dimnames = list( y = years, a = ages[1:3]))
   W_star <- get_W_star(S_star = S_star$S_star, H_star = H_star,
     aggregate_population = "Skeena", hatchery_population = "Kitsumkalum")
 

@@ -232,7 +232,8 @@ K_star
 dim(K_star)
 dimnames(K_star)
 # Age specific escapement
-E_star <- get_E_star(E = E$E, omega = omega$omega, use_alternate_escapement_by_age = TRUE, K_star = K_star, save_csv = TRUE, add_6_7 = TRUE)
+E_star <- get_E_star(E = E$E, omega = omega$omega, use_alternate_escapement_by_age = TRUE,
+                     K_star = K_star, save_csv = TRUE, add_6_7 = TRUE)
 
 E_star$df
 View(E_star$df)
@@ -280,3 +281,35 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   ylab("Escapement (E*) in gray and spawners (S*) in blue") +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
+
+# Get hatchery origin spawners
+H_df <- read.csv(here("data-old", "H.csv"))
+H_df$H <- round(H_df$H)
+H_df <- H_df[!H_df$a == 3, ]
+dim_order_H <- c("y","a")
+dim_position_H <- sapply(dim_order_H, function(x) grep( paste0("^", x, "$"), names(H_df)))
+H_star <- tapply(H_df$H, H_df[ , dim_position_H ], FUN = print, default = 0 )
+
+W_star <- get_W_star(S_star = S_star$S_star, H_star = H_star )
+
+ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
+  geom_point(colour="gray") +
+  geom_line(colour="gray") +
+  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="dodgerblue") +
+  geom_line(data = W_star$df, aes(y = W_star, x = y, group = i), colour="firebrick") +
+  geom_hline(aes(yintercept=0)) +
+  facet_grid( i ~ a , scales = "free_y") +
+  ylab("Escapement (E*) in gray and spawners (S*) in blue") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+
+
+# Get proportion wild
+p <- get_p(W_star = W_star$W_star, E_star = E_star$E_star)
+ggplot(p$df, aes(y = p, x = y, group = i)) +
+  geom_point() +
+  geom_line() +
+  facet_grid(i~a) +
+  ylab("Proportion wild spawners, p") +
+  geom_hline(aes(yintercept=0)) +
+  theme_classic()
