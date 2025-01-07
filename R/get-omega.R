@@ -45,7 +45,7 @@ get_omega <- function(n, save_csv = FALSE,save_location,
   d$y <- as.integer(d$y)
   if(save_csv == TRUE) {
     save_to <- here(save_location, save_name )
-    write.csv(dt, save_to, row.names = FALSE)
+    write.csv(d, save_to, row.names = FALSE)
   }
   res <- list( omega = omega, df = d )
   res
