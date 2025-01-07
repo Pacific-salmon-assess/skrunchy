@@ -27,7 +27,7 @@
 #'
 #'
 #' @export
-get_omega <- function(n, save_csv = FALSE,save_location,
+get_omega <- function(n, save_csv = FALSE, save_location,
                       save_name = "omega.csv") {
   sum_n_year <- apply(n, c(1,2), sum) # sum number of aged fish by year.
   n_ages <- dim(n)[3]

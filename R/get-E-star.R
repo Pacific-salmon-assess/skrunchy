@@ -8,8 +8,10 @@
 #' @param K_star Numeric, array of Kitsumkalum River escapement with two dimensions: return year (y) and age (a). Calculated using
 #' age proportion data from spawning grounds (not from Tyee samples) for males and females separately.
 #' @param population_use_age_from_river_samples Character, name of population to use alternate escapement by age data from sampling on spawning grounds. Defaults to Kitsumkalum.
-#' @param save_csv If TRUE, save a csv of the data frame output.
 #' @param add_6_7 If TRUE, add age 7 fish to age 6 fish of the same return year (treat age 7 returns as age 6 returns from the age 6 return year). Note that this "modifies" the brood year of age 7 fish (true brood year +1).
+#' @param save_csv If TRUE, save a csv of the data frame output.
+#' @param save_location Sub-directory folder of where to save csv
+#' @param save_name File name of csv to save. Defaults to "E_star.csv"
 #'
 #' @return List with two elements. First element: numeric, array of escapement values with three dimensions: population (i), year (y), and age (a).
 #'          Second element: data frame version of first element, for plotting and tables.
@@ -48,8 +50,10 @@ get_E_star <- function(E, omega,
                        use_alternate_escapement_by_age = TRUE,
                        K_star,
                        population_use_age_from_river_samples = "Kitsumkalum",
-                       save_csv = FALSE,
-                       add_6_7 = TRUE) {
+                       add_6_7 = TRUE,
+                       save_csv = FALSE, save_location,
+                       save_name = "E_star.csv"
+                       ) {
     E_star <- array(NA, dim = dim(omega), dimnames = dimnames(omega))
     n_years <- dim(omega)[2]
     populations <- dimnames(omega)$i
@@ -77,7 +81,8 @@ get_E_star <- function(E, omega,
     d$a <- as.integer(d$a)
     d$b <- d$y - d$a
     if(save_csv == TRUE) {
-      write.csv(d, here("data-out/E_star.csv"), row.names = FALSE)
+      save_to <- here(save_location, save_name )
+      write.csv(d, save_to, row.names = FALSE)
     }
     res <- list(E_star = E_star, df = d)
     res

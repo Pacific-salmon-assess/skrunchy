@@ -10,8 +10,10 @@ get_E_star(
   use_alternate_escapement_by_age = TRUE,
   K_star,
   population_use_age_from_river_samples = "Kitsumkalum",
+  add_6_7 = TRUE,
   save_csv = FALSE,
-  add_6_7 = TRUE
+  save_location,
+  save_name = "E_star.csv"
 )
 }
 \arguments{
@@ -26,9 +28,13 @@ age proportion data from spawning grounds (not from Tyee samples) for males and 
 
 \item{population_use_age_from_river_samples}{Character, name of population to use alternate escapement by age data from sampling on spawning grounds. Defaults to Kitsumkalum.}
 
+\item{add_6_7}{If TRUE, add age 7 fish to age 6 fish of the same return year (treat age 7 returns as age 6 returns from the age 6 return year). Note that this "modifies" the brood year of age 7 fish (true brood year +1).}
+
 \item{save_csv}{If TRUE, save a csv of the data frame output.}
 
-\item{add_6_7}{If TRUE, add age 7 fish to age 6 fish of the same return year (treat age 7 returns as age 6 returns from the age 6 return year). Note that this "modifies" the brood year of age 7 fish (true brood year +1).}
+\item{save_location}{Sub-directory folder of where to save csv}
+
+\item{save_name}{File name of csv to save. Defaults to "E_star.csv"}
 }
 \value{
 List with two elements. First element: numeric, array of escapement values with three dimensions: population (i), year (y), and age (a).
