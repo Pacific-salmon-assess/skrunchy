@@ -69,7 +69,7 @@ get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE, save_location,
     #write.csv( P[,,1], here("data-out/test-P.csv"))
     #write.csv( sigma_P[,,1], here("data-out/test-sigma-P.csv"))
     #write.csv( t(G[,1]), here("data-out/test-G.csv"))
-    save_to <- here(file_location, file_name )
+    save_to <- here(save_location, save_name )
     write.csv(dt, save_to, row.names = FALSE)
   }
   res <- list(P_tilde = P_tilde, sigma_P_tilde = sigma_P_tilde, df  = dt)
