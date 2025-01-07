@@ -6,6 +6,8 @@
 #' @param sigma_P Numeric, array of SD of the genetic proportions, with 3 dimensions: i (population), w (week), and y (year).
 #' @param G Numeric, array of how many Chinook were caught in the gillnet Tyee Test Fishery by week, with 2 dimensions: w (week) and y (year)
 #' @param save_csv If TRUE, saves the first year of data as csv files for checking.
+#' @param save_location Sub-directory folder of where to save csv
+#' @param save_name File name of csv to save. Defaults to "P_tilde.csv"
 #'
 #' @return List of 3 elements. First is an array of pooled genetic proportions with 2 dimensions: i (population) and y (year).
 #' Second is an array of SD of pooled genetic proportions with 2 dimensions: i (population) and y (year). Third is a data frame
@@ -22,7 +24,8 @@
 #' P_tilde <- get_P_tilde(P = P, sigma_P = sigma_P, G= G)
 #'
 #' @export
-get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE) {
+get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE, save_location,
+                        save_name = "P_tilde.csv") {
   populations <- dimnames(P)$i
   stopifnot( "Years are not equal for genetic and catch data" = all.equal(unique(dimnames(P)$y), unique(dimnames(G)$y)))
   years <- dimnames(P)$y
@@ -66,7 +69,8 @@ get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE) {
     #write.csv( P[,,1], here("data-out/test-P.csv"))
     #write.csv( sigma_P[,,1], here("data-out/test-sigma-P.csv"))
     #write.csv( t(G[,1]), here("data-out/test-G.csv"))
-    write.csv(dt, here("data-out/P_tilde.csv"), row.names = FALSE)
+    save_to <- here(file_location, file_name )
+    write.csv(dt, save_to, row.names = FALSE)
   }
   res <- list(P_tilde = P_tilde, sigma_P_tilde = sigma_P_tilde, df  = dt)
   res
