@@ -4,7 +4,14 @@
 \alias{get_P_tilde}
 \title{Get population proportions}
 \usage{
-get_P_tilde(P, sigma_P, G, save_csv = FALSE)
+get_P_tilde(
+  P,
+  sigma_P,
+  G,
+  save_csv = FALSE,
+  save_location,
+  save_name = "P_tilde.csv"
+)
 }
 \arguments{
 \item{P}{Numeric, array of genetic proportions with 3 dimensions: i (population), w (statistical week),and y (year)}
@@ -14,6 +21,10 @@ get_P_tilde(P, sigma_P, G, save_csv = FALSE)
 \item{G}{Numeric, array of how many Chinook were caught in the gillnet Tyee Test Fishery by week, with 2 dimensions: w (week) and y (year)}
 
 \item{save_csv}{If TRUE, saves the first year of data as csv files for checking.}
+
+\item{save_location}{Sub-directory folder of where to save csv}
+
+\item{save_name}{File name of csv to save. Defaults to "P_tilde.csv"}
 }
 \value{
 List of 3 elements. First is an array of pooled genetic proportions with 2 dimensions: i (population) and y (year).
