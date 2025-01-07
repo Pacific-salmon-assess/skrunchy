@@ -66,9 +66,6 @@ get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE, save_location,
   dt$y <- as.integer(dt$y)
 
   if(save_csv == TRUE) {
-    #write.csv( P[,,1], here("data-out/test-P.csv"))
-    #write.csv( sigma_P[,,1], here("data-out/test-sigma-P.csv"))
-    #write.csv( t(G[,1]), here("data-out/test-G.csv"))
     save_to <- here(save_location, save_name )
     write.csv(dt, save_to, row.names = FALSE)
   }
