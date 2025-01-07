@@ -9,7 +9,9 @@ get_S_star(
   B_star,
   aggregate_population = "Skeena",
   brood_population = "Kitsumkalum",
-  save_csv = FALSE
+  save_csv = FALSE,
+  save_location,
+  save_name = "S_star.csv"
 )
 }
 \arguments{
@@ -22,6 +24,10 @@ get_S_star(
 \item{brood_population}{Character, name of population i with where brood removals occurred. Defaults to Kitsumkalum.}
 
 \item{save_csv}{If TRUE, save a csv of the data frame output.}
+
+\item{save_location}{Sub-directory folder of where to save csv}
+
+\item{save_name}{File name of csv to save. Defaults to "S_star.csv"}
 }
 \value{
 List with two elements. First element: numeric, array of spawner values with three dimensions:  population (i), year (y), and age (a).
