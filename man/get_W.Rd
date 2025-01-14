@@ -42,4 +42,5 @@ Not age-specific.
 
 # Subtract hatchery method
  W <- get_W( method = "subtract_hatchery", S = ex_S, H = ex_H)
+
 }

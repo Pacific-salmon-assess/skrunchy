@@ -119,7 +119,6 @@ usethis::use_data(ex_S, overwrite = TRUE)
 usethis::use_data(ex_H_star, overwrite = TRUE)
 usethis::use_data(ex_H, overwrite = TRUE)
 usethis::use_data(ex_W_star, overwrite = TRUE)
-usethis::use_data(ex_W_star, overwrite = TRUE)
 
 # ex_data <- grep("^ex_.*", names(.GlobalEnv), value=TRUE)
 # ex_data_list <- do.call("list", mget(ex_data))
