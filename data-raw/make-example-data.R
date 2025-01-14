@@ -13,9 +13,7 @@ res <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
 ex_P_tilde <- res$P_tilde
 ex_sigma_P_tilde <- res$sigma_P_tilde
 
-k <- read.csv(here("data-raw/kitsumkalum-escapement.csv"))
-ex_K <- k$kitsumkalum_escapement
-ex_sigma_K = k$sd
+ex_k <- read.csv(here("data-raw/kitsumkalum-escapement.csv"))
 
 ex_X <- get_X(P_tilde = ex_P_tilde, sigma_P_tilde = ex_sigma_P_tilde , K= ex_K,
            sigma_K = ex_sigma_K,
@@ -29,8 +27,7 @@ usethis::use_data(ex_G, overwrite = TRUE)
 usethis::use_data(ex_P_tilde, overwrite = TRUE)
 usethis::use_data(ex_sigma_P_tilde, overwrite = TRUE)
 
-usethis::use_data(ex_K, overwrite = TRUE)
-usethis::use_data(ex_sigma_K, overwrite = TRUE)
+usethis::use_data(ex_k, overwrite = TRUE)
 
 usethis::use_data(ex_X, overwrite = TRUE)
 #usethis::use_data(P_tilde, overwrite = TRUE)
