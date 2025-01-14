@@ -13,20 +13,7 @@
 #'        Second object: data frame with same data in long format (columns for population, year, and age) for plotting.
 #'
 #' @examples
-#' populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
-#' n_populations <- length(populations)
-#' years <- 2000:2001
-#' n_years <- length(years)
-#' ages <- c(3,4,5,6,7)
-#' p_ages <- c(20,30,40,40,1)
-#' n_ages <- length(ages)
-#' d <- sapply(p_ages, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
-#' n <- array( d,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
-#' omega <- get_omega(n)
-#' Tau_L <- sample(500:1000, size=n_years)
-#' P_G <-  make_P_G(, start_year = 2000, n_years = n_years, population_names = populations[1:6])
-#' P_tilde <- get_P_tilde( P = P_G$P, sigma_P = P_G$sigma_P, G = P_G$G)
-#' tau_L <- get_tau_L( Tau_L = Tau_L, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena")
+#' tau_L <- get_tau_L( Tau_L = ex_Tau_L, omega = ex_omega, P_tilde = ex_P_tilde, aggregate_population = "Skeena")
 #'
 #' @export
 get_tau_L <- function( Tau_L, omega, P_tilde, aggregate_population = "Skeena") {

@@ -93,9 +93,15 @@ H_star <- S_star$S_star["Kitsumkalum",,] * runif(n = length(S_star$S_star["Kitsu
 ex_H_star <- H_star
 ex_H <- apply(ex_H_star,1, sum )
 
+# Get wild spawners
 W_star <- get_W_star(S_star = ex_S_star, H_star = ex_H_star,
     aggregate_population = "Skeena", hatchery_population = "Kitsumkalum")
 ex_W_star <- W_star$W_star
+
+#Get terminal mortalities freshwater
+# lower
+Tau_L <- sample(500:1000, size=n_years)
+ex_Tau_L <- Tau_L
 
 # Save example data sets to data/ as .rda files
 
@@ -119,6 +125,7 @@ usethis::use_data(ex_S, overwrite = TRUE)
 usethis::use_data(ex_H_star, overwrite = TRUE)
 usethis::use_data(ex_H, overwrite = TRUE)
 usethis::use_data(ex_W_star, overwrite = TRUE)
+usethis::use_data(ex_Tau_L, overwrite = TRUE)
 
 # ex_data <- grep("^ex_.*", names(.GlobalEnv), value=TRUE)
 # ex_data_list <- do.call("list", mget(ex_data))
