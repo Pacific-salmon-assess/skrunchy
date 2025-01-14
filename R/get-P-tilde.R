@@ -14,12 +14,9 @@
 #' with P_tilde, sigma_P_tilde, and year merged for plotting and reporting.
 
 #' @examples
-#' library(abind)
-#' library(here)
-#' test <- make_P_G()
-#' P <- test$P
-#' sigma_P <- test$sigma_P
-#' G <- test$G
+#' P <- ex_P
+#' sigma_P <- ex_sigma_P
+#' G <- ex_G
 #'
 #' P_tilde <- get_P_tilde(P = P, sigma_P = sigma_P, G= G)
 #'

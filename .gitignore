@@ -57,3 +57,4 @@ fig/
 *.xlsx
 .Rproj.user
 inst/extdata/ignore
+inst/extdata/temp

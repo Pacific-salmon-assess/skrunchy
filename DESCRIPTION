@@ -17,4 +17,6 @@ Imports:
     here
 Depends:
     abind,
-    here
+    here,
+    R (>= 3.5)
+LazyData: true
