@@ -52,13 +52,8 @@ rsconnect/
 fig/
 
 # Data
-data/
-data/*.csv
 *.csv
 *.xls
 *.xlsx
-data-out/
 .Rproj.user
-inst/extdata
-inst/extdata/
-data-old/
+inst/extdata/ignore
