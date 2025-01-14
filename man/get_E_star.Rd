@@ -28,7 +28,7 @@ age proportion data from spawning grounds (not from Tyee samples) for males and 
 
 \item{population_use_age_from_river_samples}{Character, name of population to use alternate escapement by age data from sampling on spawning grounds. Defaults to Kitsumkalum.}
 
-\item{add_6_7}{If TRUE, add age 7 fish to age 6 fish of the same return year (treat age 7 returns as age 6 returns from the age 6 return year). Note that this "modifies" the brood year of age 7 fish (true brood year +1).}
+\item{add_6_7}{If TRUE, add age 7 fish to age 6 fish of the same return year (treat age 7 returns as age 6 returns from the age 6 return year). Default is TRUE. Note that this "modifies" the brood year of age 7 fish (true brood year +1).}
 
 \item{save_csv}{If TRUE, save a csv of the data frame output.}
 
@@ -44,6 +44,6 @@ Second element: data frame version of first element, for plotting and tables.
 Calculate escapement of Chinook by population, year, and age.
 }
 \examples{
-  E_star <- get_E_star(E = ex_E, omega = ex_omega, K_star = ex_K_star)
+  E_star <- get_E_star(E = ex_E, omega = ex_omega, K_star = ex_K_star, add_6_7 = TRUE)
 
 }
