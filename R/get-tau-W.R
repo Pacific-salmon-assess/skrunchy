@@ -8,21 +8,7 @@
 #' @return List with two elements. First element: numeric, array of wild terminal mortalities with three dimensions:  population (i), year (y), and age (a).
 #'    Second element: data frame version of first element, for plotting and tables.
 #' @examples
-#' populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
-#' n_populations <- length(populations)
-#' years <- 2000:2001
-#' n_years <- length(years)
-#' ages <- c(3,4,5,6,7)
-#' n_ages <- length(ages)
-#' n_obs <- n_populations * n_years * n_ages
-#' com_dims <- c(n_populations, n_years, n_ages)
-#' com_dimnames <- list( i = populations, y= years, a = ages)
-#' tau_U <- array( sample(0:1000, size = n_obs, replace=TRUE), dim = com_dims, dimnames = com_dimnames )
-#' tau_L <- array( sample(0:500, size = n_obs, replace=TRUE), dim = com_dims, dimnames = com_dimnames)
-#' tau_M <- array( sample(0:2000, size = n_obs, replace=TRUE), dim = com_dims, dimnames = com_dimnames)
-#' tau <- get_tau( tau_U = tau_U, tau_L =tau_L, tau_M = tau_M)
-#' p <- array( runif(length(tau$tau), 0.8, 1), dim= dim(tau$tau), dimnames = dimnames(tau$tau))
-#' tau_W <- get_tau_W(tau = tau$tau, p = p)
+#' tau_W <- get_tau_W(tau = ex_tau, p = ex_p_wild)
 #'
 #'
 #' @export

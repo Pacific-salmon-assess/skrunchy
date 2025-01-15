@@ -123,7 +123,28 @@ ex_tau_dot_M <- tau_dot_M
 tau_M <- get_tau_M( W_star = ex_W_star, tau_dot_M = ex_tau_dot_M )
 ex_tau_M <- tau_M$tau_M
 
+# total terminal mortality
+tau <- get_tau( tau_U = ex_tau_U, tau_L = ex_tau_L, tau_M = ex_tau_M)
+ex_tau <- tau$tau
 
+# Proportion wild
+p <- get_p(W_star = ex_W_star, E_star = ex_E_star)
+ex_p_wild <- p$p
+
+# Wild terminal mortalities
+tau_W <- get_tau_W(tau = ex_tau, p = ex_p_wild)
+ex_tau_W <- tau_W$tau_W
+
+# Get terminal run
+TermRun <- get_TermRun(tau_W = ex_tau_W, W_star = ex_W_star, B_star=ex_B_star)
+ex_TermRun <- TermRun$TermRun
+
+# Get mature run
+use_arr <- ex_TermRun["Kitsumkalum",,]
+phi_dot_M <- array(runif(length(use_arr), 0.01, 0.3), dim = dim(use_arr), dimnames = dimnames(use_arr))
+ex_phi_dot_M <- phi_dot_M
+MatureRun <- get_MatureRun(TermRun = ex_TermRun, phi_dot_M = ex_phi_dot_M)
+ex_MatureRun <- MatureRun$MatureRun
 
 
 # Save example data sets to data/ as .rda files
@@ -153,6 +174,12 @@ usethis::use_data(ex_tau_L, overwrite = TRUE)
 usethis::use_data(ex_tau_U, overwrite = TRUE)
 usethis::use_data(ex_tau_dot_M, overwrite = TRUE)
 usethis::use_data(ex_tau_M, overwrite = TRUE)
+usethis::use_data(ex_tau, overwrite = TRUE)
+usethis::use_data(ex_p_wild, overwrite = TRUE)
+usethis::use_data(ex_tau_W, overwrite = TRUE)
+usethis::use_data(ex_TermRun, overwrite = TRUE)
+usethis::use_data(ex_phi_dot_M, overwrite = TRUE)
+usethis::use_data(ex_MatureRun, overwrite = TRUE)
 
 rm(list=ls()) # for testing examples
 
