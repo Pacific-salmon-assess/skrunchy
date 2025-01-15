@@ -22,17 +22,6 @@ Calculate recruits by return year and brood year by adding mature run and preter
 in adult equivalents. Produces an array by return year, an array by brood year, and a data frame with both return year and brood year.
 }
 \examples{
-  populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
-  n_populations <- length(populations)
-  years <- 2000:2010
-  n_years <- length(years)
-  ages <- c(4,5,6,7)
-  p_ages <- c(30,40,40,1)
-  n_ages <- length(ages)
-  MatureRun <- array(runif(min = 5000, max = 10000, n= n_populations*n_years*n_ages),
-    dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
-  MatureRun["Skeena",, ] <- apply(MatureRun[ !dimnames(MatureRun)$i =="Skeena",, ], c(2,3), sum)
-  phi_Q <- array(runif( min = 0, max = 4000, n = length(MatureRun)), dim = dim(MatureRun), dimnames = dimnames(MatureRun))
-  R_star <- get_R_star( MatureRun = MatureRun, phi_Q = phi_Q)
+  R_star <- get_R_star( MatureRun = ex_MatureRun, phi_Q = ex_phi_Q)
 
 }
