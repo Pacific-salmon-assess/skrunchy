@@ -146,6 +146,33 @@ ex_phi_dot_M <- phi_dot_M
 MatureRun <- get_MatureRun(TermRun = ex_TermRun, phi_dot_M = ex_phi_dot_M)
 ex_MatureRun <- MatureRun$MatureRun
 
+# Preterminal post fishery abundance
+# make up maturation rate data. Don't make for age 7
+r <- array( runif(length(use_arr), 0.8, 0.9), dim = dim(use_arr),
+    dimnames = dimnames(use_arr))
+r[, "6" ] <- 1 # maturation rate = 1 for age 6 fish
+ex_r <- r
+A_phi <- get_A_phi(MatureRun = ex_MatureRun, r = ex_r)
+ex_A_phi <- A_phi$A_phi
+
+# Ocean pre-fishery abundance
+phi_dot_E <- array(runif(length(use_arr), 0.01, 0.3), dim = dim(use_arr), dimnames = dimnames(use_arr))
+ex_phi_dot_E <- phi_dot_E
+A_P <- get_A_P( A_phi = ex_A_phi, phi_dot_E = ex_phi_dot_E)
+ex_A_P <- A_P$A_P
+
+# Preterminal fishing mortality in nominal fish
+phi_N <- get_phi_N(A_P = ex_A_P, A_phi = ex_A_phi)
+ex_phi_N <- phi_N$phi_N
+
+# Preterminal fishing mortality in adult equivalents
+use_arr <- ex_phi_N["Kitsumkalum",,]
+# Make up some adult equivalents data
+Q <- array(runif(length(use_arr), 0.5, 0.9), dim = dim(use_arr), dimnames = dimnames(use_arr))
+Q[, "6" ] <- 1 # make maturation rate = 1 for age 6 fish
+ex_Q <- Q
+phi_Q <- get_phi_Q(phi_N = ex_phi_N, Q = ex_Q)
+ex_phi_Q <- phi_Q$phi_Q
 
 # Save example data sets to data/ as .rda files
 usethis::use_data(ex_P, overwrite = TRUE)
@@ -180,6 +207,13 @@ usethis::use_data(ex_tau_W, overwrite = TRUE)
 usethis::use_data(ex_TermRun, overwrite = TRUE)
 usethis::use_data(ex_phi_dot_M, overwrite = TRUE)
 usethis::use_data(ex_MatureRun, overwrite = TRUE)
+usethis::use_data(ex_r, overwrite = TRUE)
+usethis::use_data(ex_A_phi, overwrite = TRUE)
+usethis::use_data(ex_phi_dot_E, overwrite = TRUE)
+usethis::use_data(ex_A_P, overwrite = TRUE)
+usethis::use_data(ex_phi_N, overwrite = TRUE)
+usethis::use_data(ex_Q, overwrite = TRUE)
+usethis::use_data(ex_phi_Q, overwrite = TRUE)
 
 rm(list=ls()) # for testing examples
 

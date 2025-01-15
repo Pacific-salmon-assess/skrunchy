@@ -18,18 +18,7 @@
 #'
 #'
 #' @examples
-#'  populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
-#'   n_populations <- length(populations)
-#'   years <- 2000:2001
-#'   n_years <- length(years)
-#'   ages <- c(4,5,6,7)
-#'   n_ages <- length(ages)
-#'   A_phi<- array(sample(5000:10000, size=n_populations*n_years*n_ages),
-#'     dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
-#'   A_phi["Skeena",, ] <- apply(A_phi[ !dimnames(A_phi)$i =="Skeena",, ], c(2,3), sum)
-#'   phi_dot_E <- array( sample( seq(0.01, 0.2, 0.01), size = n_years * n_ages, replace=TRUE), dim = c(n_years, n_ages),
-#'     dimnames = list( y = years, a = ages))
-#'   A_P <- get_A_P( A_phi = A_phi, phi_dot_E = phi_dot_E)
+#'   A_P <- get_A_P( A_phi = ex_A_phi, phi_dot_E = ex_phi_dot_E)
 #'
 #'
 #' @export

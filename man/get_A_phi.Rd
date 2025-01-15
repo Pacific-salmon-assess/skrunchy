@@ -23,19 +23,7 @@ before preterminal net (gillnet, seine) fishery harvest of mature fish. Of the f
 non-net ocean fisheries, the number of fish that matured into the mature run.
 }
 \examples{
-  populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
-  n_populations <- length(populations)
-  years <- 2000:2001
-  n_years <- length(years)
-  ages <- c(4,5,6,7)
-  n_ages <- length(ages)
-  MatureRun <- array(sample(5000:10000, size=n_populations*n_years*n_ages),
-    dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
-  MatureRun["Skeena",, ] <- apply(MatureRun[ !dimnames(MatureRun)$i =="Skeena",, ], c(2,3), sum)
-  r <- array( sample( seq(0.8,0.9, 0.01), size = n_years * n_ages, replace=TRUE), dim = c(n_years, n_ages),
-    dimnames = list( y = years, a = ages))
-  r[, dimnames(r)$a \%in\% c(6,7) ] <- 1
-  A_phi <- get_A_phi(MatureRun = MatureRun, r = r)
+  A_phi <- get_A_phi(MatureRun = ex_MatureRun, r = ex_r)
 
 
 }
