@@ -15,7 +15,7 @@
 #'         Second element: data frame version of matrix, for plotting and tables.
 #'
 #' @examples
-#' E <- get_E(K = ex_k$kitsumkalum_escapement, X = ex_X, Tau_U = ex_Tau_U,
+#' E <- get_E(K = ex_k$kitsumkalum_escapement, X = ex_X, Tau_U = ex_Tau_U_total,
 #'    known_population = "Kitsumkalum",
 #'     aggregate_population = "Skeena",
 #'     lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),

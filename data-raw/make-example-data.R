@@ -29,10 +29,10 @@ X <- get_X(P_tilde = ex_P_tilde, sigma_P_tilde = ex_sigma_P_tilde , K= ex_k$kits
 ex_X <- X$X
 
 # Make up Terminal mortality upstream of Terrace data
-ex_Tau_U <- sample(50:100, size = length(ex_k$year), replace=TRUE)
+ex_Tau_U_total <- sample(500:1000, size = length(ex_k$year), replace=TRUE)
 
 # Get escapement
-E <- get_E(K = ex_k$kitsumkalum_escapement, X = ex_X, Tau_U = ex_Tau_U,
+E <- get_E(K = ex_k$kitsumkalum_escapement, X = ex_X, Tau_U = ex_Tau_U_total,
    known_population = "Kitsumkalum",
     aggregate_population = "Skeena",
     lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
@@ -101,7 +101,16 @@ ex_W_star <- W_star$W_star
 #Get terminal mortalities freshwater
 # lower
 Tau_L <- sample(500:1000, size=n_years)
-ex_Tau_L <- Tau_L
+ex_Tau_L_total <- Tau_L
+tau_L <- get_tau_L( Tau_L = ex_Tau_L_total, omega = ex_omega, P_tilde = ex_P_tilde, aggregate_population = "Skeena")
+ex_tau_L <- tau_L
+# Upper
+# Example Tau_T already made
+#ex_Tau_U_total <- sample(500:1000, size=n_years)
+tau_U <- get_tau_U( Tau_U = ex_Tau_U_total, omega = ex_omega, P_tilde = ex_P_tilde,
+    aggregate_population = "Skeena", upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
+    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler") )
+ex_tau_U <- tau_U$tau_U
 
 # Save example data sets to data/ as .rda files
 
@@ -112,7 +121,7 @@ usethis::use_data(ex_P_tilde, overwrite = TRUE)
 usethis::use_data(ex_sigma_P_tilde, overwrite = TRUE)
 usethis::use_data(ex_k, overwrite = TRUE)
 usethis::use_data(ex_X, overwrite = TRUE)
-usethis::use_data(ex_Tau_U, overwrite = TRUE)
+usethis::use_data(ex_Tau_U_total, overwrite = TRUE)
 usethis::use_data(ex_E, overwrite = TRUE)
 usethis::use_data(ex_n, overwrite = TRUE)
 usethis::use_data(ex_omega, overwrite = TRUE)
@@ -125,7 +134,11 @@ usethis::use_data(ex_S, overwrite = TRUE)
 usethis::use_data(ex_H_star, overwrite = TRUE)
 usethis::use_data(ex_H, overwrite = TRUE)
 usethis::use_data(ex_W_star, overwrite = TRUE)
-usethis::use_data(ex_Tau_L, overwrite = TRUE)
+usethis::use_data(ex_Tau_L_total, overwrite = TRUE)
+usethis::use_data(ex_tau_L, overwrite = TRUE)
+#usethis::use_data(ex_Tau_U_total, overwrite = TRUE)
+usethis::use_data(ex_tau_U, overwrite = TRUE)
+
 
 # ex_data <- grep("^ex_.*", names(.GlobalEnv), value=TRUE)
 # ex_data_list <- do.call("list", mget(ex_data))
