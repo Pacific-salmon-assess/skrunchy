@@ -4,7 +4,13 @@
 \alias{get_tau_L}
 \title{Estimate Chinook total terminal mortalities in the lower Skeena River}
 \usage{
-get_tau_L(Tau_L, omega, P_tilde, aggregate_population = "Skeena")
+get_tau_L(
+  Tau_L,
+  omega,
+  P_tilde,
+  aggregate_population = "Skeena",
+  add_6_7 = TRUE
+)
 }
 \arguments{
 \item{Tau_L}{Numeric, vector of total terminal mortalities in the lower Skeena (downstream of Terrace), by year. Combination of FSC and recreational. Note uppercase Tau denotes total not broken out by population or age.}
@@ -14,6 +20,8 @@ get_tau_L(Tau_L, omega, P_tilde, aggregate_population = "Skeena")
 \item{P_tilde}{Numeric, array of genetic proportions at Skeena Tyee test fishery with 2 dimensions: i (population) and year (y).}
 
 \item{aggregate_population}{Character, name of aggregate population}
+
+\item{add_6_7}{Logical, If TRUE, add age 7 fish to age 6 fish of the same brood year (treat age 7 mortalities as age 6 mortalities from the age 6 brood year). Default is TRUE. Note that this "modifies" the return year of age 7 mortalities (true return year -1).}
 }
 \value{
 A list with two objects. First object: numeric, array of total terminal mortalities in the lower Skeena with three dimensions: population (i), year (y), and age (a).
@@ -25,6 +33,7 @@ Calculates the total terminal mortalities of Chinook salmon in the lower Skeena 
 Uses genetic data from Skeena Tyee test fishery, not CTC model outputs.
 }
 \examples{
-tau_L <- get_tau_L( Tau_L = ex_Tau_L_total, omega = ex_omega, P_tilde = ex_P_tilde, aggregate_population = "Skeena")
+tau_L <- get_tau_L( Tau_L = ex_Tau_L_total, omega = ex_omega, P_tilde = ex_P_tilde, aggregate_population = "Skeena",
+                  add_6_7 = TRUE)
 
 }

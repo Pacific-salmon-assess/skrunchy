@@ -12,7 +12,7 @@ test_that("Total mortalities by year populations sum to aggregate population", {
   Tau_L <- sample(500:1000, size=n_years)
   P_G <-  make_P_G( start_year = 2000, n_years = n_years, population_names = populations[1:6])
   P_tilde <- get_P_tilde( P = P_G$P, sigma_P = P_G$sigma_P, G = P_G$G)
-  tau_L <- get_tau_L( Tau_L = Tau_L, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena")
+  tau_L <- get_tau_L( Tau_L = Tau_L, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena",  add_6_7 = FALSE)
   expect_equal( apply(tau_L$tau_L["Skeena",,],1,sum),    apply( tau_L$tau_L[ setdiff(populations, "Skeena") ,,], 2,sum))
   expect_equal( as.numeric(apply(tau_L$tau_L["Skeena",,],1,sum)), Tau_L )
 })

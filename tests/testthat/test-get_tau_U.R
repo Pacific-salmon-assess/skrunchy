@@ -14,7 +14,7 @@ test_that("Total mortalities by year populations sum to aggregate population", {
   P_tilde <- get_P_tilde( P = P_G$P, sigma_P = P_G$sigma_P, G = P_G$G)
   tau_U <- get_tau_U( Tau_U = Tau_U, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena",
                       upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-                      lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler") )
+                      lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler") , add_6_7 = FALSE)
   expect_equal( apply(tau_U$tau_U["Skeena",,],1,sum),    apply( tau_U$tau_U[ setdiff(populations, "Skeena") ,,], 2,sum))
   expect_equal( as.numeric(apply(tau_U$tau_U["Skeena",,],1,sum)), Tau_U )
 })

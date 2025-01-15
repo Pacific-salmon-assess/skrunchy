@@ -102,18 +102,31 @@ ex_W_star <- W_star$W_star
 # lower
 Tau_L <- sample(500:1000, size=n_years)
 ex_Tau_L_total <- Tau_L
-tau_L <- get_tau_L( Tau_L = ex_Tau_L_total, omega = ex_omega, P_tilde = ex_P_tilde, aggregate_population = "Skeena")
-ex_tau_L <- tau_L
+tau_L <- get_tau_L( Tau_L = ex_Tau_L_total, omega = ex_omega, P_tilde = ex_P_tilde, aggregate_population = "Skeena",
+                    add_6_7 = TRUE)
+ex_tau_L <- tau_L$tau_L
+
+ex_tau_L <- tau_L$tau_L
 # Upper
 # Example Tau_T already made
 #ex_Tau_U_total <- sample(500:1000, size=n_years)
 tau_U <- get_tau_U( Tau_U = ex_Tau_U_total, omega = ex_omega, P_tilde = ex_P_tilde,
     aggregate_population = "Skeena", upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler") )
+    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"),
+    add_6_7 = TRUE)
 ex_tau_U <- tau_U$tau_U
 
-# Save example data sets to data/ as .rda files
+# Terminal marine mortality
+use_arr <- ex_W_star["Kitsumkalum",,]
+tau_dot_M <- array(runif(length(use_arr), 0.01, 0.2), dim = dim(use_arr), dimnames = dimnames(use_arr))
+ex_tau_dot_M <- tau_dot_M
+tau_M <- get_tau_M( W_star = ex_W_star, tau_dot_M = ex_tau_dot_M )
+ex_tau_M <- tau_M$tau_M
 
+
+
+
+# Save example data sets to data/ as .rda files
 usethis::use_data(ex_P, overwrite = TRUE)
 usethis::use_data(ex_sigma_P, overwrite = TRUE)
 usethis::use_data(ex_G, overwrite = TRUE)
@@ -138,11 +151,12 @@ usethis::use_data(ex_Tau_L_total, overwrite = TRUE)
 usethis::use_data(ex_tau_L, overwrite = TRUE)
 #usethis::use_data(ex_Tau_U_total, overwrite = TRUE)
 usethis::use_data(ex_tau_U, overwrite = TRUE)
+usethis::use_data(ex_tau_dot_M, overwrite = TRUE)
+usethis::use_data(ex_tau_M, overwrite = TRUE)
 
+rm(list=ls()) # for testing examples
 
 # ex_data <- grep("^ex_.*", names(.GlobalEnv), value=TRUE)
 # ex_data_list <- do.call("list", mget(ex_data))
 # lapply(ex_data_list, FUN = function(x) {usethis::use_data(x, overwrite = TRUE)})
 
-
-#usethis::use_data(P_tilde, overwrite = TRUE)

@@ -8,15 +8,18 @@
 #' @param omega Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).
 #' @param P_tilde Numeric, array of genetic proportions at Skeena Tyee test fishery with 2 dimensions: i (population) and year (y).
 #' @param aggregate_population Character, name of aggregate population
+#' @param add_6_7 Logical, If TRUE, add age 7 fish to age 6 fish of the same brood year (treat age 7 mortalities as age 6 mortalities from the age 6 brood year). Default is TRUE. Note that this "modifies" the return year of age 7 mortalities (true return year -1).
 #'
 #' @return A list with two objects. First object: numeric, array of total terminal mortalities in the lower Skeena with three dimensions: population (i), year (y), and age (a).
 #'        Second object: data frame with same data in long format (columns for population, year, and age) for plotting.
 #'
 #' @examples
-#' tau_L <- get_tau_L( Tau_L = ex_Tau_L_total, omega = ex_omega, P_tilde = ex_P_tilde, aggregate_population = "Skeena")
+#' tau_L <- get_tau_L( Tau_L = ex_Tau_L_total, omega = ex_omega, P_tilde = ex_P_tilde, aggregate_population = "Skeena",
+#'                   add_6_7 = TRUE)
 #'
 #' @export
-get_tau_L <- function( Tau_L, omega, P_tilde, aggregate_population = "Skeena") {
+get_tau_L <- function( Tau_L, omega, P_tilde, aggregate_population = "Skeena",
+                       add_6_7= TRUE) {
   # get character vector of populations that are not the aggregate
   not_aggregate_populations <- dimnames(omega)$i[ !dimnames(omega)$i == aggregate_population]
   # sum the proportions of the 6 summer run populations upstream of Tyee test fishery by year
@@ -30,6 +33,18 @@ get_tau_L <- function( Tau_L, omega, P_tilde, aggregate_population = "Skeena") {
     for(y in 1:n_years) {
     tau_L[aggregate_population, y, a] <- Tau_L[y] * omega[aggregate_population, y, a]
     tau_L[not_aggregate_populations, y, a] <- Tau_L[y] * omega[not_aggregate_populations, y, a] * P_tilde[not_aggregate_populations, y] / sum_P_tilde[y]
+    }
+  }
+  if(add_6_7 == TRUE) { # add age 7 to age 6 fish by brood year
+    if(any(dimnames(tau_L)$a == "7")) { # only do this if there are actual age 7 fish in the data
+      tau_L_add_6_7 <- tau_L # new array to manipulate
+      # Add age 7 mortalities to age 6 mortalities by brood year (use age 7 mortalities from return year +1)
+      for(y in 1:n_years-1) {
+        tau_L_add_6_7[,y,"6"] <- tau_L_add_6_7[,y,"6"] + tau_L_add_6_7[,y+1,"7"] # add age 7 mortalities to age 6 by brood year (age 7 mortalities from age 6 return year +1)
+      }
+      tau_L_add_6_7[,n_years,"6"] <- tau_L_add_6_7[,n_years,"6"] # for last year, no age 7s to add
+      tau_L_add_6_7 <- tau_L_add_6_7[,,-grep("7", dimnames(tau_L_add_6_7)$a)] # remove age 7 escapement dimension
+      tau_L <- tau_L_add_6_7
     }
   }
   d <- as.data.frame.table(tau_L, responseName = "tau_L")

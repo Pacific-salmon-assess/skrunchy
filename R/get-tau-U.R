@@ -10,6 +10,7 @@
 #' @param aggregate_population Character, name of aggregate population. Defaults to "Skeena"
 #' @param upper_populations Character, vector of names of upper populations. Defaults to Middle Skeena, Large Lakes, and Upper Skeena.
 #' @param lower_populations Character, vector of names of lower populations. Defaults to Lower Skeena, Kitsumkalum, and Zymoetz-Fiddler.
+#' @param add_6_7 Logical, If TRUE, add age 7 fish to age 6 fish of the same brood year (treat age 7 mortalities as age 6 mortalities from the age 6 brood year). Default is TRUE. Note that this "modifies" the return year of age 7 mortalities (true return year -1).
 #'
 #' @return A list with two objects. First object: numeric, array of total terminal mortalities in the upper Skeena with three dimensions: population (i), year (y), and age (a).
 #'        Second object: data frame with same data in long format (columns for population, year, and age) for plotting.
@@ -17,12 +18,14 @@
 #' @examples
 #' tau_U <- get_tau_U( Tau_U = ex_Tau_U_total, omega = ex_omega, P_tilde = ex_P_tilde,
 #'     aggregate_population = "Skeena", upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-#'     lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler") )
+#'     lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"),
+#'     add_6_7 = TRUE )
 #'
 #' @export
 get_tau_U <- function( Tau_U, omega, P_tilde, aggregate_population = "Skeena",
                        upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-                       lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler") ) {
+                       lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"),
+                       add_6_7 = TRUE) {
   # sum the proportions of the 6 summer run populations upstream of Tyee test fishery by year
   sum_P_tilde_upper <- apply(P_tilde[ upper_populations,], 2, sum)
   # make array to fill in
@@ -37,6 +40,18 @@ get_tau_U <- function( Tau_U, omega, P_tilde, aggregate_population = "Skeena",
       tau_U[i, y, a] <- Tau_U[y] * omega[i, y, a] * P_tilde[i,y] / sum_P_tilde_upper[y]
     }
     tau_U[lower_populations, y, a] <- 0
+    }
+  }
+  if(add_6_7 == TRUE) { # add age 7 to age 6 fish by brood year
+    if(any(dimnames(tau_U)$a == "7")) { # only do this if there are actual age 7 fish in the data
+      tau_U_add_6_7 <- tau_U # new array to manipulate
+      # Add age 7 mortalities to age 6 mortalities by brood year (use age 7 mortalities from return year +1)
+      for(y in 1:n_years-1) {
+        tau_U_add_6_7[,y,"6"] <- tau_U_add_6_7[,y,"6"] + tau_U_add_6_7[,y+1,"7"] # add age 7 mortalities to age 6 by brood year (age 7 mortalities from age 6 return year +1)
+      }
+      tau_U_add_6_7[,n_years,"6"] <- tau_U_add_6_7[,n_years,"6"] # for last year, no age 7s to add
+      tau_U_add_6_7 <- tau_U_add_6_7[,,-grep("7", dimnames(tau_U_add_6_7)$a)] # remove age 7 escapement dimension
+      tau_U <- tau_U_add_6_7
     }
   }
   d <- as.data.frame.table(tau_U, responseName = "tau_U")
