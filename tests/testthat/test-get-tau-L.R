@@ -1,7 +1,7 @@
 test_that("Total mortalities by year populations sum to aggregate population", {
   populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
   n_populations <- length(populations)
-  years <- 2000:2001
+  years <- 2000:2010
   n_years <- length(years)
   ages <- c(3,4,5,6,7)
   p_ages <- c(20,30,40,40,1)
@@ -15,4 +15,7 @@ test_that("Total mortalities by year populations sum to aggregate population", {
   tau_L <- get_tau_L( Tau_L = Tau_L, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena",  add_6_7 = FALSE)
   expect_equal( apply(tau_L$tau_L["Skeena",,],1,sum),    apply( tau_L$tau_L[ setdiff(populations, "Skeena") ,,], 2,sum))
   expect_equal( as.numeric(apply(tau_L$tau_L["Skeena",,],1,sum)), Tau_L )
+  # test adding age 7 to age 6 by brood year
+  tau_L_add_6_7 <- get_tau_L( Tau_L = Tau_L, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena",  add_6_7 = TRUE)
+  expect_equal(tau_L_add_6_7$tau_L[ ,1:(n_years-1),"6"],  tau_L$tau_L[ ,1:(n_years-1),"6"] +   tau_L$tau_L[ ,2:(n_years),"7"] )
 })
