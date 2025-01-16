@@ -38,11 +38,10 @@ get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE, save_location,
     stop("Year (y) values are not equal.")    }
 
   populations <- dimnames(P)$i
-  stopifnot( "Years are not equal for genetic and catch data" = all.equal(unique(dimnames(P)$y), unique(dimnames(G)$y)))
   years <- dimnames(P)$y
-  n_years <- length(dimnames(P)$y)
+
   P_tilde_list <- list() # make empty list to store results for each year
-  for(y in 1: n_years) { # cycle through years
+  for(y in years) { # cycle through years
     # multiply arrays to get weekly expansions. P is divided by 100 because it comes
     # from the Molecular Genetics Lab in proportions of 100.
     # Matrix multiplication, multiplies the proportion for each population and week by the catch for that week.
@@ -58,7 +57,7 @@ get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE, save_location,
 
   # sigma for P_tilde
   sigma_P_tilde_list <- list() # make empty list to store results for each year
-  for(y in 1: n_years) { # cycle through years
+  for(y in years) { # cycle through years
     # multiply arrays to get weekly expansions. sigma_P is divided by 100 because it comes
     # from the Molecular Genetics Lab in proportions of 100.
     # FLAG: this might need to be adjsuted to remove non-summer run, upstream of Tyee populations.

@@ -42,7 +42,7 @@ P <- sapply( 1:n_years, FUN = function(x) {
     fdat1 <- apply( fdat, 2, FUN = function(x) { x / sum(x)} * 100)
     mdat <- matrix( data = fdat1, nrow = n_populations, ncol =  n_weeks, byrow=FALSE )
     mdat
-  }, simplify = "array"
+  }, simplify = "array" # Use simplify = "array" keeps 3 dimensions. Making simplify = TRUE reduces it to 2 dimensions (removes week dimension)
 )
 
 # Make array of SD for genetic mixture proportions
