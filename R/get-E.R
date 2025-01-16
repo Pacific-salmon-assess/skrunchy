@@ -30,7 +30,7 @@ get_E <- function( K, X, Tau_U,
                    save_csv=FALSE) {
 
   # check that lengths (number of years) are equal in data inputs
-  if(!all( dim(K)[1] == dim(X)[2] , dim(Tau_U)[1] == dim(X)[2]))  {
+  if(!all.equal( length(K), dim(X)[2] , length(Tau_U) ))  {
     stop("Length of year (y) dimensions not equal.") }
 
   populations <- dimnames(X)$i
