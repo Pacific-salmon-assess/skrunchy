@@ -79,7 +79,7 @@ ggplot( P_tilde$df, aes(y = P_tilde, x = y, group = i)) +
   facet_wrap(~i, ncol=2) +
   ylab(TeX("$\\tilde{P}$")) +
   geom_hline(aes(yintercept=0)) +
-  theme_classic()
+  theme_classic() 
   
 ```
 

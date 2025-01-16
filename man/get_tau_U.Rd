@@ -39,9 +39,13 @@ Calculates the total terminal mortalities of Chinook salmon in the upper Skeena 
 Uses genetic data from Skeena Tyee test fishery, not CTC model outputs.
 }
 \examples{
-tau_U <- get_tau_U( Tau_U = ex_Tau_U_total, omega = ex_omega, P_tilde = ex_P_tilde,
-    aggregate_population = "Skeena", upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"),
-    add_6_7 = TRUE )
+tau_U <- get_tau_U( Tau_U = ex_Tau_U_total, omega = ex_omega,
+                    P_tilde = ex_P_tilde,
+                    aggregate_population = "Skeena",
+                    upper_populations = c("Middle Skeena", "Large Lakes",
+                            "Upper Skeena"),
+                    lower_populations = c("Lower Skeena", "Kitsumkalum",
+                                        "Zymoetz-Fiddler"),
+                    add_6_7 = TRUE )
 
 }

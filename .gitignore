@@ -58,3 +58,6 @@ fig/
 .Rproj.user
 inst/extdata/ignore
 inst/extdata/temp
+
+# Scripts for testing / work
+scripts/

@@ -14,8 +14,9 @@
 #'        Second object: data frame with same data in long format (columns for population, year, and age) for plotting.
 #'
 #' @examples
-#' tau_L <- get_tau_L( Tau_L = ex_Tau_L_total, omega = ex_omega, P_tilde = ex_P_tilde, aggregate_population = "Skeena",
-#'                   add_6_7 = TRUE)
+#' tau_L <- get_tau_L( Tau_L = ex_Tau_L_total, omega = ex_omega,
+#'                 P_tilde = ex_P_tilde, aggregate_population = "Skeena",
+#'                 add_6_7 = TRUE)
 #'
 #' @export
 get_tau_L <- function( Tau_L, omega, P_tilde, aggregate_population = "Skeena",

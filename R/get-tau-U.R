@@ -16,10 +16,14 @@
 #'        Second object: data frame with same data in long format (columns for population, year, and age) for plotting.
 #'
 #' @examples
-#' tau_U <- get_tau_U( Tau_U = ex_Tau_U_total, omega = ex_omega, P_tilde = ex_P_tilde,
-#'     aggregate_population = "Skeena", upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-#'     lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"),
-#'     add_6_7 = TRUE )
+#' tau_U <- get_tau_U( Tau_U = ex_Tau_U_total, omega = ex_omega,
+#'                     P_tilde = ex_P_tilde,
+#'                     aggregate_population = "Skeena",
+#'                     upper_populations = c("Middle Skeena", "Large Lakes",
+#'                             "Upper Skeena"),
+#'                     lower_populations = c("Lower Skeena", "Kitsumkalum",
+#'                                         "Zymoetz-Fiddler"),
+#'                     add_6_7 = TRUE )
 #'
 #' @export
 get_tau_U <- function( Tau_U, omega, P_tilde, aggregate_population = "Skeena",
