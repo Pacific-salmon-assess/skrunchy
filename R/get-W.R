@@ -29,7 +29,7 @@ get_W <- function( method = "sum_ages",
                    hatchery_population = "Kitsumkalum",
                    aggregate_population = "Skeena") {
   if(method == "sum_ages") {
-    W <- apply(W_star, c(1,2), sum, simplify = "array")
+    W <- apply(W_star, c(1,2), sum, simplify = TRUE)
   }
   if(method == "subtract_hatchery") {
   # year check
