@@ -15,7 +15,7 @@ get_tau_L(
 \arguments{
 \item{Tau_L}{Numeric, vector of total terminal mortalities in the lower Skeena (downstream of Terrace), by year. Combination of FSC and recreational. Note uppercase Tau denotes total not broken out by population or age.}
 
-\item{omega}{Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).}
+\item{omega}{Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a). Note that this should include age proportion for Skeena aggregate.}
 
 \item{P_tilde}{Numeric, array of genetic proportions at Skeena Tyee test fishery with 2 dimensions: i (population) and year (y).}
 

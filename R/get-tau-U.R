@@ -30,6 +30,22 @@ get_tau_U <- function( Tau_U, omega, P_tilde, aggregate_population = "Skeena",
                        upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
                        lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"),
                        add_6_7 = TRUE) {
+  # Check year and population
+  # Years
+  if(!all.equal( length(Tau_U), dim(omega)[2], dim(P_tilde)[2]  ))  {
+    stop("Length of year (y) dimensions not equal.") }
+  if(!all( dimnames(omega)$y %in% dimnames(P_tilde)$y )) {
+    stop("Year (y) values are not equal.")    }
+  # Populations
+  # FLAG: note that if omega has age proportion data from Skeena aggregate, it will have one more population than P_tilde, which
+  # does not contain the Skeena aggregate, since it is by definition proportions of the Skeena aggregate. If omega doesn't have
+  # age proportion data for the Skeena aggregate, this check will throw an error.
+  if(!all.equal( dim(omega)[1], dim(P_tilde)[1] +1)) {
+    stop("Length of population (i) dimensions not equal.") }
+  # have to exclude Skeena aggregate from omega.
+  if(!all(dimnames(omega)$i[!dimnames(omega)$i =="Skeena"] %in% dimnames(P_tilde)$i )) {
+    stop("Population (i) values are not equal.")    }
+
   # sum the proportions of the 6 summer run populations upstream of Tyee test fishery by year
   sum_P_tilde_upper <- apply(P_tilde[ upper_populations,], 2, sum)
   # make array to fill in

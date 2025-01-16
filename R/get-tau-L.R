@@ -5,7 +5,7 @@
 #' Uses genetic data from Skeena Tyee test fishery, not CTC model outputs.
 #'
 #' @param Tau_L Numeric, vector of total terminal mortalities in the lower Skeena (downstream of Terrace), by year. Combination of FSC and recreational. Note uppercase Tau denotes total not broken out by population or age.
-#' @param omega Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).
+#' @param omega Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a). Note that this should include age proportion for Skeena aggregate.
 #' @param P_tilde Numeric, array of genetic proportions at Skeena Tyee test fishery with 2 dimensions: i (population) and year (y).
 #' @param aggregate_population Character, name of aggregate population
 #' @param add_6_7 Logical, If TRUE, add age 7 fish to age 6 fish of the same brood year (treat age 7 mortalities as age 6 mortalities from the age 6 brood year). Default is TRUE. Note that this "modifies" the return year of age 7 mortalities (true return year -1).
@@ -21,6 +21,22 @@
 #' @export
 get_tau_L <- function( Tau_L, omega, P_tilde, aggregate_population = "Skeena",
                        add_6_7= TRUE) {
+  # Check year and population
+  # Years
+  if(!all.equal( length(Tau_L), dim(omega)[2], dim(P_tilde)[2]  ))  {
+    stop("Length of year (y) dimensions not equal.") }
+  if(!all( dimnames(omega)$y %in% dimnames(P_tilde)$y )) {
+    stop("Year (y) values are not equal.")    }
+  # Populations
+  # FLAG: note that if omega has age proportion data from Skeena aggregate, it will have one more population than P_tilde, which
+     # does not contain the Skeena aggregate, since it is by definition proportions of the Skeena aggregate. If omega doesn't have
+    # age proportion data for the Skeena aggregate, this check will throw an error.
+  if(!all.equal( dim(omega)[1], dim(P_tilde)[1] +1)) {
+    stop("Length of population (i) dimensions not equal.") }
+  # have to exclude Skeena aggregate from omega.
+  if(!all(dimnames(omega)$i[!dimnames(omega)$i =="Skeena"] %in% dimnames(P_tilde)$i )) {
+    stop("Population (i) values are not equal.")    }
+
   # get character vector of populations that are not the aggregate
   not_aggregate_populations <- dimnames(omega)$i[ !dimnames(omega)$i == aggregate_population]
   # sum the proportions of the 6 summer run populations upstream of Tyee test fishery by year
