@@ -17,6 +17,15 @@
 get_p <- function( W_star, E_star, hatchery_population = "Kitsumkalum",
                    aggregate_population = "Skeena") {
   # age and year checks
+  if(!dim(W_star)[3] == dim(E_star)[3] )  {
+    stop("Length of age (a) dimensions not equal.") }
+  if(!all(dimnames(W_star)$a %in% dimnames(E_star)$a )) {
+    stop("Age (a) values are not equal.") }
+  if(!dim(W_star)[2] == dim(E_star)[2] ) {
+    stop("Length of year (y) dimensions not equal.") }
+  if(!all(dimnames(W_star)$y %in% dimnames(E_star)$y )) {
+    stop("Year (y) values are not equal.")    }
+
   n_years <- dim(W_star)[2]
   n_ages <- dim(W_star)[3]
   no_hatchery_populations <- dimnames(W_star)$i[ !dimnames(W_star)$i %in% c(hatchery_population, aggregate_population)]

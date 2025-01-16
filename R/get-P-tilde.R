@@ -23,6 +23,8 @@
 #' @export
 get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE, save_location,
                         save_name = "P_tilde.csv") {
+  # Add week, year checks
+
   populations <- dimnames(P)$i
   stopifnot( "Years are not equal for genetic and catch data" = all.equal(unique(dimnames(P)$y), unique(dimnames(G)$y)))
   years <- dimnames(P)$y
