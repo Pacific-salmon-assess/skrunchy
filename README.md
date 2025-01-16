@@ -165,14 +165,7 @@ different from escapement for Skeena aggregate and Kitsumkalum, since
 brood removals are only for Kitsumkalum.
 
 ``` r
-# make up brood removal data. Much larger than actual values, so that it is visible on plots. 
 S_star <- get_S_star(E_star = E_star$E_star, B_star = ex_B_star)
-str(S_star$df)
-#> 'data.frame':    777 obs. of  4 variables:
-#>  $ i     : chr  "Skeena" "Kitsumkalum" "Lower Skeena" "Middle Skeena" ...
-#>  $ y     : int  1984 1984 1984 1984 1984 1984 1984 1985 1985 1985 ...
-#>  $ a     : chr  "4" "4" "4" "4" ...
-#>  $ S_star: num  20000 1555 2379 3143 2732 ...
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   geom_point(colour="gray") + 

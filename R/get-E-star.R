@@ -26,8 +26,18 @@ get_E_star <- function(E, omega,
                        population_use_age_from_river_samples = "Kitsumkalum",
                        add_6_7 = TRUE,
                        save_csv = FALSE, save_location,
-                       save_name = "E_star.csv"
-                       ) {
+                       save_name = "E_star.csv") {
+  # Age check
+  if(!dim(omega)[3] == dim(K_star)[2] )  {
+    stop("Length of age (a) dimensions not equal.") }
+  if(!all(dimnames(omega)$a %in% dimnames(K_star)$a )) {
+    stop("Age (a) values are not equal.") }
+  # Year check
+  if(!all( dim(E)[2] == dim(omega)[2] , dim(E)[2] == dim(K_star)[1]))  {
+    stop("Length of year (y) dimensions not equal.") }
+  if(!all(dimnames(E)$y %in% dimnames(omega)$y , dimnames(E)$y %in% dimnames(K_star)$y )) {
+    stop("Year (y) values are not equal.") }
+
     E_star <- array(NA, dim = dim(omega), dimnames = dimnames(omega))
     n_years <- dim(omega)[2]
     populations <- dimnames(omega)$i

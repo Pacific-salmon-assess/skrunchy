@@ -16,6 +16,7 @@
 #' @export
 get_p <- function( W_star, E_star, hatchery_population = "Kitsumkalum",
                    aggregate_population = "Skeena") {
+  # age and year checks
   n_years <- dim(W_star)[2]
   n_ages <- dim(W_star)[3]
   no_hatchery_populations <- dimnames(W_star)$i[ !dimnames(W_star)$i %in% c(hatchery_population, aggregate_population)]

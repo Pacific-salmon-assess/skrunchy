@@ -19,7 +19,6 @@
 #' @export
 get_W_star <- function(S_star, H_star, aggregate_population = "Skeena",
                        hatchery_population = "Kitsumkalum") {
-  # FLAG: the age length check is not working
     if(!dim(S_star)[3] == dim(H_star)[2] )  {
      stop("Length of age (a) dimensions not equal.") }
     if(!all(dimnames(S_star)$a %in% dimnames(H_star)$a )) {

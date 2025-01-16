@@ -33,6 +33,9 @@ get_S <- function( method = "sum_ages",
   }
 
   if(method == "subtract_brood") {
+    # Year check
+    if(!dim(E)[2] == length(B) )  {
+      stop("Length of year (y) dimensions not equal.") }
   populations <- dimnames(E)$i
   n_populations <- length(dimnames(E)$i)
   years <- dimnames(E)$y

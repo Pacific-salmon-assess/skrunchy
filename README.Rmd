@@ -158,9 +158,7 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
 Get spawners for each population (accounts for brood stock removals), plot with returns to Terrace and escapement. Spawners should only be different from escapement for Skeena aggregate and Kitsumkalum, since brood removals are only for Kitsumkalum.
 
 ```{r example_S_star, dpi = 300 }
-# make up brood removal data. Much larger than actual values, so that it is visible on plots. 
 S_star <- get_S_star(E_star = E_star$E_star, B_star = ex_B_star)
-str(S_star$df)
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   geom_point(colour="gray") + 

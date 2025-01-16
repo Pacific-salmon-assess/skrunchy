@@ -32,6 +32,9 @@ get_W <- function( method = "sum_ages",
     W <- apply(W_star, c(1,2), sum, simplify = "array")
   }
   if(method == "subtract_hatchery") {
+  # year check
+  if(!dim(S)[2] == length(H) )  {
+    stop("Length of year (y) dimensions not equal.") }
   populations <- dimnames(S)$i
   n_populations <- length(dimnames(S)$i)
   years <- dimnames(S)$y

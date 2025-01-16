@@ -23,8 +23,16 @@ get_S_star <- function(E_star, B_star, aggregate_population = "Skeena",
                        save_csv = FALSE, save_location,
                        save_name = "S_star.csv"
                        ) {
+  # Age and year checks
+  if(!dim(E_star)[3] == dim(B_star)[2] )  {
+    stop("Length of age (a) dimensions not equal.") }
+  if(!all(dimnames(E_star)$a %in% dimnames(B_star)$a )) {
+    stop("Age (a) values are not equal.") }
+  if(!dim(E_star)[2] == dim(B_star)[1] )  {
+    stop("Length of year (y) dimensions not equal.") }
+  if(!all(dimnames(E_star)$y %in% dimnames(B_star)$y )) {
+    stop("Year (y) values are not equal.") }
   no_brood_populations <- dimnames(E_star)$i[ !dimnames(E_star)$i %in% c(brood_population, aggregate_population)]
-  # FLAG add age check and year check
   n_years <- dim(E_star)[2]
   n_ages <- dim(E_star)[3]
   S_star <- array( data = NA, dim = dim(E_star), dimnames = dimnames(E_star))
