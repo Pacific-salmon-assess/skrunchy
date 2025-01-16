@@ -26,7 +26,7 @@ get_X(
 
 \item{y}{Integer, vector of years for Kitsumkalum Chinook spawners K and sigma_K.}
 
-\item{known_population}{Name if population i with known or estimated escapement. Defaults to Kitsumkalum.}
+\item{known_population}{Name of population i with known or estimated escapement. Defaults to Kitsumkalum.}
 
 \item{aggregate_population}{Name of population i that is the sum of the other populations. Defaults to Skeena.}
 
@@ -43,6 +43,5 @@ Calculate returns to Terrace of adult Chinook salmon (X) for population i and ye
 \examples{
 X <- get_X(P_tilde = ex_P_tilde, sigma_P_tilde = ex_sigma_P_tilde, K= ex_k$kitsumkalum_escapement,
           sigma_K = ex_k$sd, y = ex_k$year)
-X
 
 }

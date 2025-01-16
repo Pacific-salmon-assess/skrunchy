@@ -7,7 +7,7 @@
 #' @param K Numeric, vector of estimates of Kitsumkalum Chinook spawners (ages 4, 5, 6, and 7, no jacks) based on a mark-recapture study and open population mark-recapture model (POPAN). One dimension: y (year). For more on POPAN models, see Cooch & White 2024 Chapter 12: http://www.phidot.org/software/mark/docs/book/pdf/chap12.pdf
 #' @param sigma_K Numeric, vector of standard error (SE) of K. One dimension: y (year).
 #' @param y Integer, vector of years for Kitsumkalum Chinook spawners K and sigma_K.
-#' @param known_population Name if population i with known or estimated escapement. Defaults to Kitsumkalum.
+#' @param known_population Name of population i with known or estimated escapement. Defaults to Kitsumkalum.
 #' @param aggregate_population Name of population i that is the sum of the other populations. Defaults to Skeena.
 #' @param save_csv If TRUE, save a csv of the data frame output.
 #'
@@ -17,12 +17,21 @@
 #' @examples
 #' X <- get_X(P_tilde = ex_P_tilde, sigma_P_tilde = ex_sigma_P_tilde, K= ex_k$kitsumkalum_escapement,
 #'           sigma_K = ex_k$sd, y = ex_k$year)
-#' X
 #'
 #' @export
 get_X <- function(P_tilde, sigma_P_tilde, K, sigma_K, y, known_population = "Kitsumkalum",
                   aggregate_population = "Skeena", save_csv = FALSE) {
-  stopifnot("Years do not match between data" = all.equal(unique(dimnames(P_tilde)$y),unique(dimnames(sigma_P_tilde)$y), unique(y)))
+  # Add year, population checks
+  # Year check - P_tilde, sigma_P_tilde, K, sigma_K, y
+  if(!all.equal( dim(P_tilde)[2], dim(sigma_P_tilde)[2], length(K), length(sigma_K), length(y)))  {
+    stop("Length of year (y) dimensions not equal.") }
+  if(!all(dimnames(P_tilde)$y %in% dimnames(sigma_P_tilde)$y , dimnames(P_tilde)$y %in% unique(y) )) {
+    stop("Year (y) values are not equal.") }
+  # Population check - P_tilde, sigma_P_tilde
+  if(!all.equal( dim(P_tilde)[1], dim(sigma_P_tilde)[1])) {
+    stop("Length of population (i) dimensions not equal.") }
+  if(!all(dimnames(P_tilde)$i %in% dimnames(sigma_P_tilde)$i) ) {
+    stop("Population (i) values are not equal.")  }
   n_years <- length(y)
   n_populations <- length(dimnames(P_tilde)$i) + 1
   # make an array with bogus values to fill in with correct dimensions and names
