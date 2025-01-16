@@ -14,16 +14,28 @@
 #' with P_tilde, sigma_P_tilde, and year merged for plotting and reporting.
 
 #' @examples
-#' P <- ex_P
-#' sigma_P <- ex_sigma_P
-#' G <- ex_G
-#'
-#' P_tilde <- get_P_tilde(P = P, sigma_P = sigma_P, G= G)
+#' P_tilde <- get_P_tilde( P = ex_P, sigma_P = ex_sigma_P, G = ex_G )
 #'
 #' @export
 get_P_tilde <- function(P, sigma_P, G, save_csv = FALSE, save_location,
                         save_name = "P_tilde.csv") {
-  # Add week, year checks
+  # Check populations, weeks, and years of input data are the same
+  # populations (P and sigma_P only)
+  if(!dim(P)[1] == dim(sigma_P)[1] )  {
+    stop("Length of population (i) dimensions not equal.") }
+  if(!all(dimnames(P)$i %in% dimnames(sigma_P)$i)) {
+    stop("Population (i) values are not equal.")    }
+  # weeks
+  if(!all( dim(P)[2] == dim(sigma_P)[2] , dim(P)[2] == dim(G)[1]))  {
+    stop("Length of week (w) dimensions not equal.") }
+   # Flag: not checking names of weeks, they may be in stat weeks or start at 1
+  # if(!all(dimnames(P)$w %in% dimnames(sigma_P)$w , dimnames(P)$w %in% dimnames(G)$w )) {
+  #   stop("Week (w) values are not equal.")    }
+  # years
+  if(!all( dim(P)[3] == dim(sigma_P)[3] , dim(P)[3] == dim(G)[2]))  {
+    stop("Length of year (y) dimensions not equal.") }
+  if(!all( dimnames(P)$y %in% dimnames(sigma_P)$y , dimnames(P)$y %in% dimnames(G)$y )) {
+    stop("Year (y) values are not equal.")    }
 
   populations <- dimnames(P)$i
   stopifnot( "Years are not equal for genetic and catch data" = all.equal(unique(dimnames(P)$y), unique(dimnames(G)$y)))

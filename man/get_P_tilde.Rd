@@ -35,10 +35,6 @@ with P_tilde, sigma_P_tilde, and year merged for plotting and reporting.
 Do weekly expansions of catch by weekly genetic proportions, and then sum the weekly expansions by population and year
 }
 \examples{
-P <- ex_P
-sigma_P <- ex_sigma_P
-G <- ex_G
-
-P_tilde <- get_P_tilde(P = P, sigma_P = sigma_P, G= G)
+P_tilde <- get_P_tilde( P = ex_P, sigma_P = ex_sigma_P, G = ex_G )
 
 }
