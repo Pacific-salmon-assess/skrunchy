@@ -45,19 +45,32 @@ You can install the development version of skrunchy from
     install.packages("pak")
     pak::pak("Pacific-salmon-assess/skrunchy")
 
-## Examples (currently use fake data for several data sources - not accurate)
+## Example data
 
-Make some **fake** genetic proportion and catch data (by week),
-aggregate into estimates of annual proportions, and plot:
+The `data/` folder contains example data that all made up (exception is
+Kitsumkalum River escapement data), so don’t use this for any analysis.
+This is only for package testing and examples. Example data goes from
+return years 1984-2020.
+
+Example data sets start with the prefix `ex_`.
+
+## Examples (currently use fake data for several data sources - testing only)
+
+We can walk through all the functions with example data.
+
+Note that most of the package functions produce lists with two elements.
+where the first element is an array, and the second element is a data
+frame. The array is used for subsequent analysis, and the data frame is
+useful for plotting and producing report tables.
+
+Read in example data for Skeena Tyee test fishery weekly catch and
+genetic mixture data.
 
 ``` r
 
-d <- make_P_G()
-res <- get_P_tilde(P = d$P, sigma_P = d$sigma_P, G = d$G)
-P_tilde <- res$P_tilde
-dp <- res$df
+P_tilde <- get_P_tilde(P = ex_P, sigma_P = ex_sigma_P, G = ex_G)
 
-ggplot(dp, aes(y = P_tilde, x = y, group = i)) +
+ggplot( P_tilde$df, aes(y = P_tilde, x = y, group = i)) +
   geom_errorbar( aes( ymin = P_tilde - sigma_P_tilde, ymax = P_tilde + sigma_P_tilde ), colour="dodgerblue") +
   geom_point() +
   geom_line() +
@@ -73,13 +86,11 @@ Now do expansions to get returns to Terrace for each population plus the
 aggregate
 
 ``` r
-k <- read.csv(here("data/kitsumkalum-escapement.csv"))
-X <- get_X(P_tilde = res$P_tilde, sigma_P_tilde = res$sigma_P_tilde, K= k$kitsumkalum_escapement, 
-           sigma_K = k$sd,
-           y = k$year)
-dt <- X$df
+X <- get_X(P_tilde = P_tilde$P_tilde, sigma_P_tilde = P_tilde$sigma_P_tilde, K= ex_k$kitsumkalum_escapement, 
+           sigma_K = ex_k$sd,
+           y = ex_k$year)
 
-ggplot(dt, aes(y = X, x = y, group = i)) +
+ggplot( X$df, aes(y = X, x = y, group = i)) +
   geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
   geom_point() +
   geom_line() +
@@ -93,8 +104,7 @@ escapement for each population, plot with returns to Terrace (note, will
 only be different for Skeena aggregate and the three upper populations)
 
 ``` r
-Tau_U <- sample(5000:10000, size=length(k$y), replace=TRUE)
-E <- get_E(K = k$kitsumkalum_escapement, X = X$X, Tau_U = Tau_U,
+E <- get_E(K = ex_k$kitsumkalum_escapement, X = X$X, Tau_U = ex_Tau_U_total,
      known_population = "Kitsumkalum",
      aggregate_population = "Skeena",
      lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
@@ -102,11 +112,11 @@ E <- get_E(K = k$kitsumkalum_escapement, X = X$X, Tau_U = Tau_U,
 de <- E$df
 
 
-ggplot(dt, aes(y = X, x = y, group = i)) +
+ggplot(X$df, aes(y = X, x = y, group = i)) +
   geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
   geom_point() +
   geom_line() +
-  geom_line(data = de, aes(y = E, x = y, group=i), colour="gray") +
+  geom_line(data = E$df, aes(y = E, x = y, group=i), colour="gray") +
   facet_wrap(~i, ncol=2, scales = "free_y") +
   ylab("Return to Terrace (X) in black, escapement (E) in gray") +
   geom_hline(aes(yintercept=0)) +
@@ -118,20 +128,9 @@ ggplot(dt, aes(y = X, x = y, group = i)) +
 Get age proportions by age, population and year (fake data).
 
 ``` r
- populations <- c("Kitsumkalum", "Lower Skeena", "Zymoetz-Fiddler", "Upper Skeena", "Middle Skeena", "Large Lakes", "Skeena")
-  n_populations <- length(populations)
-  years <- k$year
-  n_years <- length(years)
-  ages <- c(4,5,6,7)
-  p_ages <- c(30,40,40,1) # make up relative frequency of different ages
-  n_ages <- length(ages)
-  # Make up some age data - number of aged fish of each age
-  d <- sapply(p_ages, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
-  n <- array( d,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
-  omega <- get_omega(n)
-do <- omega$df
+omega <- get_omega(ex_n)
 
-ggplot( do, aes(y = omega, x = y, group = i)) +
+ggplot( omega$df, aes(y = omega, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
@@ -146,7 +145,7 @@ ggplot( do, aes(y = omega, x = y, group = i)) +
 Get age-specific escapement by using age proportions.
 
 ``` r
-E_star <- get_E_star(E = E$E, omega = omega$omega)
+E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = ex_K_star, add_6_7 = TRUE)
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   geom_point( colour="gray") + 
@@ -167,9 +166,13 @@ brood removals are only for Kitsumkalum.
 
 ``` r
 # make up brood removal data. Much larger than actual values, so that it is visible on plots. 
-B_star <- E_star$E_star["Kitsumkalum",,] * runif(n = length(E_star$E_star["Kitsumkalum",,] ), 0.1, 0.2 )
-B_star[,4] <- 0 # make age 7 brood = 0 so you don't get negative fish in S_star
-S_star <- get_S_star(E_star = E_star$E_star, B_star = B_star)
+S_star <- get_S_star(E_star = E_star$E_star, B_star = ex_B_star)
+str(S_star$df)
+#> 'data.frame':    777 obs. of  4 variables:
+#>  $ i     : chr  "Skeena" "Kitsumkalum" "Lower Skeena" "Middle Skeena" ...
+#>  $ y     : int  1984 1984 1984 1984 1984 1984 1984 1985 1985 1985 ...
+#>  $ a     : chr  "4" "4" "4" "4" ...
+#>  $ S_star: num  20000 1555 2379 3143 2732 ...
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   geom_point(colour="gray") + 
@@ -180,6 +183,20 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   ylab("Escapement (E*) in gray and spawners (S*) in blue") +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
+#> Warning: Combining variables of class <integer> and <character> was deprecated in
+#> ggplot2 3.4.0.
+#> ℹ Please ensure your variables are compatible before plotting (location:
+#>   `combine_vars()`)
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
+#> Warning: Combining variables of class <character> and <integer> was deprecated in
+#> ggplot2 3.4.0.
+#> ℹ Please ensure your variables are compatible before plotting (location:
+#>   `combine_vars()`)
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 ```
 
 <img src="man/figures/README-example_S_star-1.png" width="100%" />
@@ -190,11 +207,8 @@ spawners should only be different from spawners for Skeena aggregate and
 Kitsumkalum, since hatchery origin spawners only occur for Kitsumkalum.
 
 ``` r
-# make up hatchery spawners data. Larger than actual values, so that it is visible on plots. 
-H_star <- S_star$S_star["Kitsumkalum",,] * runif(n = length(S_star$S_star["Kitsumkalum",,] ), 0.1, 0.5 )
-H_star[,4] <- 0 # make age 7 hatchery 0 to avoid negative wild spawner values.
 ## get Wild spawners
-W_star <- get_W_star( S_star = S_star$S_star, H_star = H_star) 
+W_star <- get_W_star( S_star = S_star$S_star, H_star = ex_H_star) 
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   geom_point(colour="gray") + 
@@ -233,8 +247,7 @@ Estimate terminal total mortalities in the lower Skeena by population,
 year, and age.
 
 ``` r
-Tau_L <- sample(1000:2000, size = length(k$year))
-tau_L <- get_tau_L(Tau_L = Tau_L, omega = omega$omega, P_tilde = P_tilde, aggregate_population = "Skeena")
+tau_L <- get_tau_L(Tau_L = ex_Tau_L_total, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena", add_6_7 = TRUE)
 dtauL <- tau_L$df 
 
 ggplot( dtauL, aes(y =tau_L, x = y, group = i)) +
@@ -254,13 +267,11 @@ year, and age. Should be 0 for Kitsumkalum, Lower Skeena, and
 Zymoetz-Fiddler.
 
 ``` r
-tau_U <- get_tau_U(Tau_U = Tau_U, omega = omega$omega, P_tilde = P_tilde, aggregate_population = "Skeena",
+tau_U <- get_tau_U(Tau_U = ex_Tau_U_total, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena",
                    upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler") )
+    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"), add_6_7 = TRUE)
 
-dtauU <- tau_U$df 
-
-ggplot( dtauU, aes(y =tau_U, x = y, group = i)) +
+ggplot( tau_U$df, aes(y =tau_U, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
@@ -276,9 +287,7 @@ Estimate terminal total mortalities in the marine area by population,
 year, and age.
 
 ``` r
-use_arr <- W_star$W_star["Kitsumkalum",,]
-tau_dot_M <- array(runif(length(use_arr), 0.01, 0.2), dim = dim(use_arr), dimnames = dimnames(use_arr))
-tau_M <- get_tau_M( W_star = W_star$W_star, tau_dot_M = tau_dot_M)
+tau_M <- get_tau_M( W_star = W_star$W_star, tau_dot_M = ex_tau_dot_M)
 
 ggplot( tau_M$df, aes(y =tau_M, x = y, group = i)) +
   geom_point() + 
@@ -333,7 +342,7 @@ ggplot( tau$df, aes(y =tau, x = y, group = i)) +
 Get wild terminal run
 
 ``` r
-TermRun <- get_TermRun(tau_W = tau_W$tau_W, W_star = W_star$W_star, B_star = B_star)
+TermRun <- get_TermRun(tau_W = tau_W$tau_W, W_star = W_star$W_star, B_star = ex_B_star)
 
 ggplot( TermRun$df, aes(y =TermRun, x = y, group = i)) +
   geom_line() +
@@ -352,9 +361,7 @@ ggplot( TermRun$df, aes(y =TermRun, x = y, group = i)) +
 Get mature run
 
 ``` r
-use_arr <- TermRun$TermRun["Kitsumkalum",,]
-phi_dot_M <- array(runif(length(use_arr), 0.01, 0.3), dim = dim(use_arr), dimnames = dimnames(use_arr))
-MatureRun <- get_MatureRun(TermRun = TermRun$TermRun, phi_dot_M = phi_dot_M)
+MatureRun <- get_MatureRun(TermRun = TermRun$TermRun, phi_dot_M = ex_phi_dot_M)
 
 ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
   geom_line(colour="darkgreen") +
@@ -372,11 +379,7 @@ ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
 Pre-terminal post fishery abundance.
 
 ``` r
-use_arr <- MatureRun$MatureRun["Kitsumkalum",,]
-# Make up some maturation rate data
-r <- array(runif(length(use_arr), 0.5, 0.99), dim = dim(use_arr), dimnames = dimnames(use_arr))
-r[, dimnames(r)$a %in% c(6,7) ] <- 1 # make maturation rate = 1 for age 6 and 7 fish
-A_phi <- get_A_phi( MatureRun = MatureRun$MatureRun, r = r)
+A_phi <- get_A_phi( MatureRun = MatureRun$MatureRun, r = ex_r)
 
 ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
   geom_line(colour="darkgreen") +
@@ -393,10 +396,7 @@ ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
 Pre-fishery ocean abundance.
 
 ``` r
-use_arr <-A_phi$A_phi["Kitsumkalum",,]
-# Make up some preterminal total mortality exploitation rate (non-net fisheries, e.g., troll) data
-phi_dot_E <- array(runif(length(use_arr), 0.01, 0.3), dim = dim(use_arr), dimnames = dimnames(use_arr))
-A_P <- get_A_P( A_phi = A_phi$A_phi, phi_dot_E = phi_dot_E)
+A_P <- get_A_P( A_phi = A_phi$A_phi, phi_dot_E = ex_phi_dot_E)
 
 ggplot( A_phi$df, aes(y = A_phi, x = y, group = i)) +
   geom_line(colour="dodgerblue") +
@@ -431,12 +431,7 @@ ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
 Preterminal fishing mortality in adult equivalents.
 
 ``` r
-use_arr <- phi_N$phi_N["Kitsumkalum",,]
-# Make up some adult equivalents data
-Q <- array(runif(length(use_arr), 0.5, 0.9), dim = dim(use_arr), dimnames = dimnames(use_arr))
-Q[, dimnames(r)$a %in% c(6,7) ] <- 1 # make maturation rate = 1 for age 6 and 7 fish
-
-phi_Q <- get_phi_Q( phi_N = phi_N$phi_N, Q = Q)
+phi_Q <- get_phi_Q( phi_N = phi_N$phi_N, Q = ex_Q)
 
 ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
   geom_line() +
@@ -466,20 +461,6 @@ ggplot( R_star$df, aes(y = R_star, x = y, group = i)) +
   facet_grid( i ~ a, scales="free_y") +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
-#> Warning: Combining variables of class <integer> and <character> was deprecated in
-#> ggplot2 3.4.0.
-#> ℹ Please ensure your variables are compatible before plotting (location:
-#>   `combine_vars()`)
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
-#> Warning: Combining variables of class <character> and <integer> was deprecated in
-#> ggplot2 3.4.0.
-#> ℹ Please ensure your variables are compatible before plotting (location:
-#>   `combine_vars()`)
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
 ```
 
 <img src="man/figures/README-example_R_star-1.png" width="100%" />
