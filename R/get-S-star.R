@@ -24,10 +24,12 @@ get_S_star <- function(E_star, B_star, aggregate_population = "Skeena",
                        save_name = "S_star.csv"
                        ) {
   # Age and year checks
+  # Age
   if(!dim(E_star)[3] == dim(B_star)[2] )  {
     stop("Length of age (a) dimensions not equal.") }
   if(!all(dimnames(E_star)$a %in% dimnames(B_star)$a )) {
     stop("Age (a) values are not equal.") }
+  # Year
   if(!dim(E_star)[2] == dim(B_star)[1] )  {
     stop("Length of year (y) dimensions not equal.") }
   if(!all(dimnames(E_star)$y %in% dimnames(B_star)$y )) {

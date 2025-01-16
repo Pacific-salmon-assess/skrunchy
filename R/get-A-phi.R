@@ -20,14 +20,17 @@
 #' @export
 get_A_phi <- function(MatureRun, r) {
   # check dimensions are the same
+  # Years
   if(! dim(MatureRun)[2] == dim(r)[1])  { # Note year is second dimension of MatureRun and first dimension of r
     stop("Length of year (y) dimensions not equal.") }
-  if(!dim(MatureRun)[3] == dim(r)[2])  {  # Note age is third dimension of MatureRun and second dimension of r
-    stop("Length of age (a) dimensions not equal.") }
   if(!all(dimnames(MatureRun)$y %in% dimnames(r)$y)) {
     stop("Year (y) values are not equal.")    }
+  # Ages
+  if(!dim(MatureRun)[3] == dim(r)[2])  {  # Note age is third dimension of MatureRun and second dimension of r
+    stop("Length of age (a) dimensions not equal.") }
   if(!all(dimnames(MatureRun)$a %in% dimnames(r)$a)) {
     stop("Age (a) values are not equal.")    }
+
   populations <- dimnames(MatureRun)$i
   years <- dimnames(MatureRun)$y
   ages <- dimnames(MatureRun)$a

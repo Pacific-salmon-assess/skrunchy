@@ -19,14 +19,17 @@
 #' @export
 get_phi_Q <- function(phi_N, Q) {
   # check dimensions are the same
+  # Years
   if(! dim(phi_N)[2] == dim(Q)[1])  { # Note year is second dimension of phi_N and first dimension of Q
     stop("Length of year (y) dimensions not equal.") }
-  if(!dim(phi_N)[3] == dim(Q )[2])  {  # Note age is third dimension of phi_N and second dimension of Q
-    stop("Length of age (a) dimensions not equal.") }
   if(!all(dimnames(phi_N)$y %in% dimnames(Q )$y)) {
     stop("Year (y) values are not equal.")    }
+  # Ages
+  if(!dim(phi_N)[3] == dim(Q )[2])  {  # Note age is third dimension of phi_N and second dimension of Q
+    stop("Length of age (a) dimensions not equal.") }
   if(!all(dimnames(phi_N)$a %in% dimnames(Q )$a)) {
     stop("Age (a) values are not equal.")    }
+
   populations <- dimnames(phi_N)$i
   years <- dimnames(phi_N)$y
   ages <- dimnames(phi_N)$a

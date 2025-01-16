@@ -24,14 +24,17 @@
 #' @export
 get_A_P <- function(A_phi, phi_dot_E) {
   # check dimensions are the same
+  # Years
   if(! dim(A_phi)[2] == dim(phi_dot_E)[1])  { # Note year is second dimension of A_phi and first dimension of phi_dot_E
     stop("Length of year (y) dimensions not equal.") }
-  if(!dim(A_phi)[3] == dim(phi_dot_E )[2])  {  # Note age is third dimension of A_phi and second dimension of phi_dot_E
-    stop("Length of age (a) dimensions not equal.") }
   if(!all(dimnames(A_phi)$y %in% dimnames(phi_dot_E )$y)) {
     stop("Year (y) values are not equal.")    }
+  # Ages
+  if(!dim(A_phi)[3] == dim(phi_dot_E )[2])  {  # Note age is third dimension of A_phi and second dimension of phi_dot_E
+    stop("Length of age (a) dimensions not equal.") }
   if(!all(dimnames(A_phi)$a %in% dimnames(phi_dot_E )$a)) {
     stop("Age (a) values are not equal.")    }
+
   populations <- dimnames(A_phi)$i
   years <- dimnames(A_phi)$y
   ages <- dimnames(A_phi)$a
