@@ -17,17 +17,17 @@
 get_tau <- function( tau_U, tau_L, tau_M) {
   # check dimensions are the same
   # Populations
-    if(!all( dim(tau_U)[1] == dim(tau_L)[1] , dim(tau_U)[1] == dim(tau_M)[1]))  {
+    if(!all.equal( dim(tau_U)[1], dim(tau_L)[1], dim(tau_M)[1]))  {
       stop("Length of population (i) dimensions not equal.") }
     if(!all(dimnames(tau_U)$i %in% dimnames(tau_L)$i , dimnames(tau_U)$i %in% dimnames(tau_M)$i )) {
       stop("Population (i) values are not equal.")    }
   # Years
-    if(!all( dim(tau_U)[2] == dim(tau_L)[2] , dim(tau_U)[2] == dim(tau_M)[2]))  {
+    if(!all.equal( dim(tau_U)[2] , dim(tau_L)[2] , dim(tau_M)[2]))  {
       stop("Length of year (y) dimensions not equal.") }
     if(!all(dimnames(tau_U)$y %in% dimnames(tau_L)$y , dimnames(tau_U)$y %in% dimnames(tau_M)$y )) {
       stop("Year (y) values are not equal.")    }
   # ages
-    if(!all( dim(tau_U)[3] == dim(tau_L)[3] , dim(tau_U)[3] == dim(tau_M)[3]))  {
+    if(!all.equal( dim(tau_U)[3], dim(tau_L)[3] ,  dim(tau_M)[3]))  {
       stop("Length of age (a) dimensions not equal.") }
     if(!all(dimnames(tau_U)$a %in% dimnames(tau_L)$a , dimnames(tau_U)$a %in% dimnames(tau_M)$a )) {
       stop("Age (a) values are not equal.")    }

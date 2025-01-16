@@ -14,16 +14,19 @@
 #' @export
 get_tau_W <- function(tau, p) {
   # check dimensions are the same
+  # Populations
   if(!dim(tau)[1] == dim(p)[1] )  {
     stop("Length of population (i) dimensions not equal.") }
-  if(! dim(tau)[2] == dim(p)[2])  {
-    stop("Length of year (y) dimensions not equal.") }
-  if(!dim(tau)[3] == dim(p)[3])  {
-    stop("Length of age (a) dimensions not equal.") }
   if(!all(dimnames(tau)$i %in% dimnames(p)$i) ) {
     stop("Population (i) values are not equal.")    }
+  # Years
+  if(! dim(tau)[2] == dim(p)[2])  {
+    stop("Length of year (y) dimensions not equal.") }
   if(!all(dimnames(tau)$y %in% dimnames(p)$y)) {
     stop("Year (y) values are not equal.")    }
+  # Ages
+  if(!dim(tau)[3] == dim(p)[3])  {
+    stop("Length of age (a) dimensions not equal.") }
   if(!all(dimnames(tau)$a %in% dimnames(p)$a)) {
     stop("Age (a) values are not equal.")    }
 
