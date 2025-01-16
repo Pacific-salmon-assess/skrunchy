@@ -47,10 +47,10 @@ You can install the development version of skrunchy from
 
 ## Example data
 
-The `data/` folder contains example data that all made up (exception is
-Kitsumkalum River escapement data), so don’t use this for any analysis.
-This is only for package testing and examples. Example data goes from
-return years 1984-2020.
+The `data/` folder contains example data that are all made up (exception
+is Kitsumkalum River escapement data), so don’t use this for any
+analysis. This is only for package testing and examples. Example data
+goes from return years 1984-2020.
 
 Example data sets start with the prefix `ex_`.
 
@@ -59,12 +59,12 @@ Example data sets start with the prefix `ex_`.
 We can walk through all the functions with example data.
 
 Note that most of the package functions produce lists with two elements.
-where the first element is an array, and the second element is a data
-frame. The array is used for subsequent analysis, and the data frame is
-useful for plotting and producing report tables.
+The first element is an array, and the second element is a data frame.
+The array is used for subsequent analysis, and the data frame is useful
+for plotting and producing report tables.
 
-Read in example data for Skeena Tyee test fishery weekly catch and
-genetic mixture data.
+Use example data from Skeena Tyee test fishery weekly catch and genetic
+mixture data, and pool it into annual genetic proportions.
 
 ``` r
 
@@ -82,8 +82,8 @@ ggplot( P_tilde$df, aes(y = P_tilde, x = y, group = i)) +
 
 <img src="man/figures/README-example_P_tilde-1.png" width="100%" />
 
-Now do expansions to get returns to Terrace for each population plus the
-aggregate
+Now do expansions to get returns to Terrace for each population, and the
+Skeena aggregate.
 
 ``` r
 X <- get_X(P_tilde = P_tilde$P_tilde, sigma_P_tilde = P_tilde$sigma_P_tilde, K= ex_k$kitsumkalum_escapement, 

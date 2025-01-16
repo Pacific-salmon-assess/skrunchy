@@ -40,6 +40,7 @@ get_phi_Q <- function(phi_N, Q) {
   }
   d <- as.data.frame.table(phi_Q, responseName = "phi_Q", stringsAsFactors = FALSE)
   d$y <- as.integer(d$y)
+  d$a <- as.integer(d$a)
   res <- list(phi_Q = phi_Q, df = d)
   res
 }

@@ -42,6 +42,7 @@ get_W_star <- function(S_star, H_star, aggregate_population = "Skeena",
       }
     d <- as.data.frame.table(W_star, responseName = "W_star", stringsAsFactors = FALSE)
     d$y <- as.integer(d$y)
+    d$a <- as.integer(d$a)
     res <- list(W_star = W_star, df = d)
     res
 }

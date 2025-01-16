@@ -40,6 +40,7 @@ get_tau_W <- function(tau, p) {
   }
   d <- as.data.frame.table(tau_W, responseName = "tau_W", stringsAsFactors = FALSE)
   d$y <- as.integer(d$y)
+  d$a <- as.integer(d$a)
   res <- list(tau_W = tau_W, df = d)
   res
 }

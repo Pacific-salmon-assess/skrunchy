@@ -50,6 +50,7 @@ get_TermRun <- function(tau_W, W_star, B_star,
     }
   d <- as.data.frame.table(TermRun, responseName = "TermRun", stringsAsFactors = FALSE)
   d$y <- as.integer(d$y)
+  d$a <- as.integer(d$a)
   res <- list(TermRun = TermRun, df = d)
   res
 

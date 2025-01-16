@@ -37,6 +37,7 @@ get_S_star <- function(E_star, B_star, aggregate_population = "Skeena",
   }
   d <- as.data.frame.table(S_star, responseName = "S_star", stringsAsFactors = FALSE)
   d$y <- as.integer(d$y)
+  d$a <- as.integer(d$a)
   if(save_csv == TRUE) {
     save_to <- here(save_location, save_name )
     write.csv(d, save_to, row.names = FALSE)

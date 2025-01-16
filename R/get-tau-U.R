@@ -56,6 +56,7 @@ get_tau_U <- function( Tau_U, omega, P_tilde, aggregate_population = "Skeena",
   }
   d <- as.data.frame.table(tau_U, responseName = "tau_U")
   d$y <- as.integer(as.character(d$y))
+  d$a <- as.integer(d$a)
   res <- list( tau_U = tau_U, df = d )
   res
 }

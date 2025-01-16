@@ -41,6 +41,7 @@ get_A_phi <- function(MatureRun, r) {
   }
   d <- as.data.frame.table(A_phi, responseName = "A_phi", stringsAsFactors = FALSE)
   d$y <- as.integer(d$y)
+  d$a <- as.integer(d$a)
   res <- list(A_phi = A_phi, df = d)
   res
 }

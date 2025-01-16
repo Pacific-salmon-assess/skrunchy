@@ -33,6 +33,7 @@ get_omega <- function(n, save_csv = FALSE, save_location,
   # make data frame for plotting and tables
   d <- as.data.frame.table(omega, responseName = "omega", stringsAsFactors = FALSE)
   d$y <- as.integer(d$y)
+  d$a <- as.integer(d$a)
   if(save_csv == TRUE) {
     save_to <- here(save_location, save_name )
     write.csv(d, save_to, row.names = FALSE)

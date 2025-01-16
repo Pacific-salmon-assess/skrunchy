@@ -45,6 +45,7 @@ get_A_P <- function(A_phi, phi_dot_E) {
   }
   d <- as.data.frame.table(A_P, responseName = "A_P", stringsAsFactors = FALSE)
   d$y <- as.integer(d$y)
+  d$a <- as.integer(d$a)
   res <- list(A_P = A_P, df = d)
   res
 }
