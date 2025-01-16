@@ -25,7 +25,7 @@ ex_k <- read.csv(here("data-raw/kitsumkalum-escapement.csv"))
 # get return to Terrace
 X <- get_X(P_tilde = ex_P_tilde, sigma_P_tilde = ex_sigma_P_tilde , K= ex_k$kitsumkalum_escapement,
            sigma_K = ex_k$sd,
-           y = ex_k$year)
+           y_K = ex_k$year)
 ex_X <- X$X
 
 # Make up Terminal mortality upstream of Terrace data
@@ -56,6 +56,7 @@ ex_omega <- omega$omega
 
 # read in Kitsumkalum age-specific escapement
 ksd <- read.csv(here("data-raw", "K_star.csv"))
+names(ksd)[1] <- "y" # Reading in the first column name weird.
 ksdl <- ksd %>% tidyr::pivot_longer(c("X4", "X5", "X6", "X7"), names_to = "a", values_to = "K_star")
 ksdl$a <- sub("X", "", ksdl$a)
 dim_order_K_star <- c("y","a")

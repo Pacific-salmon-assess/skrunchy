@@ -8,8 +8,8 @@ get_X(
   P_tilde,
   sigma_P_tilde,
   K,
+  y_K,
   sigma_K,
-  y,
   known_population = "Kitsumkalum",
   aggregate_population = "Skeena",
   save_csv = FALSE
@@ -22,9 +22,9 @@ get_X(
 
 \item{K}{Numeric, vector of estimates of Kitsumkalum Chinook spawners (ages 4, 5, 6, and 7, no jacks) based on a mark-recapture study and open population mark-recapture model (POPAN). One dimension: y (year). For more on POPAN models, see Cooch & White 2024 Chapter 12: http://www.phidot.org/software/mark/docs/book/pdf/chap12.pdf}
 
-\item{sigma_K}{Numeric, vector of standard error (SE) of K. One dimension: y (year).}
+\item{y_K}{Integer, vector of years for Kitsumkalum Chinook spawners K and sigma_K.}
 
-\item{y}{Integer, vector of years for Kitsumkalum Chinook spawners K and sigma_K.}
+\item{sigma_K}{Numeric, vector of standard error (SE) of K. One dimension: y (year).}
 
 \item{known_population}{Name of population i with known or estimated escapement. Defaults to Kitsumkalum.}
 
@@ -42,6 +42,6 @@ Calculate returns to Terrace of adult Chinook salmon (X) for population i and ye
 }
 \examples{
 X <- get_X(P_tilde = ex_P_tilde, sigma_P_tilde = ex_sigma_P_tilde, K= ex_k$kitsumkalum_escapement,
-          sigma_K = ex_k$sd, y = ex_k$year)
+            y_K = ex_k$year, sigma_K = ex_k$sd)
 
 }

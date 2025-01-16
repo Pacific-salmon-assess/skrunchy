@@ -88,7 +88,7 @@ Now do expansions to get returns to Terrace for each population, and the Skeena 
 ```{r example_X, dpi = 300 }
 X <- get_X(P_tilde = P_tilde$P_tilde, sigma_P_tilde = P_tilde$sigma_P_tilde, K= ex_k$kitsumkalum_escapement, 
            sigma_K = ex_k$sd,
-           y = ex_k$year)
+           y_K = ex_k$year)
 
 ggplot( X$df, aes(y = X, x = y, group = i)) +
   geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
