@@ -23,12 +23,15 @@ get_X <- function(P_tilde, sigma_P_tilde, K,  y_K, sigma_K, known_population = "
                   aggregate_population = "Skeena", save_csv = FALSE) {
   # Add year, population checks
   # Year check - P_tilde, sigma_P_tilde, K, sigma_K, y
-  if(!all.equal( dim(P_tilde)[2], dim(sigma_P_tilde)[2], length(K), length(sigma_K), length(y_K)))  {
+  if(!isTRUE( identical(dim(P_tilde)[2], dim(sigma_P_tilde)[2]) &&
+              identical( dim(P_tilde)[2], length(K)) &&
+              identical(  dim(P_tilde)[2], length(sigma_K)) &&
+              identical(  dim(P_tilde)[2], length(y_K))))  {
     stop("Length of year (y) dimensions not equal.") }
   if(!all(dimnames(P_tilde)$y %in% dimnames(sigma_P_tilde)$y , dimnames(P_tilde)$y %in% unique(y_K) )) {
     stop("Year (y) values are not equal.") }
   # Population check - P_tilde, sigma_P_tilde
-  if(!all.equal( dim(P_tilde)[1], dim(sigma_P_tilde)[1])) {
+  if(!identical( dim(P_tilde)[1], dim(sigma_P_tilde)[1])) {
     stop("Length of population (i) dimensions not equal.") }
   if(!all(dimnames(P_tilde)$i %in% dimnames(sigma_P_tilde)$i) ) {
     stop("Population (i) values are not equal.")  }

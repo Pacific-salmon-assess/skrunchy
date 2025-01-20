@@ -24,7 +24,7 @@ Second object: data frame with same data in long format (columns for population,
 Calculate age proportions (age at return) for populations, based on age data from Skeena River Tyee test fishery.
 }
 \examples{
-  omega <- get_omega(ex_n)
+  omega1 <- get_omega(ex_n)
 
 
 

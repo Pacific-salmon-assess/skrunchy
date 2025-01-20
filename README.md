@@ -88,7 +88,7 @@ Skeena aggregate.
 ``` r
 X <- get_X(P_tilde = P_tilde$P_tilde, sigma_P_tilde = P_tilde$sigma_P_tilde, K= ex_k$kitsumkalum_escapement, 
            sigma_K = ex_k$sd,
-           y = ex_k$year)
+           y_K = ex_k$year)
 
 ggplot( X$df, aes(y = X, x = y, group = i)) +
   geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
@@ -176,20 +176,6 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   ylab("Escapement (E*) in gray and spawners (S*) in blue") +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5))
-#> Warning: Combining variables of class <integer> and <character> was deprecated in
-#> ggplot2 3.4.0.
-#> ℹ Please ensure your variables are compatible before plotting (location:
-#>   `combine_vars()`)
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
-#> Warning: Combining variables of class <character> and <integer> was deprecated in
-#> ggplot2 3.4.0.
-#> ℹ Please ensure your variables are compatible before plotting (location:
-#>   `combine_vars()`)
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
 ```
 
 <img src="man/figures/README-example_S_star-1.png" width="100%" />

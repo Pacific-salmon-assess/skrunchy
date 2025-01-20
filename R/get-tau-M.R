@@ -45,7 +45,7 @@ get_tau_M <- function( W_star, tau_dot_M) {
   }
   d <- as.data.frame.table(tau_M, responseName = "tau_M")
   d$y <- as.integer(as.character(d$y))
-  d$a <- as.integer(d$a)
+  d$a <- as.integer(as.character(d$a))
   res <- list("tau_M" = tau_M, "df" = d)
   res
 }

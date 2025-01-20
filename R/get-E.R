@@ -2,6 +2,7 @@
 #'
 #' Calculates E, escapement by population by subtracting freshwater terminal mortality from returns to Terrace if appropriate.
 #'
+#'
 #' @param K Numeric, vector of estimates of Kitsumkalum Chinook spawners (ages 4, 5, 6, and 7, no jacks) based on a mark-recapture study and open population mark-recapture model (POPAN). One dimension: y (year). For more on POPAN models, see Cooch & White 2024 Chapter 12: http://www.phidot.org/software/mark/docs/book/pdf/chap12.pdf
 #' @param X Numeric, array of returns to Terrace with two dimensions: population (i) and year (y).
 #' @param Tau_U Integer, Chinook terminal mortalities from freshwater fisheries upsteam of Terrace, by year. Includes catch and incidental mortality estimate.
@@ -30,7 +31,7 @@ get_E <- function( K, X, Tau_U,
                    save_csv=FALSE) {
 
   # check that lengths (number of years) are equal in data inputs
-  if(!all.equal( length(K), dim(X)[2] , length(Tau_U) ))  {
+  if(!isTRUE( identical(length(K), dim(X)[2]) && identical( length(K), length(Tau_U) )))  {
     stop("Length of year (y) dimensions not equal.") }
 
   populations <- dimnames(X)$i
@@ -48,7 +49,7 @@ get_E <- function( K, X, Tau_U,
     # Lower populations
     E[ lower_populations, y] <- X[lower_populations, y]
     # Upper populations
-    for(i in upper_populations) { # FLAG: think this for loop works with the character vector. need to double check the populations work
+    for(i in upper_populations) {
       E[ i, y] <-   X[ i, y ] -  Tau_U[y] * X[ i, y ] / X_U[y]
     }
     # Skeena aggregate escapement

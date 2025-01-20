@@ -23,7 +23,7 @@ get_tau_L <- function( Tau_L, omega, P_tilde, aggregate_population = "Skeena",
                        add_6_7= TRUE) {
   # Check year and population
   # Years
-  if(!all.equal( length(Tau_L), dim(omega)[2], dim(P_tilde)[2]  ))  {
+  if(!isTRUE( identical(length(Tau_L), dim(omega)[2]) && identical( length(Tau_L), dim(P_tilde)[2]  )))  {
     stop("Length of year (y) dimensions not equal.") }
   if(!all( dimnames(omega)$y %in% dimnames(P_tilde)$y )) {
     stop("Year (y) values are not equal.")    }
@@ -31,7 +31,7 @@ get_tau_L <- function( Tau_L, omega, P_tilde, aggregate_population = "Skeena",
   # FLAG: note that if omega has age proportion data from Skeena aggregate, it will have one more population than P_tilde, which
      # does not contain the Skeena aggregate, since it is by definition proportions of the Skeena aggregate. If omega doesn't have
     # age proportion data for the Skeena aggregate, this check will throw an error.
-  if(!all.equal( dim(omega)[1], dim(P_tilde)[1] +1)) {
+  if(!isTRUE(identical(dim(omega)[1], as.integer(dim(P_tilde)[1] +1)))) {
     stop("Length of population (i) dimensions not equal.") }
   # have to exclude Skeena aggregate from omega.
   if(!all(dimnames(omega)$i[!dimnames(omega)$i =="Skeena"] %in% dimnames(P_tilde)$i )) {
@@ -66,7 +66,7 @@ get_tau_L <- function( Tau_L, omega, P_tilde, aggregate_population = "Skeena",
   }
   d <- as.data.frame.table(tau_L, responseName = "tau_L")
   d$y <- as.integer(as.character(d$y))
-  d$a <- as.integer(d$a)
+  d$a <- as.integer(as.character(d$a))
   res <- list( tau_L = tau_L, df = d )
   res
 }

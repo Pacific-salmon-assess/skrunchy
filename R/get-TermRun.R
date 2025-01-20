@@ -30,12 +30,12 @@ get_TermRun <- function(tau_W, W_star, B_star,
   if(!all(dimnames(tau_W)$i %in% dimnames(W_star)$i )) {
     stop("Population (i) values are not equal.")    }
   # Years
-  if(!all.equal( dim(tau_W)[2] , dim(W_star)[2] , dim(B_star)[1]))  {
+  if(!isTRUE( identical( dim(tau_W)[2] , dim(W_star)[2]) && identical( dim(tau_W)[2], dim(B_star)[1])))  {
     stop("Length of year (y) dimensions not equal.") }
   if(!all(dimnames(tau_W)$y %in% dimnames(W_star)$y , dimnames(tau_W)$y %in% dimnames(B_star)$y )) {
     stop("Year (y) values are not equal.")    }
   # Ages
-  if(!all.equal( dim(tau_W)[3] , dim(W_star)[3] , dim(B_star)[2]))  {
+  if(!isTRUE( identical(dim(tau_W)[3] , dim(W_star)[3]) && identical( dim(tau_W)[3] , dim(B_star)[2])))  {
     stop("Length of age (a) dimensions not equal.") }
   if(!all(dimnames(tau_W)$a %in% dimnames(W_star)$a , dimnames(tau_W)$a %in% dimnames(B_star)$a )) {
     stop("Age (a) values are not equal.")    }

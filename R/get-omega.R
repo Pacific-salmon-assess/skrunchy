@@ -12,7 +12,7 @@
 #'        Second object: data frame with same data in long format (columns for population, year, and age) for plotting.
 #'
 #' @examples
-#'   omega <- get_omega(ex_n)
+#'   omega1 <- get_omega(ex_n)
 #'
 #'
 #'
@@ -20,12 +20,14 @@
 get_omega <- function(n, save_csv = FALSE, save_location,
                       save_name = "omega.csv") {
   sum_n_year <- apply(n, c(1,2), sum) # sum number of aged fish by year.
-  n_ages <- dim(n)[3]
-  n_years <- dim(n)[2]
+  #n_ages <- dim(n)[3]
+  #n_years <- dim(n)[2]
+  ages <- dimnames(n)$a
+  years <- dimnames(n)$y
   # make array to fill in with age proportion values
-  omega <- array( rep(99, length(n)), dim=dim(n), dimnames = dimnames(n))
-  for(a in 1:n_ages) {
-    for(y in 1:n_years) {
+  omega <- array( rep(NA, length(n)), dim=dim(n), dimnames = dimnames(n))
+  for(a in ages) {
+    for(y in years) {
       # divide number of aged fish of each age by total aged in each year.
       omega[ ,y,a] <- n[ ,y,a] / sum_n_year[ ,y]
     }
