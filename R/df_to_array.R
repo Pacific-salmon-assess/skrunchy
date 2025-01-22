@@ -7,6 +7,7 @@
 #' @param value Name of the dataframe variable to use for the array value.
 #' @param dimnames_order Variable names to use for dimensions of the new array (in the order you want them to be in the array)
 #' @param FUN Optional, function to use if there are more than 1 value for each combination of dimensions. Default is print().
+#' @param na.rm Optional, if FUN is arithmetic (e.g., sum), should NAs be removed? Default is TRUE.
 #' @param default Value to use if there are missing values for combinations of dimension. Default is 0.
 #'
 #' @return An array with values equal to the dataframe value column, dimensions and dimension names as supplied.
@@ -20,8 +21,8 @@
 #' arr <- df_to_array( df = d, value = "p", dimnames_order = c("i", "y", "w"))
 
 #' @export
-df_to_array <- function( df, value, dimnames_order, FUN = print, default = 0) {
+df_to_array <- function( df, value, dimnames_order, FUN = print, na.rm=TRUE, default = 0) {
   dim_position <- sapply(dimnames_order, function(x) grep( paste0("^", x, "$"), names(df)) )
-  array <- tapply( df[ ,value], df[ ,dim_position], FUN = FUN, default = default)
+  array <- tapply( df[ ,value], df[ ,dim_position], FUN = FUN, na.rm = na.rm, default = default)
   return(array)
 }

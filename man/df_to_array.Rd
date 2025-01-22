@@ -4,7 +4,7 @@
 \alias{df_to_array}
 \title{Convert a data frame into an array.}
 \usage{
-df_to_array(df, value, dimnames_order, FUN = print, default = 0)
+df_to_array(df, value, dimnames_order, FUN = print, na.rm = TRUE, default = 0)
 }
 \arguments{
 \item{df}{Dataframe input.}
@@ -14,6 +14,8 @@ df_to_array(df, value, dimnames_order, FUN = print, default = 0)
 \item{dimnames_order}{Variable names to use for dimensions of the new array (in the order you want them to be in the array)}
 
 \item{FUN}{Optional, function to use if there are more than 1 value for each combination of dimensions. Default is print().}
+
+\item{na.rm}{Optional, if FUN is arithmetic (e.g., sum), should NAs be removed? Default is TRUE.}
 
 \item{default}{Value to use if there are missing values for combinations of dimension. Default is 0.}
 }
