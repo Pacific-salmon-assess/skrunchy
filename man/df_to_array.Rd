@@ -4,15 +4,7 @@
 \alias{df_to_array}
 \title{Convert a data frame into an array.}
 \usage{
-df_to_array(
-  df,
-  value,
-  dimnames_order,
-  FUN = function(x) {
-     invisible(print(x))
- },
-  default = 0
-)
+df_to_array(df, value, dimnames_order, FUN = print, default = 0)
 }
 \arguments{
 \item{df}{Dataframe input.}
