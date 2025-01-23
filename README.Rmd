@@ -11,6 +11,8 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+h <- 10
+w <- 8
 ```
 
 # skrunchy
@@ -27,7 +29,7 @@ Detailed methods with variables and equations matching (as much as possible) thi
 
 ## General methods
 
-Here, we take a known abundance of population $K$ and expand it to estimate an aggregate population size $X_{aggregate}$ using the proportion of fish from population $K$ in a mixed genetic sample, $P_K$: 
+Here, we take a known abundance of population (in this case, Kitsumkalum) $K$ and expand it to estimate an aggregate population size $X_{aggregate}$ using the proportion of fish from population $K$ in a mixed genetic sample, $P_K$: 
 
 $$X_{aggregate} = \frac{K}{P_K}$$
 
@@ -45,14 +47,9 @@ You can install the development version of skrunchy from [GitHub](https://github
 ```
 install.packages("pak")
 pak::pak("Pacific-salmon-assess/skrunchy")
-```
 
-```{r load-libraries, include = FALSE, echo = FALSE }
-library(skrunchy)
-library(ggplot2)
-library(latex2exp)
-```
 
+```
 
 ## Example data
 
@@ -69,6 +66,9 @@ Note that most of the package functions produce lists with two elements. The fir
 Use example data from Skeena Tyee test fishery weekly catch and genetic mixture data, and pool it into annual genetic proportions. 
 
 ```{r example_P_tilde, dpi = 300}
+library(skrunchy)
+library(ggplot2)
+library(latex2exp)
 
 P_tilde <- get_P_tilde(P = ex_P, sigma_P = ex_sigma_P, G = ex_G)
 
@@ -107,8 +107,6 @@ E <- get_E(K = ex_k$kitsumkalum_escapement, X = X$X, Tau_U = ex_Tau_U_total,
      aggregate_population = "Skeena",
      lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
      upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"))
-de <- E$df
-
 
 ggplot(X$df, aes(y = X, x = y, group = i)) +
   geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
@@ -125,7 +123,7 @@ ggplot(X$df, aes(y = X, x = y, group = i)) +
 Get age proportions by age, population and year (fake data).
 
 
-```{r example_omega, dpi = 300 }
+```{r example_omega, dpi = 300 , fig.width = w,fig.height=h}
 omega <- get_omega(ex_n)
 
 ggplot( omega$df, aes(y = omega, x = y, group = i)) +
@@ -142,7 +140,7 @@ ggplot( omega$df, aes(y = omega, x = y, group = i)) +
 
 Get age-specific escapement by using age proportions. 
 
-```{r example_E_star, dpi=300}
+```{r example_E_star, dpi=300, fig.width = w,fig.height=h}
 E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = ex_K_star, add_6_7 = TRUE)
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
@@ -157,7 +155,7 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
 
 Get spawners for each population (accounts for brood stock removals), plot with returns to Terrace and escapement. Spawners should only be different from escapement for Skeena aggregate and Kitsumkalum, since brood removals are only for Kitsumkalum.
 
-```{r example_S_star, dpi = 300 }
+```{r example_S_star, dpi = 300, fig.width = w,fig.height=h }
 S_star <- get_S_star(E_star = E_star$E_star, B_star = ex_B_star)
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
@@ -175,15 +173,14 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
 Get wild spawners for each population (accounts for hatchery origin spawners), plot with returns to Terrace, escapement, and spawners. Wild spawners should only be different from spawners for Skeena aggregate and Kitsumkalum, since hatchery origin spawners only occur for Kitsumkalum.
 
 
-```{r example_W_star, dpi = 300 }
-## get Wild spawners
+```{r example_W_star, dpi = 300, fig.width = w,fig.height=h }
 W_star <- get_W_star( S_star = S_star$S_star, H_star = ex_H_star) 
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   geom_point(colour="gray") + 
   geom_line(colour="gray") + 
-  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="dodgerblue") +
   geom_line(data = W_star$df, aes(y = W_star, x = y, group = i), colour="firebrick") +
+  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="dodgerblue") +
   geom_hline(aes(yintercept=0)) + 
   facet_grid( i ~ a , scales = "free_y") + 
   ylab("Escapement (E*) in gray, spawners (S*) in blue,\nand wild spawners (W*) in red.") +
@@ -195,7 +192,7 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
 Get proportion wild spawners for each population and plot. Should only be <1 for Skeena aggregate and Kitsumkalum, since hatchery origin spawners only occur for Kitsumkalum. Note this is not real data, p is very high for Kitsumkalum across years. 
 
 
-```{r example_p, dpi = 300 }
+```{r example_p, dpi = 300 , fig.width = w,fig.height=h}
 p <- get_p(W_star = W_star$W_star, E_star = E_star$E_star)
 
 ggplot(p$df, aes(y = p, x = y, group = i)) +
@@ -212,11 +209,10 @@ ggplot(p$df, aes(y = p, x = y, group = i)) +
 Estimate terminal total mortalities in the lower Skeena by population, year, and age. 
 
 
-```{r example_tau_L, dpi = 300 }
+```{r example_tau_L, dpi = 300 , fig.width = w,fig.height=h}
 tau_L <- get_tau_L(Tau_L = ex_Tau_L_total, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena", add_6_7 = TRUE)
-dtauL <- tau_L$df 
 
-ggplot( dtauL, aes(y =tau_L, x = y, group = i)) +
+ggplot( tau_L$df , aes(y =tau_L, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
@@ -229,7 +225,7 @@ ggplot( dtauL, aes(y =tau_L, x = y, group = i)) +
 Estimate terminal total mortalities in the upper Skeena by population, year, and age. Should be 0 for Kitsumkalum, Lower Skeena, and Zymoetz-Fiddler. 
 
 
-```{r example_tau_U, dpi = 300 }
+```{r example_tau_U, dpi = 300, fig.width = w,fig.height=h }
 tau_U <- get_tau_U(Tau_U = ex_Tau_U_total, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena",
                    upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
     lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"), add_6_7 = TRUE)
@@ -247,7 +243,7 @@ ggplot( tau_U$df, aes(y =tau_U, x = y, group = i)) +
 Estimate terminal total mortalities in the marine area by population, year, and age. 
 
 
-```{r example_tau_M, dpi = 300 }
+```{r example_tau_M, dpi = 300 , fig.width = w,fig.height=h}
 tau_M <- get_tau_M( W_star = W_star$W_star, tau_dot_M = ex_tau_dot_M)
 
 ggplot( tau_M$df, aes(y =tau_M, x = y, group = i)) +
@@ -262,7 +258,7 @@ ggplot( tau_M$df, aes(y =tau_M, x = y, group = i)) +
 
 Get total terminal mortality 
 
-```{r example_tau, dpi=300}
+```{r example_tau, dpi=300, fig.width = w,fig.height=h}
 tau <- get_tau(tau_U = tau_U$tau_U, tau_L = tau_L$tau_L, tau_M= tau_M$tau_M)
 
 ggplot( tau$df, aes(y =tau, x = y, group = i)) +
@@ -282,7 +278,7 @@ ggplot( tau$df, aes(y =tau, x = y, group = i)) +
 
 Get wild total terminal mortality 
 
-```{r example_tau_W, dpi=300}
+```{r example_tau_W, dpi=300, fig.width = w,fig.height=h}
 tau_W <- get_tau_W(tau= tau$tau, p = p$p)
 
 ggplot( tau$df, aes(y =tau, x = y, group = i)) +
@@ -301,7 +297,7 @@ ggplot( tau$df, aes(y =tau, x = y, group = i)) +
 
 Get wild terminal run 
 
-```{r example_TermRun, dpi=300}
+```{r example_TermRun, dpi=300, fig.width = w,fig.height=h}
 TermRun <- get_TermRun(tau_W = tau_W$tau_W, W_star = W_star$W_star, B_star = ex_B_star)
 
 ggplot( TermRun$df, aes(y =TermRun, x = y, group = i)) +
@@ -320,7 +316,7 @@ ggplot( TermRun$df, aes(y =TermRun, x = y, group = i)) +
 
 Get mature run 
 
-```{r example_MatureRun, dpi=300}
+```{r example_MatureRun, dpi=300, fig.width = w,fig.height=h}
 MatureRun <- get_MatureRun(TermRun = TermRun$TermRun, phi_dot_M = ex_phi_dot_M)
 
 ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
@@ -338,7 +334,7 @@ ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
 
 Pre-terminal post fishery abundance. 
 
-```{r example_A_phi, dpi=300}
+```{r example_A_phi, dpi=300, fig.width = w,fig.height=h}
 A_phi <- get_A_phi( MatureRun = MatureRun$MatureRun, r = ex_r)
 
 ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
@@ -355,7 +351,7 @@ ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
 ```
 Pre-fishery ocean abundance. 
 
-```{r example_A_P, dpi=300}
+```{r example_A_P, dpi=300, fig.width = w,fig.height=h}
 A_P <- get_A_P( A_phi = A_phi$A_phi, phi_dot_E = ex_phi_dot_E)
 
 ggplot( A_phi$df, aes(y = A_phi, x = y, group = i)) +
@@ -373,7 +369,7 @@ ggplot( A_phi$df, aes(y = A_phi, x = y, group = i)) +
 
 Preterminal fishing mortality in nominal fish. 
 
-```{r example_phi_N, dpi=300}
+```{r example_phi_N, dpi=300, fig.width = w,fig.height=h}
 phi_N <- get_phi_N( A_P = A_P$A_P, A_phi = A_phi$A_phi)
 
 ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
@@ -389,7 +385,7 @@ ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
 ```
 
 Preterminal fishing mortality in adult equivalents. 
-```{r example_phi_Q, dpi=300}
+```{r example_phi_Q, dpi=300, fig.width = w,fig.height=h}
 phi_Q <- get_phi_Q( phi_N = phi_N$phi_N, Q = ex_Q)
 
 ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
@@ -407,7 +403,7 @@ ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
 
 Recruits by return year and brood year. 
 
-```{r example_R_star, dpi=300}
+```{r example_R_star, dpi=300, fig.width = w,fig.height=h}
 R_star <- get_R_star( MatureRun = MatureRun$MatureRun, phi_Q = phi_Q$phi_Q)
 
 ggplot( R_star$df, aes(y = R_star, x = y, group = i)) +

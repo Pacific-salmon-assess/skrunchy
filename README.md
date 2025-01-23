@@ -18,9 +18,10 @@ possible) this package will be added in the file: `methods.PDF`.
 
 ## General methods
 
-Here, we take a known abundance of population $K$ and expand it to
-estimate an aggregate population size $X_{aggregate}$ using the
-proportion of fish from population $K$ in a mixed genetic sample, $P_K$:
+Here, we take a known abundance of population (in this case,
+Kitsumkalum) $K$ and expand it to estimate an aggregate population size
+$X_{aggregate}$ using the proportion of fish from population $K$ in a
+mixed genetic sample, $P_K$:
 
 $$X_{aggregate} = \frac{K}{P_K}$$
 
@@ -67,6 +68,12 @@ Use example data from Skeena Tyee test fishery weekly catch and genetic
 mixture data, and pool it into annual genetic proportions.
 
 ``` r
+library(skrunchy)
+#> Loading required package: abind
+#> Loading required package: here
+#> here() starts at C:/github/skrunchy
+library(ggplot2)
+library(latex2exp)
 
 P_tilde <- get_P_tilde(P = ex_P, sigma_P = ex_sigma_P, G = ex_G)
 
@@ -109,8 +116,6 @@ E <- get_E(K = ex_k$kitsumkalum_escapement, X = X$X, Tau_U = ex_Tau_U_total,
      aggregate_population = "Skeena",
      lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
      upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"))
-de <- E$df
-
 
 ggplot(X$df, aes(y = X, x = y, group = i)) +
   geom_errorbar( aes( ymin = X - sigma_X, ymax = X + sigma_X)) +
@@ -186,14 +191,13 @@ spawners should only be different from spawners for Skeena aggregate and
 Kitsumkalum, since hatchery origin spawners only occur for Kitsumkalum.
 
 ``` r
-## get Wild spawners
 W_star <- get_W_star( S_star = S_star$S_star, H_star = ex_H_star) 
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   geom_point(colour="gray") + 
   geom_line(colour="gray") + 
-  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="dodgerblue") +
   geom_line(data = W_star$df, aes(y = W_star, x = y, group = i), colour="firebrick") +
+  geom_line(data = S_star$df, aes(y = S_star, x = y, group = i), colour="dodgerblue") +
   geom_hline(aes(yintercept=0)) + 
   facet_grid( i ~ a , scales = "free_y") + 
   ylab("Escapement (E*) in gray, spawners (S*) in blue,\nand wild spawners (W*) in red.") +
@@ -227,9 +231,8 @@ year, and age.
 
 ``` r
 tau_L <- get_tau_L(Tau_L = ex_Tau_L_total, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena", add_6_7 = TRUE)
-dtauL <- tau_L$df 
 
-ggplot( dtauL, aes(y =tau_L, x = y, group = i)) +
+ggplot( tau_L$df , aes(y =tau_L, x = y, group = i)) +
   geom_point() + 
   geom_line() + 
   geom_hline(aes(yintercept=0)) + 
