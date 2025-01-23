@@ -142,7 +142,8 @@ ggplot( omega$df, aes(y = omega, x = y, group = i)) +
   ylab(TeX("$\\Omega$") )+
   facet_grid( i ~ a ) + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_omega-1.png" width="100%" />
@@ -159,7 +160,8 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   facet_grid( i ~ a , scales = "free_y") + 
   ylab("Escapement (E*)") +
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_E_star-1.png" width="100%" />
@@ -180,7 +182,8 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   facet_grid( i ~ a , scales = "free_y") + 
   ylab("Escapement (E*) in gray and spawners (S*) in blue") +
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_S_star-1.png" width="100%" />
@@ -202,7 +205,8 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   facet_grid( i ~ a , scales = "free_y") + 
   ylab("Escapement (E*) in gray, spawners (S*) in blue,\nand wild spawners (W*) in red.") +
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_W_star-1.png" width="100%" />
@@ -221,7 +225,9 @@ ggplot(p$df, aes(y = p, x = y, group = i)) +
   facet_grid(i~a) +
   ylab("Proportion wild spawners, p") +
   geom_hline(aes(yintercept=0)) +
-  theme_classic()
+  theme_classic()+
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_p-1.png" width="100%" />
@@ -239,7 +245,8 @@ ggplot( tau_L$df , aes(y =tau_L, x = y, group = i)) +
   ylab(TeX("$\\tau_L$")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_tau_L-1.png" width="100%" />
@@ -260,7 +267,8 @@ ggplot( tau_U$df, aes(y =tau_U, x = y, group = i)) +
   ylab(TeX("$\\tau_U$")) +
   facet_grid( i ~ a) + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_tau_U-1.png" width="100%" />
@@ -278,7 +286,8 @@ ggplot( tau_M$df, aes(y =tau_M, x = y, group = i)) +
   ylab(TeX("$\\tau_M$")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_tau_M-1.png" width="100%" />
@@ -298,7 +307,8 @@ ggplot( tau$df, aes(y =tau, x = y, group = i)) +
   ylab(TeX("$\\tau$")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_tau-1.png" width="100%" />
@@ -316,7 +326,8 @@ ggplot( tau$df, aes(y =tau, x = y, group = i)) +
   ylab(TeX("$\\tau_W$ in orange, and $\\tau$ in black")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_tau_W-1.png" width="100%" />
@@ -335,7 +346,8 @@ ggplot( TermRun$df, aes(y =TermRun, x = y, group = i)) +
   ylab(TeX("$TermRun$ in black, $\\tau_W$ in orange, and $W^*$ in red")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_TermRun-1.png" width="100%" />
@@ -353,7 +365,8 @@ ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
   ylab(TeX("$MatureRun$ in green, $TermRun$ in black")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_MatureRun-1.png" width="100%" />
@@ -371,7 +384,8 @@ ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
   ylab(TeX("$MatureRun$ in green, $A_\\varphi$ in blue")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_A_phi-1.png" width="100%" />
@@ -388,7 +402,8 @@ ggplot( A_phi$df, aes(y = A_phi, x = y, group = i)) +
   ylab(TeX("Pre-fishery ocean abundance $A_P$ in orange, $A_\\varphi$ in blue")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_A_P-1.png" width="100%" />
@@ -405,7 +420,8 @@ ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
   ylab(TeX("Preterminal fishing mortality in nominal fish, $\\varphi_N$")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text( angle = 0))
 ```
 
 <img src="man/figures/README-example_phi_N-1.png" width="100%" />
@@ -423,7 +439,8 @@ ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
   ylab(TeX("Preterminal fishing mortality in adults equivalents $\\varphi_Q$ in purple. $\\varphi_N$ in black")) +
   facet_grid( i ~ a, scales="free_y") +
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_phi_Q-1.png" width="100%" />
@@ -442,7 +459,8 @@ ggplot( R_star$df, aes(y = R_star, x = y, group = i)) +
   ylab(TeX("$R^*$ in black, $MatureRun$ in pink, $\\varphi_Q$ in green")) +
   facet_grid( i ~ a, scales="free_y") +
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_R_star-1.png" width="100%" />
@@ -458,7 +476,8 @@ ggplot( R_star$df, aes(y = R_star, x = b, group = i, colour= complete_brood)) +
   facet_grid( i ~ a, scales="free_y") +
   scale_colour_manual(values = c("gray", "black")) +
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 <img src="man/figures/README-example_R_star-2.png" width="100%" />

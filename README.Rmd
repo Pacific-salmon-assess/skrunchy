@@ -11,8 +11,8 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
-h <- 10
-w <- 8
+h <- 6
+w <- 6
 ```
 
 # skrunchy
@@ -133,7 +133,8 @@ ggplot( omega$df, aes(y = omega, x = y, group = i)) +
   ylab(TeX("$\\Omega$") )+
   facet_grid( i ~ a ) + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 
 ```
@@ -150,7 +151,8 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   facet_grid( i ~ a , scales = "free_y") + 
   ylab("Escapement (E*)") +
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 Get spawners for each population (accounts for brood stock removals), plot with returns to Terrace and escapement. Spawners should only be different from escapement for Skeena aggregate and Kitsumkalum, since brood removals are only for Kitsumkalum.
@@ -166,7 +168,8 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   facet_grid( i ~ a , scales = "free_y") + 
   ylab("Escapement (E*) in gray and spawners (S*) in blue") +
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 ```
 
@@ -185,7 +188,8 @@ ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   facet_grid( i ~ a , scales = "free_y") + 
   ylab("Escapement (E*) in gray, spawners (S*) in blue,\nand wild spawners (W*) in red.") +
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 ```
 
@@ -201,7 +205,9 @@ ggplot(p$df, aes(y = p, x = y, group = i)) +
   facet_grid(i~a) +
   ylab("Proportion wild spawners, p") +
   geom_hline(aes(yintercept=0)) +
-  theme_classic()
+  theme_classic()+
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 ```
 
@@ -219,7 +225,8 @@ ggplot( tau_L$df , aes(y =tau_L, x = y, group = i)) +
   ylab(TeX("$\\tau_L$")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 Estimate terminal total mortalities in the upper Skeena by population, year, and age. Should be 0 for Kitsumkalum, Lower Skeena, and Zymoetz-Fiddler. 
@@ -237,7 +244,8 @@ ggplot( tau_U$df, aes(y =tau_U, x = y, group = i)) +
   ylab(TeX("$\\tau_U$")) +
   facet_grid( i ~ a) + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 Estimate terminal total mortalities in the marine area by population, year, and age. 
@@ -253,7 +261,8 @@ ggplot( tau_M$df, aes(y =tau_M, x = y, group = i)) +
   ylab(TeX("$\\tau_M$")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 ```
 
 Get total terminal mortality 
@@ -271,7 +280,8 @@ ggplot( tau$df, aes(y =tau, x = y, group = i)) +
   ylab(TeX("$\\tau$")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 ```
 
@@ -289,7 +299,8 @@ ggplot( tau$df, aes(y =tau, x = y, group = i)) +
   ylab(TeX("$\\tau_W$ in orange, and $\\tau$ in black")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 
 ```
@@ -309,7 +320,8 @@ ggplot( TermRun$df, aes(y =TermRun, x = y, group = i)) +
   ylab(TeX("$TermRun$ in black, $\\tau_W$ in orange, and $W^*$ in red")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 
 ```
@@ -327,7 +339,8 @@ ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
   ylab(TeX("$MatureRun$ in green, $TermRun$ in black")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 
 ```
@@ -345,7 +358,8 @@ ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
   ylab(TeX("$MatureRun$ in green, $A_\\varphi$ in blue")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 
 ```
@@ -362,7 +376,8 @@ ggplot( A_phi$df, aes(y = A_phi, x = y, group = i)) +
   ylab(TeX("Pre-fishery ocean abundance $A_P$ in orange, $A_\\varphi$ in blue")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 
 ```
@@ -379,7 +394,8 @@ ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
   ylab(TeX("Preterminal fishing mortality in nominal fish, $\\varphi_N$")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text( angle = 0))
 
 
 ```
@@ -396,7 +412,8 @@ ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
   ylab(TeX("Preterminal fishing mortality in adults equivalents $\\varphi_Q$ in purple. $\\varphi_N$ in black")) +
   facet_grid( i ~ a, scales="free_y") +
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 
 ```
@@ -415,7 +432,8 @@ ggplot( R_star$df, aes(y = R_star, x = y, group = i)) +
   ylab(TeX("$R^*$ in black, $MatureRun$ in pink, $\\varphi_Q$ in green")) +
   facet_grid( i ~ a, scales="free_y") +
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 ggplot( R_star$df, aes(y = R_star, x = b, group = i, colour= complete_brood)) +
   geom_line() +
@@ -426,7 +444,8 @@ ggplot( R_star$df, aes(y = R_star, x = b, group = i, colour= complete_brood)) +
   facet_grid( i ~ a, scales="free_y") +
   scale_colour_manual(values = c("gray", "black")) +
   theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5))
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
 
 ```
 
