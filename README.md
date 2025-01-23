@@ -456,7 +456,7 @@ ggplot( R_star$df, aes(y = R_star, x = y, group = i)) +
   geom_line(data = phi_Q$df, aes( y= phi_Q, x = y), colour="darkorchid1")+
   geom_line(data = MatureRun$df, aes(y = MatureRun, x = y), colour = "darkgreen") +
   geom_hline(aes(yintercept=0)) +
-  ylab(TeX("$R^*$ in black, $MatureRun$ in pink, $\\varphi_Q$ in green")) +
+  ylab(TeX("$R^*$ in black, $MatureRun$ in green, $\\varphi_Q$ in pink")) +
   facet_grid( i ~ a, scales="free_y") +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5),
