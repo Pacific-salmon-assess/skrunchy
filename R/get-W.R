@@ -9,6 +9,7 @@
 #' @param W_star Numeric, array of wild spawner values with three dimensions:  population (i), year (y), and age (a).
 #' @param S  numeric, matrix of spawner values for Chinook with two dimensions: population (i), and year (y). Chinook that spawned (doesn't include brood stock removals).
 #' @param H Numeric, vector of number of hatchery origin spawners returning to the population with a hatchery (e.g., Kitsumkalum River), by year (y).
+#' This is the sum of CTC model output column Esc_exp by return year, for KLM (fry) and KLY (yearlings) combined.
 #' @param hatchery_population Character, name of population i with where brood removals occurred. Defaults to Kitsumkalum.
 #' @param aggregate_population Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.
 #'

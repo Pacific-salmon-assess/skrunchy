@@ -5,6 +5,7 @@
 #'
 #' @param S_star  Numeric, array of spawner values with three dimensions:  population (i), year (y), and age (a).
 #' @param H_star Numeric, array of number of hatchery origin spawners returning to the population with a hatchery (e.g., Kitsumkalum River), by year (y) and age (a). Excludes age 3 fish (jacks).
+#' This is the sum of CTC model output column Esc_exp by return year and age, for KLM (fry) and KLY (yearlings) combined.
 #' @param hatchery_population Character, name of population i with where brood removals occurred. Defaults to Kitsumkalum.
 #' @param aggregate_population Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.
 #'
