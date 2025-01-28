@@ -6,6 +6,8 @@
 
 library(abind)
 
+devtools::load_all()
+
 # make up weekly catch and genetic proportion data
 d <- make_P_G(catch_range = c(0,100), n_weeks = 12, n_years = NA, start_year = 1984, end_year = 2020,
               population_names = c("Kitsumkalum", "Lower Skeena", "Middle Skeena", "Zymoetz-Fiddler", "Large Lakes", "Upper Skeena"),
@@ -29,7 +31,7 @@ X <- get_X(P_tilde = ex_P_tilde, sigma_P_tilde = ex_sigma_P_tilde , K= ex_k$kits
 ex_X <- X$X
 
 # Make up Terminal mortality upstream of Terrace data
-ex_Tau_U_total <- sample(500:1000, size = length(ex_k$year), replace=TRUE)
+ex_Tau_U_total <- sample(1000:(min(X$X)-500), size = length(ex_k$year), replace=TRUE)
 
 # Get escapement
 E <- get_E(K = ex_k$kitsumkalum_escapement, X = ex_X, Tau_U = ex_Tau_U_total,
