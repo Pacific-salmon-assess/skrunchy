@@ -31,7 +31,7 @@ X <- get_X(P_tilde = ex_P_tilde, sigma_P_tilde = ex_sigma_P_tilde , K= ex_k$kits
 ex_X <- X$X
 
 # Make up Terminal mortality upstream of Terrace data
-ex_Tau_U_total <- sample(1000:(min(X$X)-500), size = length(ex_k$year), replace=TRUE)
+ex_Tau_U_total <- runif( dim(ex_X)[2], 0.1, 0.3) *   apply(ex_X[c("Middle Skeena", "Large Lakes", "Upper Skeena"), ], 2, sum)
 
 # Get escapement
 E <- get_E(K = ex_k$kitsumkalum_escapement, X = ex_X, Tau_U = ex_Tau_U_total,
