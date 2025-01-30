@@ -265,31 +265,34 @@ ggplot( tau_M$df, aes(y =tau_M, x = y, group = i)) +
         strip.text.y = element_text(angle = 0))
 ```
 
-Get total terminal mortality 
+<!-- Get total terminal mortality  -->
 
-```{r example_tau, dpi=300, fig.width = w,fig.height=h}
-tau <- get_tau(tau_U = tau_U$tau_U, tau_L = tau_L$tau_L, tau_M= tau_M$tau_M)
+<!-- ```{r example_tau, dpi=300, fig.width = w,fig.height=h} -->
+<!-- tau <- get_tau(tau_U = tau_U$tau_U, tau_L = tau_L$tau_L, tau_M= tau_M$tau_M) -->
 
-ggplot( tau$df, aes(y =tau, x = y, group = i)) +
-  geom_line() +
-  geom_point() +
-  geom_line( data = tau_L$df, aes(y =tau_L, x = y), colour="goldenrod") +
-  geom_line( data = tau_U$df, aes(y =tau_U, x = y), colour="aquamarine") +
-  geom_line( data = tau_M$df, aes(y =tau_M, x = y), colour="blue") +
-  geom_hline(aes(yintercept=0)) + 
-  ylab(TeX("$\\tau$")) +
-  facet_grid( i ~ a, scales="free_y") + 
-  theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5),
-        strip.text.y = element_text(angle = 0))
+<!-- ggplot( tau$df, aes(y =tau, x = y, group = i)) + -->
+<!--   geom_line() + -->
+<!--   geom_point() + -->
+<!--   geom_line( data = tau_L$df, aes(y =tau_L, x = y), colour="goldenrod") + -->
+<!--   geom_line( data = tau_U$df, aes(y =tau_U, x = y), colour="aquamarine") + -->
+<!--   geom_line( data = tau_M$df, aes(y =tau_M, x = y), colour="blue") + -->
+<!--   geom_hline(aes(yintercept=0)) +  -->
+<!--   ylab(TeX("$\\tau$")) + -->
+<!--   facet_grid( i ~ a, scales="free_y") +  -->
+<!--   theme_classic() + -->
+<!--   theme(axis.text.x = element_text(angle=90, vjust=0.5), -->
+<!--         strip.text.y = element_text(angle = 0)) -->
 
-```
+<!-- ``` -->
 
 
 Get wild total terminal mortality 
 
 ```{r example_tau_W, dpi=300, fig.width = w,fig.height=h}
-tau_W <- get_tau_W(tau= tau$tau, p = p$p)
+# Note updated function
+tau_W <- get_tau_W(tau_U= tau_U$tau_U, tau_L = tau_L$tau_L, tau_M = tau_M$tau_M, p = p$p)
+
+#tau_W <- get_tau_W(tau= tau$tau, p = p$p)
 
 ggplot( tau$df, aes(y =tau, x = y, group = i)) +
   geom_line() +

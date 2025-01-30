@@ -4,10 +4,14 @@
 \alias{get_tau_W}
 \title{Get wild terminal mortalities}
 \usage{
-get_tau_W(tau, p)
+get_tau_W(tau_U, tau_L, tau_M, p)
 }
 \arguments{
-\item{tau}{Numeric, array of total terminal mortalities, with three dimensions: population (i), year (y), and age (a).}
+\item{tau_U}{Numeric, array of total terminal mortalities in the upper Skeena with three dimensions: population (i), year (y), and age (a).}
+
+\item{tau_L}{Numeric, array of total terminal mortalities in the lower Skeena with three dimensions: population (i), year (y), and age (a).}
+
+\item{tau_M}{Numeric, array of total terminal mortalities in marine fisheries, with three dimensions: population (i), year (y), and age (a).}
 
 \item{p}{Numeric, an array of wild spawner proportions with values between 0 and 1, with three dimensions: population (i), year (y), and age (a).}
 }
@@ -19,7 +23,7 @@ Second element: data frame version of first element, for plotting and tables.
 Calculate the wild total terminal mortalities by population, year, and age.
 }
 \examples{
-tau_W <- get_tau_W(tau = ex_tau, p = ex_p_wild)
+tau_W <- get_tau_W(tau_L = ex_tau_L, tau_U = ex_tau_U, tau_M = ex_tau_M, p = ex_p_wild)
 
 
 }
