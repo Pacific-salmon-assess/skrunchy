@@ -294,12 +294,14 @@ tau_W <- get_tau_W(tau_U= tau_U$tau_U, tau_L = tau_L$tau_L, tau_M = tau_M$tau_M,
 
 #tau_W <- get_tau_W(tau= tau$tau, p = p$p)
 
-ggplot( tau$df, aes(y =tau, x = y, group = i)) +
+ggplot( tau_W$df, aes(y =tau_W, x = y, group = i)) +
   geom_line() +
   geom_point() +
-  geom_line( data = tau_W$df, aes(y =tau_W, x = y), colour="darkorange3") +
   geom_hline(aes(yintercept=0)) + 
-  ylab(TeX("$\\tau_W$ in orange, and $\\tau$ in black")) +
+  geom_line( data = tau_L$df, aes(y =tau_L, x = y), colour="goldenrod") + 
+  geom_line( data = tau_U$df, aes(y =tau_U, x = y), colour="aquamarine") + 
+  geom_line( data = tau_M$df, aes(y =tau_M, x = y), colour="blue") + 
+  ylab(TeX("$\\tau_W$ in black")) +
   facet_grid( i ~ a, scales="free_y") + 
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5),
