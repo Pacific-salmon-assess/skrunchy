@@ -1,4 +1,4 @@
-#' Estimate Chinook total terminal mortalities in the upper Skeena River
+#' Estimate Chinook total terminal mortalities in the upper Skeena River, by population, year, and age.
 #'
 #' Calculates the total terminal mortalities of Chinook salmon in the upper Skeena River
 #' (upstream of Terrace), by population, year, and age. Includes fishing plus incidental mortality.

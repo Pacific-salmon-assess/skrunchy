@@ -5,6 +5,7 @@
 # Example data goes from return years 1984-2020.
 
 library(abind)
+library(skrunchy)
 
 devtools::load_all()
 
@@ -48,9 +49,19 @@ ages <- c(4,5,6,7)
 p_ages <- c(30,40,40,1)
 n_ages <- length(ages)
 
+# do the same with jacks included. Need for omega_J, for removing jacks from terminal mortalities.
+ages_jacks <- c(3,4,5,6,7)
+p_ages_jacks <- c(20,30,40,40,1)
+n_ages_jacks <- length(ages_jacks)
+
+
 # Make up some age sample data
 ad <- sapply(p_ages, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
 ex_n <- array( ad,  dim = c(n_populations, n_years, n_ages), dimnames = list(i = populations, y = years, a = ages))
+
+# Make up age sample data including 3 year old (jacks)
+ad_jacks <- sapply(p_ages_jacks, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
+ex_n_with_jacks <- array( ad_jacks,  dim = c(n_populations, n_years, n_ages_jacks), dimnames = list(i = populations, y = years, a = ages_jacks))
 
 # Get age proportion data
 omega <- get_omega(ex_n)
@@ -102,6 +113,16 @@ W_star <- get_W_star(S_star = ex_S_star, H_star = ex_H_star,
 ex_W_star <- W_star$W_star
 
 #Get terminal mortalities freshwater
+# Make up data frame of terminal freshwater mortalities by type
+ex_Tau_total <- data.frame( y = ex_k$year,
+                            tyee = 500,
+                            rec_catch_L = 500,
+                            rec_release_L = 500,
+                            FN_catch_L= 500,
+                            rec_catch_U = 500,
+                            FN_catch_U = 500)
+
+
 # lower
 Tau_L <- sample(500:1000, size=n_years)
 ex_Tau_L_total <- Tau_L
@@ -135,7 +156,7 @@ p <- get_p(W_star = ex_W_star, E_star = ex_E_star)
 ex_p_wild <- p$p
 
 # Wild terminal mortalities
-tau_W <- get_tau_W(tau = ex_tau, p = ex_p_wild)
+tau_W <- get_tau_W_obsolete(tau = ex_tau, p = ex_p_wild)
 ex_tau_W <- tau_W$tau_W
 
 # Get terminal run
@@ -189,9 +210,11 @@ usethis::use_data(ex_P_tilde, overwrite = TRUE)
 usethis::use_data(ex_sigma_P_tilde, overwrite = TRUE)
 usethis::use_data(ex_k, overwrite = TRUE)
 usethis::use_data(ex_X, overwrite = TRUE)
+usethis::use_data(ex_Tau_total, overwrite = TRUE)
 usethis::use_data(ex_Tau_U_total, overwrite = TRUE)
 usethis::use_data(ex_E, overwrite = TRUE)
 usethis::use_data(ex_n, overwrite = TRUE)
+usethis::use_data(ex_n_with_jacks, overwrite = TRUE)
 usethis::use_data(ex_omega, overwrite = TRUE)
 usethis::use_data(ex_K_star, overwrite = TRUE)
 usethis::use_data(ex_E_star, overwrite = TRUE)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/get-tau-U.R
 \name{get_tau_U}
 \alias{get_tau_U}
-\title{Estimate Chinook total terminal mortalities in the upper Skeena River}
+\title{Estimate Chinook total terminal mortalities in the upper Skeena River, by population, year, and age.}
 \usage{
 get_tau_U(
   Tau_U,

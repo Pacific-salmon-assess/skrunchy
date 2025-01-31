@@ -136,7 +136,6 @@ ggplot( omega$df, aes(y = omega, x = y, group = i)) +
   theme(axis.text.x = element_text(angle=90, vjust=0.5),
         strip.text.y = element_text(angle = 0))
 
-
 ```
 
 Get age-specific escapement by using age proportions. 
