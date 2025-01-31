@@ -41,7 +41,7 @@ get_Tau_L_total <- function( omega_J,
     proportion_adults <- apply( omega_J[ , adult_ages], 1, FUN = sum)
     Tau_L <- proportion_adults * ( tyee * ( 1  + IM_tyee ) +
                                    rec_catch_L * ( 1 + IM_rec_catch) +
-                                   rec_release_L * ( 1 + IM_rec_release ) +
+                                   rec_release_L * IM_rec_release +
                                    FN_catch_L * ( 1 + IM_FN_catch ))
     names(Tau_L) <- years
     return(Tau_L)
