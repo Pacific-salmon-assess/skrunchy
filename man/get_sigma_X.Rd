@@ -2,12 +2,22 @@
 % Please edit documentation in R/get-sigma-X.R
 \name{get_sigma_X}
 \alias{get_sigma_X}
-\title{Get standard error for X, returns to Terrace}
+\title{Get standard error for X, returns to Terrace for the aggregate}
 \usage{
-get_sigma_X(X, K, sigma_K, P_tilde, sigma_P_tilde, aggregate_population = TRUE)
+get_sigma_X(
+  X,
+  sigma_X,
+  K,
+  sigma_K,
+  P_tilde,
+  sigma_P_tilde,
+  aggregate_population = TRUE
+)
 }
 \arguments{
 \item{X}{Array of returns to Terrace with two dimensions: population (i) and year (y).}
+
+\item{sigma_X}{Array of SD of returns to Terrace with two dimensions: population (i) and year (y).}
 
 \item{K}{Numeric, vector of estimates of Kitsumkalum Chinook spawners (ages 4, 5, 6, and 7, no jacks) based on a mark-recapture study and open population mark-recapture model (POPAN). One dimension: y (year). For more on POPAN models, see Cooch & White 2024 Chapter 12: http://www.phidot.org/software/mark/docs/book/pdf/chap12.pdf}
 
@@ -24,10 +34,14 @@ Array, numeric, SE of returns to Terrace of Chinook, with two dimensions: popula
 }
 \description{
 Calculate the standard error for X, returns to Terrace of Chinook.
+Uses CTC 1999 (https://www.psc.org/download/35/chinook-\%20technical-committee/2172/tcchinook99-3.pdf)
+page 6, third equation for SD for the aggregte return to Terrace, and second equation for
+the SD of other populations.
 }
 \examples{
 
 sigma_X <- get_sigma_X( X = 60000,
+              sigma_X = NA,
              K = 10000, sigma_K = 500,
              P_tilde = 0.2,
              sigma_P_tilde = 0.05,

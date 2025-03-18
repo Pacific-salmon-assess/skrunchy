@@ -13,7 +13,7 @@
 #' @param rec_catch_L Numeric, vector of recreational catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.
 #' @param IM_rec_catch Numeric, value to use for incidental mortality (drop-off) for recreational catch. Default is 6.9%.
 #' @param rec_release_L Numeric, vector of recreational catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.
-#' @param IM_rec_release Numeric, value to use for incidental mortality (release mortality) for recreational catch. Default is 5%.
+#' @param IM_rec_release Numeric, value to use for incidental mortality (release mortality) for fish caught and released in recreational fishery. Default is 5%.
 #' @param FN_catch_L Numeric, vector of First Nations FSC catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.
 #' @param IM_FN_catch Numeric, value to use for incidental mortality (drouput) for First Nations FSC catch. Default is 4.6%.
 #' @param adult_ages Character, vector of adult ages to use. Should match age names of omega_J columns. Defaults to "4", "5", "6", and "7".

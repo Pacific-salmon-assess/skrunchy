@@ -61,12 +61,18 @@ get_X <- function(P_tilde, sigma_P_tilde, K,  y_K, sigma_K, known_population = "
   for(y in years) {
     # sigma_X for return to Terrace, Skeena aggregate
      sigma_X[aggregate_population, y] <- get_sigma_X( X = X[aggregate_population, y],
+                                                      sigma_X = NA,
                                                       K = K[y_K == y], sigma_K = sigma_K[ y_K == y],
                                                       P_tilde = P_tilde[known_population, y],
                                                       sigma_P_tilde = sigma_P_tilde[known_population, y],
                                                       aggregate_population = TRUE)
      sigma_X[known_population, y] <- sigma_K[ y_K == y] # fill in with SE for Kitsumkalum mark recapture estimate
-     sigma_X[unknown_populations, y] <- NA # Leave as 0 for now, waiting to hear from Ivan
+     sigma_X[unknown_populations, y] <- get_sigma_X( X = X[aggregate_population, y],
+                                                     sigma_X = sigma_X[aggregate_population, y],
+                                                     K = NA, sigma_K = NA,
+                                                     P_tilde = P_tilde[unknown_populations, y],
+                                                     sigma_P_tilde = sigma_P_tilde[unknown_populations, y],
+                                                     aggregate_population = FALSE)
   }
 
 

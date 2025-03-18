@@ -31,7 +31,7 @@ Note that this should include age proportion for Skeena aggregate. This is used 
 
 \item{rec_release_L}{Numeric, vector of recreational catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.}
 
-\item{IM_rec_release}{Numeric, value to use for incidental mortality (release mortality) for recreational catch. Default is 5\%.}
+\item{IM_rec_release}{Numeric, value to use for incidental mortality (release mortality) for fish caught and released in recreational fishery. Default is 5\%.}
 
 \item{FN_catch_L}{Numeric, vector of First Nations FSC catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.}
 
