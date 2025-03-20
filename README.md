@@ -106,9 +106,11 @@ ggplot( X$df, aes(y = X, x = y, group = i)) +
   theme_classic()
 ```
 
-<img src="man/figures/README-example_X-1.png" width="100%" /> Get
-escapement for each population, plot with returns to Terrace (note, will
-only be different for Skeena aggregate and the three upper populations)
+<img src="man/figures/README-example_X-1.png" width="100%" />
+
+Get escapement for each population, plot with returns to Terrace (note,
+will only be different for Skeena aggregate and the three upper
+populations). See below for $T_U$ calculations.
 
 ``` r
 E <- get_E(K = ex_k$kitsumkalum_escapement, X = X$X, Tau_U = ex_Tau_U_total,
@@ -232,11 +234,70 @@ ggplot(p$df, aes(y = p, x = y, group = i)) +
 
 <img src="man/figures/README-example_p-1.png" width="100%" />
 
-Estimate terminal total mortalities in the lower Skeena by population,
-year, and age.
+Estimate terminal mortalities
+
+Get age proportions by age, population and year (fake data), including
+jacks.
 
 ``` r
-tau_L <- get_tau_L(Tau_L = ex_Tau_L_total, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena", add_6_7 = TRUE)
+omega_J_all <- get_omega(ex_n_with_jacks)
+ex_omega_J <- omega_J_all$omega["Skeena",,] # only include Skeena
+
+ggplot( omega_J_all$df[ omega_J_all$df$i == "Skeena", ], aes(y = omega, x = y, group = i)) +
+  geom_point() + 
+  geom_line() + 
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$\\Omega_J$") )+
+  facet_grid( i ~ a ) + 
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
+```
+
+<img src="man/figures/README-example_omega_J-1.png" width="100%" />
+
+Get freshwater terminal mortalities in the lower Skeena by year
+
+``` r
+Tau_L_total <- get_Tau_U_total( omega_J = ex_omega_J, rec_catch_U = ex_Tau$rec_catch_U,
+                                   FN_catch_U = ex_Tau$FN_catch_U)
+Tau_L_total_df <- data.frame(Tau_L_total = Tau_L_total, y = names(Tau_L_total))
+
+ggplot( Tau_L_total_df, aes(y = Tau_L_total, x = y, group = 1)) +
+  geom_line() + 
+  geom_point() + 
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$T_L$") )+
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
+```
+
+<img src="man/figures/README-example_Tau_L_total-1.png" width="100%" />
+
+Get freshwater terminal mortalities in the upper Skeena by year
+
+``` r
+Tau_U_total <- get_Tau_U_total( omega_J = ex_omega_J, rec_catch_U = ex_Tau$rec_catch_U,
+                                   FN_catch_U = ex_Tau$FN_catch_U)
+Tau_U_total_df <- data.frame(Tau_U_total, y = names(Tau_U_total))
+ggplot( Tau_U_total_df, aes(y = Tau_U_total, x = y, group = 1)) +
+  geom_point() + 
+  geom_line() + 
+  geom_hline(aes(yintercept=0)) + 
+  ylab(TeX("$T_U$") )+
+  theme_classic() +
+  theme(axis.text.x = element_text(angle=90, vjust=0.5),
+        strip.text.y = element_text(angle = 0))
+```
+
+<img src="man/figures/README-example_Tau_U_total-1.png" width="100%" />
+
+Estimate freshwater terminal mortalities in the lower Skeena by
+population, year, and age.
+
+``` r
+tau_L <- get_tau_L(Tau_L = Tau_L_total, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena", add_6_7 = TRUE)
 
 ggplot( tau_L$df , aes(y =tau_L, x = y, group = i)) +
   geom_point() + 
@@ -251,12 +312,12 @@ ggplot( tau_L$df , aes(y =tau_L, x = y, group = i)) +
 
 <img src="man/figures/README-example_tau_L-1.png" width="100%" />
 
-Estimate terminal total mortalities in the upper Skeena by population,
-year, and age. Should be 0 for Kitsumkalum, Lower Skeena, and
-Zymoetz-Fiddler.
+Estimate freshwater terminal mortalities in the upper Skeena by
+population, year, and age. Should be 0 for Kitsumkalum, Lower Skeena,
+and Zymoetz-Fiddler.
 
 ``` r
-tau_U <- get_tau_U(Tau_U = ex_Tau_U_total, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena",
+tau_U <- get_tau_U(Tau_U = Tau_U_total, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena",
                    upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
     lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"), add_6_7 = TRUE)
 
@@ -273,7 +334,7 @@ ggplot( tau_U$df, aes(y =tau_U, x = y, group = i)) +
 
 <img src="man/figures/README-example_tau_U-1.png" width="100%" />
 
-Estimate terminal total mortalities in the marine area by population,
+Estimate marine terminal mortalities in the marine area by population,
 year, and age.
 
 ``` r
