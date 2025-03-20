@@ -37,6 +37,7 @@ get_Tau_L_total <- function( omega_J,
                              adult_ages = as.character(c(4,5,6,7))) {
   # Check vector lengths
 
+
     years <- dimnames(omega_J)$y
     proportion_adults <- apply( omega_J[ , adult_ages], 1, FUN = sum)
     Tau_L <- proportion_adults * ( tyee * ( 1  + IM_tyee ) +
