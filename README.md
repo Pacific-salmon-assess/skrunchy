@@ -241,7 +241,7 @@ jacks.
 
 ``` r
 omega_J_all <- get_omega(ex_n_with_jacks)
-ex_omega_J <- omega_J_all$omega["Skeena",,] # only include Skeena
+omega_J <- omega_J_all$omega["Skeena",,] # only include Skeena
 
 ggplot( omega_J_all$df[ omega_J_all$df$i == "Skeena", ], aes(y = omega, x = y, group = i)) +
   geom_point() + 
@@ -259,8 +259,10 @@ ggplot( omega_J_all$df[ omega_J_all$df$i == "Skeena", ], aes(y = omega, x = y, g
 Get freshwater terminal mortalities in the lower Skeena by year
 
 ``` r
-Tau_L_total <- get_Tau_U_total( omega_J = ex_omega_J, rec_catch_U = ex_Tau$rec_catch_U,
-                                   FN_catch_U = ex_Tau$FN_catch_U)
+Tau_L_total <- get_Tau_L_total( omega_J = omega_J, tyee = ex_Tau$tyee, 
+                                rec_catch_L = ex_Tau$rec_catch_L,
+                                rec_release_L = ex_Tau$rec_release_L, 
+                                FN_catch_L = ex_Tau$FN_catch_L)
 Tau_L_total_df <- data.frame(Tau_L_total = Tau_L_total, y = names(Tau_L_total))
 
 ggplot( Tau_L_total_df, aes(y = Tau_L_total, x = y, group = 1)) +
@@ -278,7 +280,7 @@ ggplot( Tau_L_total_df, aes(y = Tau_L_total, x = y, group = 1)) +
 Get freshwater terminal mortalities in the upper Skeena by year
 
 ``` r
-Tau_U_total <- get_Tau_U_total( omega_J = ex_omega_J, rec_catch_U = ex_Tau$rec_catch_U,
+Tau_U_total <- get_Tau_U_total( omega_J = omega_J, rec_catch_U = ex_Tau$rec_catch_U,
                                    FN_catch_U = ex_Tau$FN_catch_U)
 Tau_U_total_df <- data.frame(Tau_U_total, y = names(Tau_U_total))
 ggplot( Tau_U_total_df, aes(y = Tau_U_total, x = y, group = 1)) +
