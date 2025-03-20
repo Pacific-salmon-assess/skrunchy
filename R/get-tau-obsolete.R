@@ -11,10 +11,10 @@
 #'
 #'
 #' @examples
-#' tau <- get_tau( tau_U = ex_tau_U, tau_L = ex_tau_L, tau_M = ex_tau_M)
+#' tau <- get_tau_obsolete( tau_U = ex_tau_U, tau_L = ex_tau_L, tau_M = ex_tau_M)
 #'
 #' @export
-get_tau <- function( tau_U, tau_L, tau_M) {
+get_tau_obsolete <- function( tau_U, tau_L, tau_M) {
   # check dimensions are the same
   # Populations
     if(!isTRUE( identical(dim(tau_U)[1], dim(tau_L)[1]) && identical(dim(tau_U)[1], dim(tau_M)[1])))  {

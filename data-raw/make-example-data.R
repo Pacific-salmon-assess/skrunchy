@@ -159,7 +159,7 @@ tau_M <- get_tau_M( W_star = ex_W_star, tau_dot_M = ex_tau_dot_M )
 ex_tau_M <- tau_M$tau_M
 
 # # total terminal mortality
-tau <- get_tau( tau_U = ex_tau_U, tau_L = ex_tau_L, tau_M = ex_tau_M)
+tau <- get_tau_obsolete( tau_U = ex_tau_U, tau_L = ex_tau_L, tau_M = ex_tau_M)
 ex_tau_obsolete <- tau$tau
 
 # Proportion wild
