@@ -3,7 +3,7 @@
 \docType{data}
 \name{ex_H_star}
 \alias{ex_H_star}
-\title{Example hatchery removal data by year and age for testing and examples}
+\title{Example hatchery origin spawner data by year and age for testing and examples}
 \format{
 \subsection{\code{ex_H_star}}{
 
@@ -21,6 +21,6 @@ data-raw/make-example-data.R
 ex_H_star
 }
 \description{
-Example hatchery removal data (fake) for testing and examples.
+Example hatchery origin spawner data (fake) for testing and examples.
 }
 \keyword{datasets}

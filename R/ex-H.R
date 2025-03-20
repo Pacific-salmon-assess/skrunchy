@@ -1,6 +1,6 @@
-#' Example hatchery removal data by year for testing and examples
+#' Example hatchery origin spawner data by year for testing and examples
 #'
-#' Example hatchery removal data (fake) for testing and examples.
+#' Example hatchery origin spawner data (fake) for testing and examples.
 #'
 #'
 #' @format ## `ex_H`
