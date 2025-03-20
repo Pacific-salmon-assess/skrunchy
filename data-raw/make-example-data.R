@@ -31,16 +31,6 @@ X <- get_X(P_tilde = ex_P_tilde, sigma_P_tilde = ex_sigma_P_tilde , K= ex_k$kits
            y_K = ex_k$year)
 ex_X <- X$X
 
-# Make up Terminal mortality upstream of Terrace data
-ex_Tau_U_total <- runif( dim(ex_X)[2], 0.1, 0.3) *   apply(ex_X[c("Middle Skeena", "Large Lakes", "Upper Skeena"), ], 2, sum)
-
-# Get escapement
-E <- get_E(K = ex_k$kitsumkalum_escapement, X = ex_X, Tau_U = ex_Tau_U_total,
-   known_population = "Kitsumkalum",
-    aggregate_population = "Skeena",
-    lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
-    upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"))
-ex_E <- E$E
 populations <- dimnames(ex_X)$i
 n_populations <- length(populations)
 years <- dimnames(ex_X)$y
@@ -66,6 +56,33 @@ ex_n_with_jacks <- array( ad_jacks,  dim = c(n_populations, n_years, n_ages_jack
 # Get age proportion data
 omega <- get_omega(ex_n)
 ex_omega <- omega$omega
+
+# Get age proportion data with jacks
+omega_J_all <- get_omega(ex_n_with_jacks)
+ex_omega_J <- omega_J_all$omega["Skeena",,] # only include Skeena
+
+# Make up data frame of terminal freshwater mortalities by type
+ex_Tau <- data.frame( y = ex_k$year,
+                      tyee = 500,
+                      rec_catch_L = 500,
+                      rec_release_L = 500,
+                      FN_catch_L= 500,
+                      rec_catch_U = 500,
+                      FN_catch_U = 500)
+
+# Terminal mortality upstream of Terrace data
+ex_Tau_U_total <- get_Tau_U_total( omega_J = ex_omega_J, rec_catch_U = ex_Tau$rec_catch_U,
+                                   FN_catch_U = ex_Tau$FN_catch_U)
+# Optional: make up as fraction of return to Terrace.
+#ex_Tau_U_total <- runif( dim(ex_X)[2], 0.1, 0.3) *   apply(ex_X[c("Middle Skeena", "Large Lakes", "Upper Skeena"), ], 2, sum)
+
+# Get escapement
+E <- get_E(K = ex_k$kitsumkalum_escapement, X = ex_X, Tau_U = ex_Tau_U_total,
+   known_population = "Kitsumkalum",
+    aggregate_population = "Skeena",
+    lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
+    upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"))
+ex_E <- E$E
 
 # read in Kitsumkalum age-specific escapement
 ksd <- read.csv(here("data-raw", "K_star.csv"))
@@ -113,27 +130,20 @@ W_star <- get_W_star(S_star = ex_S_star, H_star = ex_H_star,
 ex_W_star <- W_star$W_star
 
 #Get terminal mortalities freshwater
-# Make up data frame of terminal freshwater mortalities by type
-ex_Tau_total <- data.frame( y = ex_k$year,
-                            tyee = 500,
-                            rec_catch_L = 500,
-                            rec_release_L = 500,
-                            FN_catch_L= 500,
-                            rec_catch_U = 500,
-                            FN_catch_U = 500)
-
+ex_Tau_L_total <- get_Tau_L_total( omega_J = ex_omega_J, tyee = ex_Tau$tyee,
+                                   rec_catch_L = ex_Tau$rec_catch_L,
+                                   rec_release_L = ex_Tau$rec_release_L,
+                                   FN_catch_L = ex_Tau$FN_catch_L)
 
 # lower
-Tau_L <- sample(500:1000, size=n_years)
-ex_Tau_L_total <- Tau_L
 tau_L <- get_tau_L( Tau_L = ex_Tau_L_total, omega = ex_omega, P_tilde = ex_P_tilde, aggregate_population = "Skeena",
                     add_6_7 = TRUE)
 ex_tau_L <- tau_L$tau_L
 
-ex_tau_L <- tau_L$tau_L
 # Upper
-# Example Tau_T already made
-#ex_Tau_U_total <- sample(500:1000, size=n_years)
+ex_Tau_U_total <- get_Tau_U_total( omega_J = ex_omega_J, rec_catch_U = ex_Tau$rec_catch_U,
+                                   FN_catch_U = ex_Tau$FN_catch_U)
+
 tau_U <- get_tau_U( Tau_U = ex_Tau_U_total, omega = ex_omega, P_tilde = ex_P_tilde,
     aggregate_population = "Skeena", upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
     lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"),
@@ -147,9 +157,9 @@ ex_tau_dot_M <- tau_dot_M
 tau_M <- get_tau_M( W_star = ex_W_star, tau_dot_M = ex_tau_dot_M )
 ex_tau_M <- tau_M$tau_M
 
-# total terminal mortality
-tau <- get_tau( tau_U = ex_tau_U, tau_L = ex_tau_L, tau_M = ex_tau_M)
-ex_tau <- tau$tau
+# # total terminal mortality
+# tau <- get_tau( tau_U = ex_tau_U, tau_L = ex_tau_L, tau_M = ex_tau_M)
+# ex_tau <- tau$tau
 
 # Proportion wild
 p <- get_p(W_star = ex_W_star, E_star = ex_E_star)
@@ -210,12 +220,12 @@ usethis::use_data(ex_P_tilde, overwrite = TRUE)
 usethis::use_data(ex_sigma_P_tilde, overwrite = TRUE)
 usethis::use_data(ex_k, overwrite = TRUE)
 usethis::use_data(ex_X, overwrite = TRUE)
-usethis::use_data(ex_Tau_total, overwrite = TRUE)
 usethis::use_data(ex_Tau_U_total, overwrite = TRUE)
 usethis::use_data(ex_E, overwrite = TRUE)
 usethis::use_data(ex_n, overwrite = TRUE)
 usethis::use_data(ex_n_with_jacks, overwrite = TRUE)
 usethis::use_data(ex_omega, overwrite = TRUE)
+usethis::use_data(ex_omega_J, overwrite = TRUE)
 usethis::use_data(ex_K_star, overwrite = TRUE)
 usethis::use_data(ex_E_star, overwrite = TRUE)
 usethis::use_data(ex_B_star, overwrite = TRUE)
@@ -225,13 +235,14 @@ usethis::use_data(ex_S, overwrite = TRUE)
 usethis::use_data(ex_H_star, overwrite = TRUE)
 usethis::use_data(ex_H, overwrite = TRUE)
 usethis::use_data(ex_W_star, overwrite = TRUE)
-usethis::use_data(ex_Tau_L_total, overwrite = TRUE)
+#usethis::use_data(ex_Tau_L_total, overwrite = TRUE)
+usethis::use_data(ex_Tau, overwrite = TRUE)
 usethis::use_data(ex_tau_L, overwrite = TRUE)
 #usethis::use_data(ex_Tau_U_total, overwrite = TRUE)
 usethis::use_data(ex_tau_U, overwrite = TRUE)
 usethis::use_data(ex_tau_dot_M, overwrite = TRUE)
 usethis::use_data(ex_tau_M, overwrite = TRUE)
-usethis::use_data(ex_tau, overwrite = TRUE)
+#usethis::use_data(ex_tau, overwrite = TRUE)
 usethis::use_data(ex_p_wild, overwrite = TRUE)
 usethis::use_data(ex_tau_W, overwrite = TRUE)
 usethis::use_data(ex_TermRun, overwrite = TRUE)
