@@ -373,10 +373,7 @@ ggplot( tau_M$df, aes(y =tau_M, x = y, group = i)) +
 Get wild total terminal mortality
 
 ``` r
-# Note updated function
 tau_W <- get_tau_W(tau_U= tau_U$tau_U, tau_L = tau_L$tau_L, tau_M = tau_M$tau_M, p = p$p)
-
-#tau_W <- get_tau_W(tau= tau$tau, p = p$p)
 
 ggplot( tau_W$df, aes(y =tau_W, x = y, group = i)) +
   geom_line() +
