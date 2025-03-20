@@ -20,8 +20,8 @@
 #' omega_J_all <- get_omega( ex_n_with_jacks ) # get age proportions with jacks
 #' omega_J <- omega_J_all$omega["Skeena",,] # select just Skeena age proportions
 #' Tau_U_total <- get_Tau_U_total( omega_J = omega_J,
-#'                                rec_catch_U = ex_Tau_total$rec_catch_U,
-#'                                FN_catch_U = ex_Tau_total$FN_catch_U )
+#'                                rec_catch_U = ex_Tau$rec_catch_U,
+#'                                FN_catch_U = ex_Tau$FN_catch_U )
 #'
 #' @export
 get_Tau_U_total <- function( omega_J,
@@ -29,6 +29,9 @@ get_Tau_U_total <- function( omega_J,
                              FN_catch_U, IM_FN_catch = 0.046,
                              adult_ages = as.character(c(4,5,6,7))) {
   # Check vector lengths
+  dim(omega_J)[1]
+  length(rec_catch_U)
+  length(FN_catch_U)
 
   years <- dimnames(omega_J)$y
   proportion_adults <- apply( omega_J[ , adult_ages], 1, FUN = sum)

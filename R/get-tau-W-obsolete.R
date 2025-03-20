@@ -8,7 +8,7 @@
 #' @return List with two elements. First element: numeric, array of wild terminal mortalities with three dimensions:  population (i), year (y), and age (a).
 #'    Second element: data frame version of first element, for plotting and tables.
 #' @examples
-#' tau_W <- get_tau_W_obsolete(tau = ex_tau, p = ex_p_wild)
+#' tau_W <- get_tau_W_obsolete(tau = ex_tau_obsolete, p = ex_p_wild)
 #'
 #'
 #' @export

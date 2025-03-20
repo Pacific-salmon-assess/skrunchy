@@ -41,7 +41,7 @@ See Winther et al. 2024 Appendix 2 https://publications.gc.ca/site/eng/9.901355/
 omega_J_all <- get_omega( ex_n_with_jacks ) # get age proportions with jacks
 omega_J <- omega_J_all$omega["Skeena",,] # select just Skeena age proportions
 Tau_U_total <- get_Tau_U_total( omega_J = omega_J,
-                               rec_catch_U = ex_Tau_total$rec_catch_U,
-                               FN_catch_U = ex_Tau_total$FN_catch_U )
+                               rec_catch_U = ex_Tau$rec_catch_U,
+                               FN_catch_U = ex_Tau$FN_catch_U )
 
 }

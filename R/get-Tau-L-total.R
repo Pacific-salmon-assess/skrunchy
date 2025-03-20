@@ -23,10 +23,10 @@
 #' @examples
 #' omega_J_all <- get_omega( ex_n_with_jacks ) # get age proportions with jacks
 #' omega_J <- omega_J_all$omega["Skeena",,] # select just Skeena age proportions
-#' Tau_L_total <- get_Tau_L_total( omega_J = omega_J, tyee = ex_Tau_total$tyee,
-#'                                rec_catch_L = ex_Tau_total$rec_catch_L,
-#'                                rec_release_L = ex_Tau_total$rec_release_L,
-#'                                FN_catch_L = ex_Tau_total$FN_catch_L )
+#' Tau_L_total <- get_Tau_L_total( omega_J = omega_J, tyee = ex_Tau$tyee,
+#'                                rec_catch_L = ex_Tau$rec_catch_L,
+#'                                rec_release_L = ex_Tau$rec_release_L,
+#'                                FN_catch_L = ex_Tau$FN_catch_L )
 #'
 #' @export
 get_Tau_L_total <- function( omega_J,
@@ -36,14 +36,16 @@ get_Tau_L_total <- function( omega_J,
                              FN_catch_L, IM_FN_catch = 0.046,
                              adult_ages = as.character(c(4,5,6,7))) {
   # Check vector lengths
+  l <- dim(omega_J)[1]
+  if(!isTRUE(identical(l, length(tyee)) && identical(l, length(rec_catch_L)) && identical(l, length(rec_release_L)) && identical(l, length(FN_catch_L)))) {
+    stop("Length of year (y) dimensions not equal.") }
 
-
-    years <- dimnames(omega_J)$y
-    proportion_adults <- apply( omega_J[ , adult_ages], 1, FUN = sum)
-    Tau_L <- proportion_adults * ( tyee * ( 1  + IM_tyee ) +
+  years <- dimnames(omega_J)$y
+  proportion_adults <- apply( omega_J[ , adult_ages], 1, FUN = sum)
+  Tau_L <- proportion_adults * ( tyee * ( 1  + IM_tyee ) +
                                    rec_catch_L * ( 1 + IM_rec_catch) +
                                    rec_release_L * IM_rec_release +
                                    FN_catch_L * ( 1 + IM_FN_catch ))
-    names(Tau_L) <- years
-    return(Tau_L)
+  names(Tau_L) <- years
+  return(Tau_L)
 }

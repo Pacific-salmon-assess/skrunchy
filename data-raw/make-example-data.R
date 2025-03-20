@@ -141,8 +141,9 @@ tau_L <- get_tau_L( Tau_L = ex_Tau_L_total, omega = ex_omega, P_tilde = ex_P_til
 ex_tau_L <- tau_L$tau_L
 
 # Upper
-ex_Tau_U_total <- get_Tau_U_total( omega_J = ex_omega_J, rec_catch_U = ex_Tau$rec_catch_U,
-                                   FN_catch_U = ex_Tau$FN_catch_U)
+# already made above
+# ex_Tau_U_total <- get_Tau_U_total( omega_J = ex_omega_J, rec_catch_U = ex_Tau$rec_catch_U,
+#                                    FN_catch_U = ex_Tau$FN_catch_U)
 
 tau_U <- get_tau_U( Tau_U = ex_Tau_U_total, omega = ex_omega, P_tilde = ex_P_tilde,
     aggregate_population = "Skeena", upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
@@ -158,15 +159,16 @@ tau_M <- get_tau_M( W_star = ex_W_star, tau_dot_M = ex_tau_dot_M )
 ex_tau_M <- tau_M$tau_M
 
 # # total terminal mortality
-# tau <- get_tau( tau_U = ex_tau_U, tau_L = ex_tau_L, tau_M = ex_tau_M)
-# ex_tau <- tau$tau
+tau <- get_tau( tau_U = ex_tau_U, tau_L = ex_tau_L, tau_M = ex_tau_M)
+ex_tau_obsolete <- tau$tau
 
 # Proportion wild
 p <- get_p(W_star = ex_W_star, E_star = ex_E_star)
 ex_p_wild <- p$p
 
 # Wild terminal mortalities
-tau_W <- get_tau_W_obsolete(tau = ex_tau, p = ex_p_wild)
+tau_W <- get_tau_W(tau_U = ex_tau_U, tau_L = ex_tau_L, tau_M = ex_tau_M, p = ex_p_wild)
+#tau_W <- get_tau_W_obsolete(tau = ex_tau, p = ex_p_wild)
 ex_tau_W <- tau_W$tau_W
 
 # Get terminal run
@@ -235,14 +237,14 @@ usethis::use_data(ex_S, overwrite = TRUE)
 usethis::use_data(ex_H_star, overwrite = TRUE)
 usethis::use_data(ex_H, overwrite = TRUE)
 usethis::use_data(ex_W_star, overwrite = TRUE)
-#usethis::use_data(ex_Tau_L_total, overwrite = TRUE)
+usethis::use_data(ex_Tau_L_total, overwrite = TRUE)
 usethis::use_data(ex_Tau, overwrite = TRUE)
 usethis::use_data(ex_tau_L, overwrite = TRUE)
-#usethis::use_data(ex_Tau_U_total, overwrite = TRUE)
+usethis::use_data(ex_Tau_U_total, overwrite = TRUE)
 usethis::use_data(ex_tau_U, overwrite = TRUE)
 usethis::use_data(ex_tau_dot_M, overwrite = TRUE)
 usethis::use_data(ex_tau_M, overwrite = TRUE)
-#usethis::use_data(ex_tau, overwrite = TRUE)
+usethis::use_data(ex_tau_obsolete, overwrite = TRUE)
 usethis::use_data(ex_p_wild, overwrite = TRUE)
 usethis::use_data(ex_tau_W, overwrite = TRUE)
 usethis::use_data(ex_TermRun, overwrite = TRUE)

@@ -53,9 +53,9 @@ See Winther et al. 2024 Appendix 2 https://publications.gc.ca/site/eng/9.901355/
 \examples{
 omega_J_all <- get_omega( ex_n_with_jacks ) # get age proportions with jacks
 omega_J <- omega_J_all$omega["Skeena",,] # select just Skeena age proportions
-Tau_L_total <- get_Tau_L_total( omega_J = omega_J, tyee = ex_Tau_total$tyee,
-                               rec_catch_L = ex_Tau_total$rec_catch_L,
-                               rec_release_L = ex_Tau_total$rec_release_L,
-                               FN_catch_L = ex_Tau_total$FN_catch_L )
+Tau_L_total <- get_Tau_L_total( omega_J = omega_J, tyee = ex_Tau$tyee,
+                               rec_catch_L = ex_Tau$rec_catch_L,
+                               rec_release_L = ex_Tau$rec_release_L,
+                               FN_catch_L = ex_Tau$FN_catch_L )
 
 }

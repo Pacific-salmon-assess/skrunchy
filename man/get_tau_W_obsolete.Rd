@@ -19,7 +19,7 @@ Second element: data frame version of first element, for plotting and tables.
 Calculate the wild total terminal mortalities by population, year, and age.
 }
 \examples{
-tau_W <- get_tau_W_obsolete(tau = ex_tau, p = ex_p_wild)
+tau_W <- get_tau_W_obsolete(tau = ex_tau_obsolete, p = ex_p_wild)
 
 
 }
