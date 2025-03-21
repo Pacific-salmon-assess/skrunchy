@@ -22,6 +22,6 @@ data-raw/make-example-data.R, get_MatureRun()
 ex_MatureRun
 }
 \description{
-Escapement of Chinook mature run data
+Chinook mature run
 }
 \keyword{datasets}

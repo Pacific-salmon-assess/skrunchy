@@ -6,7 +6,7 @@
 #'
 #' @param TermRun Numeric, array of wild terminal run abundance, with dimensions population (i), year (y), and age (a).
 #' @param phi_dot_M Numeric, array of preterminal net total mortality harvest rates (greater than or equal to 0, less than 1) with two dimensions: year (y) and age (a).
-#' Preterminal net total mortality harvest rate on mature fish: seine and gillnet catch and incidental mortalities of mature fish.
+#' Preterminal net total mortality harvest rate on mature fish: seine and gillnet catch and incidental mortalities of mature fish. From CTC Chinook model output.
 #'
 #' @return List with two elements. First element: numeric, array of mature run size by population (i), year (y), and age (a).
 #' Second element: data frame version of first element, for plotting and tables.

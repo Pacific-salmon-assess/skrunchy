@@ -6,7 +6,7 @@
 #' @format ## `ex_B`
 #' A vector with one dimension:
 #' \describe{
-#'   \item{B}{Year}
+#'   \item{y}{Year}
 #' }
 #' @source data-raw/make-example-data.R
 "ex_B"

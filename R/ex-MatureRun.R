@@ -1,6 +1,6 @@
 #' Example mature run by population, year, and age for testing and examples
 #'
-#' Escapement of Chinook mature run data
+#' Chinook mature run
 #'
 #' @format ## `ex_MatureRun`
 #' An array with three dimensions:

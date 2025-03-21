@@ -6,9 +6,9 @@
 #' @param df Dataframe input.
 #' @param value Name of the dataframe variable to use for the array value.
 #' @param dimnames_order Variable names to use for dimensions of the new array (in the order you want them to be in the array)
-#' @param FUN Optional, function to use if there are more than 1 value for each combination of dimensions. Default is print().
-#'           Note that if FUN is arithmetic and you want to ignore NA values, it must be
-#'           specified like FUN = function(x) {sum(x, na.rm=TRUE)}
+#' @param FUN Optional, function to use if there are more than 1 value for each combination of dimensions.
+#' Default is print(). Note that if FUN is arithmetic and you want to ignore NA values, it must be specified
+#' like FUN = function(x) \{ sum(x, na.rm=TRUE) \}
 #' @param default Value to use if there are missing values for combinations of dimension. Default is 0.
 #'
 #' @return An array with values equal to the dataframe value column, dimensions and dimension names as supplied.

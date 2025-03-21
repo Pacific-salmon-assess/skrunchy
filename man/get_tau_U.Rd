@@ -15,7 +15,7 @@ get_tau_U(
 )
 }
 \arguments{
-\item{Tau_U}{Numeric, vector of total terminal mortalities in the upper Skeena (upstream of Terrace), by year. Combination of FSC and recreational. Note uppercase Tau denotes total not broken out by population or age.}
+\item{Tau_U}{Numeric, vector of total terminal mortalities in the upper Skeena (upstream of Terrace), by year. Combination of recrational and First Nations FSC. Note uppercase Tau denotes total not broken out by population or age.}
 
 \item{omega}{Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).}
 

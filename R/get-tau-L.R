@@ -4,7 +4,7 @@
 #' (downstream of Terrace), by population, year, and age. Includes fishing plus incidental mortality.
 #' Uses genetic data from Skeena Tyee test fishery, not CTC model outputs.
 #'
-#' @param Tau_L Numeric, vector of total terminal mortalities in the lower Skeena (downstream of Terrace), by year. Combination of FSC and recreational. Note uppercase Tau denotes total not broken out by population or age.
+#' @param Tau_L Numeric, vector of total terminal mortalities in the lower Skeena (downstream of Terrace), by year. Combination of Tyee test fishery, recreational, and First Nations FSC. Note uppercase Tau denotes total not broken out by population or age.
 #' @param omega Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a). Note that this should include age proportion for Skeena aggregate.
 #' @param P_tilde Numeric, array of genetic proportions at Skeena Tyee test fishery with 2 dimensions: i (population) and year (y).
 #' @param aggregate_population Character, name of aggregate population

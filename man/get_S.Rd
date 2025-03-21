@@ -28,8 +28,8 @@ If "subtract_brood", uses non-age-specific escapement (E) and subtracts non-age-
 \item{aggregate_population}{Character, name of population i that is the sum of the other populations. Defaults to Skeena. Brood also need to removed from this since brood population is part of the aggregate.}
 }
 \value{
-List with two elements. First element: numeric, matrix of spawner values for Chinook with two dimensions: population (i), and year (y).
-Second element: data frame version of matrix, for plotting and tables.
+List with two elements. First element: numeric, array of spawner values for Chinook with two dimensions: population (i), and year (y).
+Second element: data frame version of array, for plotting and tables.
 }
 \description{
 Calculates spawners (S,  not age-specific) by population by either summing S_star by ages, or subtracting brood stock removals (B) from escapement (E) of Kitsumkalum and Skeena aggregate populations.

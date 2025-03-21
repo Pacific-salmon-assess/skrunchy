@@ -9,7 +9,7 @@
 
 A vector with one dimension:
 \describe{
-\item{B}{Year}
+\item{y}{Year}
 }
 }
 }
