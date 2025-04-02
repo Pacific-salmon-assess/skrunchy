@@ -74,6 +74,8 @@ library(skrunchy)
 #> here() starts at C:/github/skrunchy
 library(ggplot2)
 library(latex2exp)
+options(scipen = 999)
+
 
 P_tilde <- get_P_tilde(P = ex_P, sigma_P = ex_sigma_P, G = ex_G)
 
