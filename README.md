@@ -13,8 +13,8 @@ for Skeena River summer run timing Chinook upstream of Tyee test fishery
 (aggregate plus six Conservation Units), as documented in [Winther et
 al. 2024](https://publications.gc.ca/site/eng/9.901355/publication.html "An assessment of Skeena River Chinook salmon using genetic stock identification 1984 to 2020").
 
-The file `methods.PDF` contains detailed methods with variables and
-equations matching this package as much as possible.
+[This methods document](methods.pdf) contains detailed methods,
+variables, and equations matching this package as much as possible.
 
 ## General methods
 
