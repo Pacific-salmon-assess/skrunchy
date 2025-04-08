@@ -57,7 +57,7 @@ get_tau_W <- function( tau_U, tau_L, tau_M, p) {
   for(i in populations) {
     for(y in years) {
       for(a in ages) {
-        tau_W[i,y,a] <- tau_M[i,y,a] + p[i,y,a] * (tau_U[i,y,a] + tau_L[i,y,a] )
+        tau_W[i,y,a] <- tau_M[i,y,a] + p[i,y,a] * tau_L[i,y,a] +  tau_U[i,y,a]
       }
     }
   }

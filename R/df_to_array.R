@@ -15,7 +15,8 @@
 #'
 #' @examples
 #' i <- c(rep("A", 4), rep("B", 9), rep("C", 16))
-#' y <- c(rep(2000:2001, each = 2), rep(2000:2002, each = 3), rep(2000:2003, each=4))
+#' y <- c(rep(2000:2001, each = 2), rep(2000:2002, each = 3),
+#'   rep(2000:2003, each=4))
 #' w <- c(rep(1:2, times = 2), rep(1:3, times = 3), rep(1:4, times = 4))
 #' p <- runif(length(i), 0,1)
 #' d <- data.frame(i, y, w, p)
@@ -23,8 +24,10 @@
 #'
 #' # Handling NA values, need to specify na.rm=TRUE within function statement.
 #' i <- c(rep("A", 4), rep("B", 9), rep("C", 16), rep("C", 16) )
-#' y <- c(rep(2000:2001, each = 2), rep(2000:2002, each = 3), rep(2000:2003, each=4), rep(2000:2003, each=4))
-#' w <- c(rep(1:2, times = 2), rep(1:3, times = 3), rep(1:4, times = 4),  rep(1:4, times = 4))
+#' y <- c(rep(2000:2001, each = 2), rep(2000:2002, each = 3),
+#'   rep(2000:2003, each=4), rep(2000:2003, each=4))
+#' w <- c(rep(1:2, times = 2), rep(1:3, times = 3), rep(1:4, times = 4),
+#'   rep(1:4, times = 4))
 #' p <- c(runif(length(i)-8, 0,1), rep(NA, 8))
 #' d <- data.frame(i, y, w, p)
 #' arr <- df_to_array( df = d, value = "p", FUN = sum, dimnames_order = c("i", "y", "w"))
