@@ -198,7 +198,7 @@ Get proportion wild spawners for each population and plot. Should only be <1 for
 
 
 ```{r example_p, dpi = 300 , fig.width = w,fig.height=h}
-p <- get_p(W_star = W_star$W_star, E_star = E_star$E_star)
+p <- get_p(W_star = W_star$W_star, E_star = E_star$E_star, B_star = ex_B_star)
 
 ggplot(p$df, aes(y = p, x = y, group = i)) +
   geom_point() +

@@ -7,6 +7,7 @@
 get_p(
   W_star,
   E_star,
+  B_star,
   hatchery_population = "Kitsumkalum",
   aggregate_population = "Skeena"
 )
@@ -15,6 +16,8 @@ get_p(
 \item{W_star}{Numeric, array of wild spawner values with three dimensions:  population (i), year (y), and age (a).}
 
 \item{E_star}{Numeric, array of escapement values with three dimensions: population (i), year (y), and age (a).}
+
+\item{B_star}{Numeric, array of brood stock removals with three dimensions: population (i), year (y), and age (a).}
 
 \item{hatchery_population}{Character, name of population i with where brood removals occurred. Defaults to Kitsumkalum.}
 
@@ -25,9 +28,9 @@ A list with two elements. First element: numeric, an array of wild spawner propo
 Second element: data frame version of matrix, for plotting and tables.
 }
 \description{
-Calculate the proportion of total spawners that are wild spawners (natural origin).
+Calculate the proportion of total escapement that are wild (natural origin).
 }
 \examples{
- p <- get_p(W_star = ex_W_star, E_star = ex_E_star)
+ p <- get_p(W_star = ex_W_star, E_star = ex_E_star, B_star = ex_B_star)
 
 }
