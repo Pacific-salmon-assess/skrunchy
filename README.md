@@ -221,7 +221,7 @@ spawners only occur for Kitsumkalum. Note this is not real data, p is
 very high for Kitsumkalum across years.
 
 ``` r
-p <- get_p(W_star = W_star$W_star, E_star = E_star$E_star)
+p <- get_p(W_star = W_star$W_star, E_star = E_star$E_star, B_star = ex_B_star)
 
 ggplot(p$df, aes(y = p, x = y, group = i)) +
   geom_point() +
