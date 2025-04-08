@@ -25,7 +25,7 @@ w <- 6
 
 The goal of skrunchy is to recreate and update the run reconstruction for Skeena River summer run timing Chinook upstream of Tyee test fishery (aggregate plus six Conservation Units), as documented in [Winther et al. 2024](https://publications.gc.ca/site/eng/9.901355/publication.html "An assessment of Skeena River Chinook salmon using genetic stock identification 1984 to 2020").
 
-Detailed methods with variables and equations matching (as much as possible) this package will be added in the file: `methods.PDF`. 
+The file `methods.PDF` contains detailed methods with variables and equations matching this package as much as possible. 
 
 ## General methods
 
