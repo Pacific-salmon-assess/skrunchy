@@ -46,6 +46,11 @@ You can install the development version of skrunchy from
     install.packages("pak")
     pak::pak("Pacific-salmon-assess/skrunchy")
 
+    # Alternative method:
+
+    library(devtools)
+    install_github("Pacific-salmon-assess/skrunchy")
+
 ## Example data
 
 The `data/` folder contains example data that are all made up (exception
