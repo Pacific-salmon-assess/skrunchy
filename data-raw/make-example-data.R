@@ -44,6 +44,9 @@ ages_jacks <- c(3,4,5,6,7)
 p_ages_jacks <- c(20,30,40,40,1)
 n_ages_jacks <- length(ages_jacks)
 
+# Do the same for Kitsumkalum, males and female separate
+p_ages_males <- c(40,40,20,0)
+p_ages_females <- c(0, 50, 50,0)
 
 # Make up some age sample data
 ad <- sapply(p_ages, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
@@ -53,6 +56,13 @@ ex_n <- array( ad,  dim = c(n_populations, n_years, n_ages), dimnames = list(i =
 ad_jacks <- sapply(p_ages_jacks, FUN = function(x){ rpois( n = n_populations*n_years, lambda= x) })
 ex_n_with_jacks <- array( ad_jacks,  dim = c(n_populations, n_years, n_ages_jacks), dimnames = list(i = populations, y = years, a = ages_jacks))
 
+# Make up age sampling data for Kitsumkalum males and females
+ad_males <- sapply(p_ages_males, FUN = function(x){ rpois( n = n_years, lambda= x) })
+ex_n_males <- array( ad_males,  dim = c(n_years, n_ages), dimnames = list(y = years, a = ages))
+ad_females <- sapply(p_ages_females, FUN = function(x){ rpois( n = n_years, lambda= x) })
+ex_n_females <- array( ad_females,  dim = c(n_years, n_ages), dimnames = list(y = years, a = ages))
+
+
 # Get age proportion data
 omega <- get_omega(ex_n)
 ex_omega <- omega$omega
@@ -60,6 +70,25 @@ ex_omega <- omega$omega
 # Get age proportion data with jacks
 omega_J_all <- get_omega(ex_n_with_jacks)
 ex_omega_J <- omega_J_all$omega["Skeena",,] # only include Skeena
+
+# Get age proportion data for male and female Kitsumkalum escapement
+get_omega_sex <- function(n) {
+  sum_n_year <- apply(n, 1, sum)
+  ages <- dimnames(n)$a
+  years <- dimnames(n)$y
+  # make array to fill in with age proportion values
+  omega <- array( rep(NA, length(n)), dim=dim(n), dimnames = dimnames(n))
+  for(a in ages) {
+    for(y in years) {
+      # divide number of aged fish of each age by total aged in each year.
+      omega[ y,a ] <- n[ y,a] / sum_n_year[ y]
+    }
+  }
+  return(omega)
+}
+ex_omega_KM <- get_omega_sex(ex_n_males)
+ex_omega_KF <- get_omega_sex(ex_n_females)
+
 
 # Make up data frame of terminal freshwater mortalities by type
 ex_Tau <- data.frame( y = ex_k$year,
@@ -163,7 +192,7 @@ tau <- get_tau_obsolete( tau_U = ex_tau_U, tau_L = ex_tau_L, tau_M = ex_tau_M)
 ex_tau_obsolete <- tau$tau
 
 # Proportion wild
-p <- get_p(W_star = ex_W_star, E_star = ex_E_star)
+p <- get_p(W_star = ex_W_star, E_star = ex_E_star, B_star = ex_B_star)
 ex_p_wild <- p$p
 
 # Wild terminal mortalities
@@ -228,6 +257,8 @@ usethis::use_data(ex_n, overwrite = TRUE)
 usethis::use_data(ex_n_with_jacks, overwrite = TRUE)
 usethis::use_data(ex_omega, overwrite = TRUE)
 usethis::use_data(ex_omega_J, overwrite = TRUE)
+usethis::use_data(ex_omega_KM, overwrite = TRUE)
+usethis::use_data(ex_omega_KF, overwrite = TRUE)
 usethis::use_data(ex_K_star, overwrite = TRUE)
 usethis::use_data(ex_E_star, overwrite = TRUE)
 usethis::use_data(ex_B_star, overwrite = TRUE)
