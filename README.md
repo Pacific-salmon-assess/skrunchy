@@ -180,7 +180,7 @@ ggplot(K_star$df, aes(y = K_star, x = y, group= a )) +
 Get age-specific escapement by using age proportions.
 
 ``` r
-E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = round(K_star$K_star), add_6_7 = TRUE)
+E_star <- get_E_star(E = E$E, omega = omega$omega, K_star = ex_K_star, add_6_7 = TRUE)
 
 ggplot( E_star$df, aes(y = E_star, x = y, group = i)) +
   geom_point( colour="gray") + 
