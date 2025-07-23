@@ -1,4 +1,4 @@
-#' Get wild terminal mortalities (obsolete version of function)
+#' Get wild terminal mortalities (obsolete version of function relying on applying proportion wild to a total tau value)
 #'
 #' Calculate the wild total terminal mortalities by population, year, and age.
 #'

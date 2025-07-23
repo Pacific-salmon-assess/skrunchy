@@ -1,4 +1,4 @@
-#' Get total terminal mortalities
+#' Get total terminal mortalities - obsolete function
 #'
 #' Add terminal mortalities in the upper Skeena, lower Skeena, and terminal marine areas.
 #'
