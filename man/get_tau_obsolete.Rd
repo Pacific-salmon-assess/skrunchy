@@ -2,7 +2,7 @@
 % Please edit documentation in R/get-tau-obsolete.R
 \name{get_tau_obsolete}
 \alias{get_tau_obsolete}
-\title{Get total terminal mortalities}
+\title{Get total terminal mortalities - obsolete function}
 \usage{
 get_tau_obsolete(tau_U, tau_L, tau_M)
 }

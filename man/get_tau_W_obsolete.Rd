@@ -2,7 +2,7 @@
 % Please edit documentation in R/get-tau-W-obsolete.R
 \name{get_tau_W_obsolete}
 \alias{get_tau_W_obsolete}
-\title{Get wild terminal mortalities (obsolete version of function)}
+\title{Get wild terminal mortalities (obsolete version of function relying on applying proportion wild to a total tau value)}
 \usage{
 get_tau_W_obsolete(tau, p)
 }
