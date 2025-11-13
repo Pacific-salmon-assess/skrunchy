@@ -10,19 +10,25 @@ get_stage(
   POH,
   comments,
   jack_ages = c("32", "31", "1M"),
+  adult_ages = c("41", "42", "43", "51", "52", "53", "61", "62", "63", "71", "72", "73",
+    "81", "82", "83", "2M", "3M", "4M", "5M"),
   jack_cutoff_length_POH = 450
 )
 }
 \arguments{
 \item{scale_age}{Character, vector of Gilbert-Rich scale ages (including partial ages) from Sclerochronology Lab.}
 
-\item{cwt_age}{Numeric, vector of ages from Coded Wire Tags. Gilbert-Rich total age (return year minus brood year).}
+\item{cwt_age}{Numeric, vector of total ages from Coded Wire Tags (or a combination of scale ages and CWT ages). Gilbert-Rich total age (return year minus brood year).}
 
 \item{POH}{Numeric, post-orbital hypural length, in mm}
 
 \item{comments}{Character, vector of comments}
 
 \item{jack_ages}{Character, vector of which scale_age values to include as jacks. Defaults to c("32", "31", "1M")}
+
+\item{adult_ages}{Character, vector of which scale_age values to include as adults.
+Defaults to c("41", "42", "43", "51", "52", "53", "61", "62", "63", "71", "72", "73",
+"81", "82", "83", "2M", "3M", "4M", "5M" )}
 
 \item{jack_cutoff_length_POH}{Numeric, single value of what POH length to use as a cutoff for jacks. Defaults to 450 mm.}
 }
