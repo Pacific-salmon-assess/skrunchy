@@ -37,8 +37,10 @@ get_stage <- function(scale_age, cwt_age, POH, comments, jack_ages = c("32", "31
   for(i in 1:length(scale_age)) {
   stage[i] <- ifelse( isTRUE(cwt_age[i] <4), "jack", # If CWT age is less than 4, it is a jack
                    ifelse(scale_age[i] %in% jack_ages , "jack",# If scale age is a jack age, it is a jack
-                          # If there is no scale age, CWT age, and length is less than jack cutoff, it is a jack
-                          ifelse( all( is.na(scale_age[i]) && is.na(cwt_age[i]), !is.na(POH[i]) && POH[i] <= jack_cutoff_length_POH ), "jack",
+                          # # If there is no scale age, CWT age, and length is less than jack cutoff, it is a jack
+                          # ifelse( all( is.na(scale_age[i]) && is.na(cwt_age[i]), !is.na(POH[i]) && POH[i] <= jack_cutoff_length_POH ), "jack",
+                          # If there is a POH length and it is less than the jack cutoff, it is a jack
+                          ifelse( all( !is.na(POH[i]), POH[i] <= jack_cutoff_length_POH ), "jack",
                                   # If there is no length, scale age, or CWT age, and it is jack in comments, it is a jack
                                   ifelse( all( is.na(POH[i]) && is.na(scale_age[i]), is.na(cwt_age[i]) && grepl("Jack|jack", comments[i])), "jack",
                                           "adult"))))

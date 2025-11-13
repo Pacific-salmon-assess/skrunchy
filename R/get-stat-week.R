@@ -17,7 +17,7 @@ get_stat_week <- function(date) {
   # the "%U" format gives: The week number of the year (Sunday as the first day of the week)
   # as a zero-padded decimal number (e.g. "00" to "53").
   stat_week <- ifelse(
-    strftime( ISOdate( as.integer( strftime( date, format = "%Y" )), 1, 1), format = "%A" ) == "Sunday", # is the first day of the year a Sunday?
-    as.integer( strftime( date, format = "%U" )),  # If January 1 is a Sunday, then don't add 1 to %U format week because it starts at 1 if January 1 is a Sunday
-    as.integer( strftime( date, format = "%U" )) + 1 ) # If January 1 is not a Sunday, then weeks start at 0 and you have to add 1
+    strftime( ISOdate( as.integer( strftime( date, format = "%Y" )), 1, 1), format = "%A" ) == "Sunday", # is the first day of the given year a Sunday?
+    as.integer( strftime( date, format = "%U" )),  # If January 1 is a Sunday (in the given year), then don't add 1 to %U format week because it starts at 1 if January 1 is a Sunday
+    as.integer( strftime( date, format = "%U" )) + 1 ) # If January 1 is not a Sunday (in the given year), then %U format week starts at 0 and you have to add 1
 }

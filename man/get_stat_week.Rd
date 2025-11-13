@@ -16,9 +16,6 @@ Integer, which stat week the date corresponds to.
 This is used to group catch at Tyee into stat weeks, for weekly gill net catch
 and as a utility function. See https://mtalab.adfg.alaska.gov/CWT/reports/sbp_calendar.aspx
 }
-\details{
-This code is based on the "mixture_split.R" code, from Eric Rondeau and based on code by Colin ____
-}
 \examples{
 d <- data.frame( "date" = seq.Date(ISOdate(2021,1,1), ISOdate(2025,12,31)))
 d$stat_week <- get_stat_week(d$date)
