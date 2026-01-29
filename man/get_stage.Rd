@@ -43,6 +43,8 @@ CWT age, scale age, POH, and comments.
 In skrunchy, the main purpose of this function is to filter the complete biodata to estimate
 weekly catch of adult Chinook, which are used to do the weekly expansions of GSI proportions.
 Default POH cutoff length is 450 mm. Note that this is what is used at Kitsumkalum.
+This is more accurate when dividing between 32 and 42 male Chinook at Tyee, compared to 650 mm nose-fork length,
+which categorizes a decent proportion of 42 males as jacks (incorrectly).
 }
 \examples{
 scale_age <- c("31", "32", "42", "52", "62", "1M", "2M", "3M", "4M", NA, NA)

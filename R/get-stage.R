@@ -6,6 +6,8 @@
 #' In skrunchy, the main purpose of this function is to filter the complete biodata to estimate
 #' weekly catch of adult Chinook, which are used to do the weekly expansions of GSI proportions.
 #' Default POH cutoff length is 450 mm. Note that this is what is used at Kitsumkalum.
+#' This is more accurate when dividing between 32 and 42 male Chinook at Tyee, compared to 650 mm nose-fork length,
+#' which categorizes a decent proportion of 42 males as jacks (incorrectly).
 #'
 #' @param scale_age Character, vector of Gilbert-Rich scale ages (including partial ages) from Sclerochronology Lab.
 #' @param cwt_age Numeric, vector of total ages from Coded Wire Tags (or a combination of scale ages and CWT ages). Gilbert-Rich total age (return year minus brood year).
@@ -20,10 +22,10 @@
 #' @returns Character, "jack" or "adult"
 #'
 #' @examples
-#' scale_age <- c("31", "32", "42", "52", "62", "1M", "2M", "3M", "4M", NA, NA)
-#' cwt_age <- c(3, 3, 4, 5, 6, 3, 4, 5, 6, NA, NA)
-#' POH <- c(440, 420, 500, 600, 700, 380, 500, 600, 700, NA, NA)
-#' comments <- c("Jack", "Jack", NA, NA, NA, NA, NA, NA, NA, "jack, bitten", "Jack")
+#' scale_age <- c("31", "31", "32", "42", "52", "62", "1M", "2M", "3M", "4M", NA, NA)
+#' cwt_age <- c( 4, 3, 3, 4, 5, 6, 3, 4, 5, 6, NA, NA)
+#' POH <- c( 500, 440, 420, 500, 600, 700, 380, 500, 600, 700, NA, NA)
+#' comments <- c( "NA", "Jack", "Jack", NA, NA, NA, NA, NA, NA, NA, "jack, bitten", "Jack")
 #' d <- data.frame(scale_age, cwt_age, POH, comments)
 #' d$revised_stage <- get_stage( scale_age = scale_age, cwt_age = cwt_age, POH = POH, comments = comments)
 #'
@@ -44,7 +46,10 @@ get_stage <- function(scale_age, cwt_age, POH, comments,
   stage <- character( length = length(scale_age) )
   # Main function
   for(i in 1:length(scale_age)) {
-  stage[i] <- ifelse( isTRUE(cwt_age[i] <4), "jack", # If CWT age is less than 4, it is a jack
+  if( !is.na(cwt_age[i]))  # If there is a cwt age, ignore everything else
+    stage[i] <- ifelse( isTRUE(cwt_age[i] <4), "jack", "adult") # If CWT age is less than 4, it is a jack
+  if( is.na(cwt_age[i])) # If cwt age is NA, use the other data sources
+    stage[i] <- ifelse( isTRUE(cwt_age[i] <4), "jack", # If CWT age is less than 4, it is a jack
                    ifelse(scale_age[i] %in% jack_ages , "jack",# If scale age is a jack age, it is a jack
                           ifelse( scale_age[i] %in% adult_ages, "adult", # if scale age is an adult age, it is an adult.
                           # # If there is no scale age, CWT age, and length is less than jack cutoff, it is a jack
