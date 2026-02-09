@@ -47,10 +47,10 @@ This is more accurate when dividing between 32 and 42 male Chinook at Tyee, comp
 which categorizes a decent proportion of 42 males as jacks (incorrectly).
 }
 \examples{
-scale_age <- c("31", "32", "42", "52", "62", "1M", "2M", "3M", "4M", NA, NA)
-cwt_age <- c(3, 3, 4, 5, 6, 3, 4, 5, 6, NA, NA)
-POH <- c(440, 420, 500, 600, 700, 380, 500, 600, 700, NA, NA)
-comments <- c("Jack", "Jack", NA, NA, NA, NA, NA, NA, NA, "jack, bitten", "Jack")
+scale_age <- c("31", "31", "32", "42", "52", "62", "1M", "2M", "3M", "4M", NA, NA)
+cwt_age <- c( 4, 3, 3, 4, 5, 6, 3, 4, 5, 6, NA, NA)
+POH <- c( 500, 440, 420, 500, 600, 700, 380, 500, 600, 700, NA, NA)
+comments <- c( "NA", "Jack", "Jack", NA, NA, NA, NA, NA, NA, NA, "jack, bitten", "Jack")
 d <- data.frame(scale_age, cwt_age, POH, comments)
 d$revised_stage <- get_stage( scale_age = scale_age, cwt_age = cwt_age, POH = POH, comments = comments)
 
