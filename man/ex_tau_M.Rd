@@ -3,7 +3,7 @@
 \docType{data}
 \name{ex_tau_M}
 \alias{ex_tau_M}
-\title{Example data for marine terminal moratlity}
+\title{Example data for marine terminal mortality}
 \format{
 \subsection{\code{ex_tau_M}}{
 

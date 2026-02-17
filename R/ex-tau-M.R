@@ -1,4 +1,4 @@
-#' Example data for marine terminal moratlity
+#' Example data for marine terminal mortality
 #'
 #' Array of total terminal mortalities in marine fisheries, with three dimensions: population (i), year (y), and age (a).
 #' Total terminal mortality (catch plus incidental mortality) in marine areas.

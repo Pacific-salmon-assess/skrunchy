@@ -20,6 +20,7 @@
 #' dn <- process_rates( d )
 #' plot( d ~ dn )
 #'
+#'
 #' @export
 process_rates <- function( rate_array, upper_limit = 0.5, roll_mean_window = 5 ) {
   arr <- rate_array

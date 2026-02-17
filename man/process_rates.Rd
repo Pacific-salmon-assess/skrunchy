@@ -30,4 +30,5 @@ dimnames(d) <- list( "y" = years, "a" = ages )
 dn <- process_rates( d )
 plot( d ~ dn )
 
+
 }
