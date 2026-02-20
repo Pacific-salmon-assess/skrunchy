@@ -1,4 +1,4 @@
-#' Get TotalRun by return year
+#' Get total run by return year
 #'
 #' Calculate the total run by return year by adding mature run and preterminal fishing mortality
 #' in adult equivalents.
@@ -14,10 +14,10 @@
 #'
 #'
 #' @examples
-#'   TotalRun <- get_TotalRun( MatureRun = ex_MatureRun, phi_Q = ex_phi_Q)
+#'   N <- get_N( MatureRun = ex_MatureRun, phi_Q = ex_phi_Q)
 #'
 #' @export
-get_TotalRun <- function(MatureRun, phi_Q) {
+get_N <- function(MatureRun, phi_Q) {
   # Data checks
   # populations
   if(!dim(MatureRun)[1] == dim(phi_Q)[1] )  {
@@ -39,18 +39,18 @@ get_TotalRun <- function(MatureRun, phi_Q) {
   ages <- dimnames(MatureRun)$a
   n_populations <- length(populations)
   n_ages <- length(ages)
-  TotalRun <- array(NA, dim= dim(MatureRun), dimnames = dimnames(MatureRun))
+  N <- array(NA, dim= dim(MatureRun), dimnames = dimnames(MatureRun))
   for(i in populations) {
     for(y in years) {
       for(a in ages) {
-        TotalRun[i,y,a] <- MatureRun[i,y,a] + phi_Q[i,y,a]
+        N[i,y,a] <- MatureRun[i,y,a] + phi_Q[i,y,a]
       }
     }
   }
 
-  d <- as.data.frame.table( TotalRun, responseName = "R_star", stringsAsFactors = FALSE)
+  d <- as.data.frame.table( N, responseName = "N", stringsAsFactors = FALSE)
   d$y <- as.integer(d$y)
   d$a <- as.integer(d$a)
-  res <- list( TotalRun = TotalRun, df = d)
+  res <- list( N = N, df = d)
   res
 }
