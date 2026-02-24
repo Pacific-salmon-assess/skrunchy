@@ -130,6 +130,7 @@ ggplot(X$df, aes(y = X, x = y, group = i)) +
 Get age proportions by age, population and year (fake data).
 
 ```{r example_omega, dpi = 300 , fig.width = w,fig.height=h}
+ex_n <- ex_n
 omega <- get_omega(ex_n)
 
 ggplot( omega$df, aes(y = omega, x = y, group = i)) +
@@ -427,6 +428,7 @@ ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
 Pre-terminal post fishery abundance. 
 
 ```{r example_A_phi, dpi=300, fig.width = w,fig.height=h}
+ex_r <- ex_r
 A_phi <- get_A_phi( MatureRun = MatureRun$MatureRun, r = ex_r)
 
 ggplot( MatureRun$df, aes(y =MatureRun, x = y, group = i)) +
@@ -497,41 +499,41 @@ ggplot( phi_N$df, aes(y = phi_N, x = y, group = i)) +
 
 ```
 
-Recruits by return year and brood year. 
+Get total run by return year and return year. 
 
-```{r example_R_star, dpi=300, fig.width = w,fig.height=h}
-R_star <- get_R_star( MatureRun = MatureRun$MatureRun, phi_Q = phi_Q$phi_Q)
+```{r example_N, dpi=300, fig.width = w,fig.height=h}
+N <- get_N( MatureRun = MatureRun$MatureRun, phi_Q = phi_Q$phi_Q)
 
-ggplot( R_star$df, aes(y = R_star, x = y, group = i)) +
+ggplot( N$df, aes(y = N, x = y, group = i)) +
   geom_line() +
   geom_point() +
   geom_line(data = phi_Q$df, aes( y= phi_Q, x = y), colour="darkorchid1")+
   geom_line(data = MatureRun$df, aes(y = MatureRun, x = y), colour = "darkgreen") +
   geom_hline(aes(yintercept=0)) +
-  ylab(TeX("$R^*$ in black, $MatureRun$ in green, $\\varphi_Q$ in pink")) +
+  ylab(TeX("$N$ in black, $MatureRun$ in green, $\\varphi_Q$ in pink")) +
   facet_grid( i ~ a, scales="free_y") +
   theme_classic() +
   theme(axis.text.x = element_text(angle=90, vjust=0.5),
         strip.text.y = element_text(angle = 0))
 
-ggplot( R_star$df, aes(y = R_star, x = b, group = i, colour= complete_brood)) +
-  geom_line() +
-  geom_point() +
-  geom_hline(aes(yintercept=0)) +
-  xlab("Brood year") +
-  ylab(TeX("$R^*$ by brood year.")) +
-  facet_grid( i ~ a, scales="free_y") +
-  scale_colour_manual(values = c("gray", "black")) +
-  theme_classic() +
-  theme(axis.text.x = element_text(angle=90, vjust=0.5),
-        strip.text.y = element_text(angle = 0))
+# ggplot( N$df, aes(y = N, x = b, group = i, colour= complete_brood)) +
+#   geom_line() +
+#   geom_point() +
+#   geom_hline(aes(yintercept=0)) +
+#   xlab("Brood year") +
+#   ylab(TeX("$R^*$ by brood year.")) +
+#   facet_grid( i ~ a, scales="free_y") +
+#   scale_colour_manual(values = c("gray", "black")) +
+#   theme_classic() +
+#   theme(axis.text.x = element_text(angle=90, vjust=0.5),
+#         strip.text.y = element_text(angle = 0))
 
 ```
 
 
 Get recruits by brood year, summed across ages.
 ```{r example_R, dpi=300}
-R <- get_R( R_star_b = R_star$R_star_b, R_star_df = R_star$df)
+R <- get_R( N$N)
 
 ggplot( R$df, aes(y = R, x = b, group = i, colour = complete_brood)) +
   geom_line() +

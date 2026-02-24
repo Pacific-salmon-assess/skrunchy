@@ -239,9 +239,15 @@ ex_Q <- Q
 phi_Q <- get_phi_Q(phi_N = ex_phi_N, Q = ex_Q)
 ex_phi_Q <- phi_Q$phi_Q
 
+# Total Run, N
+N <- get_N( MatureRun= MatureRun$MatureRun, phi_Q= phi_Q$phi_Q )
+N
+ex_N_total_run <- N$N
+
 # Recruits
-R_star <- get_R_star( MatureRun = ex_MatureRun, phi_Q = ex_phi_Q)
-ex_R_star <- R_star
+R <- get_R( N$N )
+str(R)
+ex_R_recruits <- R$R
 
 # Save example data sets to data/ as .rda files
 usethis::use_data(ex_P, overwrite = TRUE)
@@ -288,7 +294,8 @@ usethis::use_data(ex_A_P, overwrite = TRUE)
 usethis::use_data(ex_phi_N, overwrite = TRUE)
 usethis::use_data(ex_Q, overwrite = TRUE)
 usethis::use_data(ex_phi_Q, overwrite = TRUE)
-usethis::use_data(ex_R_star, overwrite = TRUE)
+usethis::use_data( ex_N_total_run, overwrite = TRUE)
+usethis::use_data( ex_R_recruits, overwrite = TRUE)
 
 rm(list=ls()) # for testing examples
 

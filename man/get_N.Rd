@@ -13,7 +13,7 @@ get_N(MatureRun, phi_Q)
 adult equivalents, with three dimensions: population (i), year (y), and age (a).}
 }
 \value{
-List with three elements. First element: numeric, array of recruits by return year with three dimensions: population (i), return year (y), and
+List with three elements. First element: numeric, array of total return by return year with three dimensions: population (i), return year (y), and
 age (a). Third element: data frame version of first and second elements, for plotting and tables.
 }
 \description{

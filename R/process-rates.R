@@ -25,13 +25,13 @@
 process_rates <- function( rate_array, upper_limit = 0.5, roll_mean_window = 5 ) {
   arr <- rate_array
   # make array with NA for values >0.5, for rolling mean
-  arr_drop_hi_vals <- ifelse(arr < 0.5, arr, NA)
+  arr_drop_hi_vals <- ifelse(arr < upper_limit, arr, NA)
   # running mean of drop hi vals array
   arr_rollmean <- rollapply( arr_drop_hi_vals, width = 5, FUN = mean,
                                   by.column = TRUE,
                                   na.rm=TRUE, fill = NA, partial = TRUE )
   dimnames( arr_rollmean ) <- dimnames( arr_drop_hi_vals ) # not necessary, but useful for plotting to check
   # sub rollmean for hi values
-  arr_new <- ifelse( arr < 0.5, arr, arr_rollmean)
+  arr_new <- ifelse( arr < upper_limit, arr, arr_rollmean)
   return(arr_new)
 }

@@ -2,23 +2,27 @@
 % Please edit documentation in R/get-R.R
 \name{get_R}
 \alias{get_R}
-\title{Get recruits by brood year}
+\title{Get recruits brood year}
 \usage{
-get_R(R_star_b, R_star_df)
+get_R(N)
 }
 \arguments{
-\item{R_star_b}{Numeric, array of recruits by brood year, with three dimensions: population (i), brood year (b), and age (a).}
-
-\item{R_star_df}{Numeric, data frame of recruits by poopulation, return year, brood year, and age.}
+\item{N}{Numeric, array of total run by population (i), year (y), and age (a).}
 }
 \value{
-List with two elements. First element: numeric, array of recruits with two dimensions: population (i) and brood year (b).
-Second element: data frame version of first element, for plotting and tables.
+List with three elements. First element: numeric, array of recruits by  brood year with three dimensions: population (i), brood year (b).
+Second element: data frame version of first element, plus return year. Third element: data frame of recruits by age, population, brood year and return year.
 }
 \description{
+Calculate recruits by return year and brood year by adding up total run by brood year.
+Produces an array with recruits by brood year, a data frame with both return year and brood year, and a data frame with ages and return year and brood year.
+}
+\details{
+Get recruits by brood year
+
 Calculate recruits by brood year, summing across ages.
 }
 \examples{
-  R <- get_R(R_star_b = ex_R_star$R_star_b, R_star_df = ex_R_star$df)
+  R <- get_R( N = ex_N_total_run)
 
 }
