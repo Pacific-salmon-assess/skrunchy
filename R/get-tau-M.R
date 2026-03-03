@@ -18,28 +18,33 @@
 #'
 #'
 #' @export
-get_tau_M <- function( W_star, tau_dot_M) {
+get_tau_M <- function(W_star, tau_dot_M) {
   # Check year and age
   # Ages
-  if(!dim(W_star)[3] == dim(tau_dot_M)[2] )  {
-    stop("Length of age (a) dimensions not equal.") }
-  if(!all(dimnames(W_star)$a %in% dimnames(tau_dot_M)$a )) {
-    stop("Age (a) values are not equal.") }
+  if (!dim(W_star)[3] == dim(tau_dot_M)[2]) {
+    stop("Length of age (a) dimensions not equal.")
+  }
+  if (!all(dimnames(W_star)$a %in% dimnames(tau_dot_M)$a)) {
+    stop("Age (a) values are not equal.")
+  }
   # Years
-  if(!dim(W_star)[2] == dim(tau_dot_M)[1] )  {
-    stop("Length of year (y) dimensions not equal.") }
-  if(!all(dimnames(W_star)$y %in% dimnames(tau_dot_M)$y )) {
-    stop("Year (y) values are not equal.") }
+  if (!dim(W_star)[2] == dim(tau_dot_M)[1]) {
+    stop("Length of year (y) dimensions not equal.")
+  }
+  if (!all(dimnames(W_star)$y %in% dimnames(tau_dot_M)$y)) {
+    stop("Year (y) values are not equal.")
+  }
 
   populations <- dimnames(W_star)$i
   n_years <- dim(W_star)[2]
   n_ages <- dim(W_star)[3]
   # make blank array to fill in, with same dimensions and names as wild spawners array
   tau_M <- array(data = NA, dim = dim(W_star), dimnames = dimnames(W_star))
-  for(i in populations) {
-    for(y in 1:n_years) {
-      for(a in 1:n_ages) {
-      tau_M[i,y,a] <- ( W_star[i,y,a] / ( 1 - tau_dot_M[y,a]) ) - W_star[i,y,a]
+  for (i in populations) {
+    for (y in 1:n_years) {
+      for (a in 1:n_ages) {
+        tau_M[i, y, a] <- (W_star[i, y, a] / (1 - tau_dot_M[y, a])) -
+          W_star[i, y, a]
       }
     }
   }

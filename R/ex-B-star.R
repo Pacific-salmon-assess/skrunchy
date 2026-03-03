@@ -11,4 +11,3 @@
 #' }
 #' @source data-raw/make-example-data.R
 "ex_B_star"
-

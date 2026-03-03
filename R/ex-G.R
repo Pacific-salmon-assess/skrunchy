@@ -11,4 +11,3 @@
 #' }
 #' @source data-raw/make-example-data.R, make_P_G()
 "ex_G"
-

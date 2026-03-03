@@ -24,20 +24,23 @@
 #'                                FN_catch_U = ex_Tau$FN_catch_U )
 #'
 #' @export
-get_Tau_U_total <- function( omega_J,
-                             rec_catch_U, IM_rec_catch = 0.069,
-                             FN_catch_U, IM_FN_catch = 0.046,
-                             adult_ages = as.character(c(4,5,6,7))) {
+get_Tau_U_total <- function(
+  omega_J,
+  rec_catch_U,
+  IM_rec_catch = 0.069,
+  FN_catch_U,
+  IM_FN_catch = 0.046,
+  adult_ages = as.character(c(4, 5, 6, 7))
+) {
   # Check vector lengths
   dim(omega_J)[1]
   length(rec_catch_U)
   length(FN_catch_U)
 
   years <- dimnames(omega_J)$y
-  proportion_adults <- apply( omega_J[ , adult_ages], 1, FUN = sum)
-  Tau_U <- proportion_adults * (   rec_catch_U * ( 1 + IM_rec_catch) +
-                                   FN_catch_U * ( 1 + IM_FN_catch ))
+  proportion_adults <- apply(omega_J[, adult_ages], 1, FUN = sum)
+  Tau_U <- proportion_adults *
+    (rec_catch_U * (1 + IM_rec_catch) + FN_catch_U * (1 + IM_FN_catch))
   names(Tau_U) <- years
   return(Tau_U)
 }
-

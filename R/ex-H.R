@@ -10,4 +10,3 @@
 #' }
 #' @source data-raw/make-example-data.R
 "ex_H"
-

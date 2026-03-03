@@ -20,37 +20,43 @@
 get_N <- function(MatureRun, phi_Q) {
   # Data checks
   # populations
-  if(!dim(MatureRun)[1] == dim(phi_Q)[1] )  {
-    stop("Length of population (i) dimensions not equal.") }
-  if(!all(dimnames(MatureRun)$i %in% dimnames(phi_Q)$i)) {
-    stop("Population (i) values are not equal.")    }
+  if (!dim(MatureRun)[1] == dim(phi_Q)[1]) {
+    stop("Length of population (i) dimensions not equal.")
+  }
+  if (!all(dimnames(MatureRun)$i %in% dimnames(phi_Q)$i)) {
+    stop("Population (i) values are not equal.")
+  }
   # Years
-  if(!dim(MatureRun)[2] == dim(phi_Q)[2] ) {
-    stop("Length of year (y) dimensions not equal.") }
-  if(!all(dimnames(MatureRun)$y %in% dimnames(phi_Q)$y )) {
-    stop("Year (y) values are not equal.")    }
+  if (!dim(MatureRun)[2] == dim(phi_Q)[2]) {
+    stop("Length of year (y) dimensions not equal.")
+  }
+  if (!all(dimnames(MatureRun)$y %in% dimnames(phi_Q)$y)) {
+    stop("Year (y) values are not equal.")
+  }
   # ages
-  if(!dim(MatureRun)[3] == dim(phi_Q)[3] )  {
-    stop("Length of age (a) dimensions not equal.") }
-  if(!all(dimnames(MatureRun)$a %in% dimnames(phi_Q)$a )) {
-    stop("Age (a) values are not equal.")    }
+  if (!dim(MatureRun)[3] == dim(phi_Q)[3]) {
+    stop("Length of age (a) dimensions not equal.")
+  }
+  if (!all(dimnames(MatureRun)$a %in% dimnames(phi_Q)$a)) {
+    stop("Age (a) values are not equal.")
+  }
   populations <- dimnames(MatureRun)$i
   years <- dimnames(MatureRun)$y
   ages <- dimnames(MatureRun)$a
   n_populations <- length(populations)
   n_ages <- length(ages)
-  N <- array(NA, dim= dim(MatureRun), dimnames = dimnames(MatureRun))
-  for(i in populations) {
-    for(y in years) {
-      for(a in ages) {
-        N[i,y,a] <- MatureRun[i,y,a] + phi_Q[i,y,a]
+  N <- array(NA, dim = dim(MatureRun), dimnames = dimnames(MatureRun))
+  for (i in populations) {
+    for (y in years) {
+      for (a in ages) {
+        N[i, y, a] <- MatureRun[i, y, a] + phi_Q[i, y, a]
       }
     }
   }
 
-  d <- as.data.frame.table( N, responseName = "N", stringsAsFactors = FALSE)
+  d <- as.data.frame.table(N, responseName = "N", stringsAsFactors = FALSE)
   d$y <- as.integer(d$y)
   d$a <- as.integer(d$a)
-  res <- list( N = N, df = d)
+  res <- list(N = N, df = d)
   res
 }

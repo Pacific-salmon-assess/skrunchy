@@ -11,4 +11,3 @@
 #' }
 #' @source data-raw/make-example-data.R, data-raw/K_star.csv
 "ex_K_star"
-

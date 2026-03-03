@@ -38,8 +38,10 @@
 #' arr <- df_to_array( df = d, value = "p", FUN = print, dimnames_order = c("i", "y", "w"))
 
 #' @export
-df_to_array <- function( df, value, dimnames_order, FUN = print, default = 0) {
-  dim_position <- sapply(dimnames_order, function(x) grep( paste0("^", x, "$"), names(df)) )
-  array <- tapply( df[ ,value], df[ ,dim_position], FUN = FUN, default = default)
+df_to_array <- function(df, value, dimnames_order, FUN = print, default = 0) {
+  dim_position <- sapply(dimnames_order, function(x) {
+    grep(paste0("^", x, "$"), names(df))
+  })
+  array <- tapply(df[, value], df[, dim_position], FUN = FUN, default = default)
   return(array)
 }

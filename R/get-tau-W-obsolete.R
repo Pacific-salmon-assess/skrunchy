@@ -15,33 +15,43 @@
 get_tau_W_obsolete <- function(tau, p) {
   # check dimensions are the same
   # Populations
-  if(!dim(tau)[1] == dim(p)[1] )  {
-    stop("Length of population (i) dimensions not equal.") }
-  if(!all(dimnames(tau)$i %in% dimnames(p)$i) ) {
-    stop("Population (i) values are not equal.")    }
+  if (!dim(tau)[1] == dim(p)[1]) {
+    stop("Length of population (i) dimensions not equal.")
+  }
+  if (!all(dimnames(tau)$i %in% dimnames(p)$i)) {
+    stop("Population (i) values are not equal.")
+  }
   # Years
-  if(! dim(tau)[2] == dim(p)[2])  {
-    stop("Length of year (y) dimensions not equal.") }
-  if(!all(dimnames(tau)$y %in% dimnames(p)$y)) {
-    stop("Year (y) values are not equal.")    }
+  if (!dim(tau)[2] == dim(p)[2]) {
+    stop("Length of year (y) dimensions not equal.")
+  }
+  if (!all(dimnames(tau)$y %in% dimnames(p)$y)) {
+    stop("Year (y) values are not equal.")
+  }
   # Ages
-  if(!dim(tau)[3] == dim(p)[3])  {
-    stop("Length of age (a) dimensions not equal.") }
-  if(!all(dimnames(tau)$a %in% dimnames(p)$a)) {
-    stop("Age (a) values are not equal.")    }
+  if (!dim(tau)[3] == dim(p)[3]) {
+    stop("Length of age (a) dimensions not equal.")
+  }
+  if (!all(dimnames(tau)$a %in% dimnames(p)$a)) {
+    stop("Age (a) values are not equal.")
+  }
 
   populations <- dimnames(tau)$i
   years <- dimnames(tau)$y
   ages <- dimnames(tau)$a
-  tau_W <- array(NA, dim= dim(tau), dimnames = dimnames(tau))
-  for(i in populations) {
-    for(y in years) {
-      for(a in ages) {
-        tau_W[i,y,a] <- tau[i,y,a] * p[i,y,a]
+  tau_W <- array(NA, dim = dim(tau), dimnames = dimnames(tau))
+  for (i in populations) {
+    for (y in years) {
+      for (a in ages) {
+        tau_W[i, y, a] <- tau[i, y, a] * p[i, y, a]
       }
     }
   }
-  d <- as.data.frame.table(tau_W, responseName = "tau_W", stringsAsFactors = FALSE)
+  d <- as.data.frame.table(
+    tau_W,
+    responseName = "tau_W",
+    stringsAsFactors = FALSE
+  )
   d$y <- as.integer(d$y)
   d$a <- as.integer(d$a)
   res <- list(tau_W = tau_W, df = d)
