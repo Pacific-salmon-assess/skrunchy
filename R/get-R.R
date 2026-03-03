@@ -44,6 +44,8 @@ get_R <- function(N) {
 
   R_star_df <- N_df
   names(R_star_df) <- sub("^N$", "R_star", names(R_star_df))
+  R_star_df$a <- as.integer(R_star_df$a)
+  R_star_df$y <- as.integer(R_star_df$y)
 
   R_df <- aggregate(N ~ i + b + complete_brood, data = N_df, FUN = sum)
   names(R_df) <- sub("^N$", "R", names(R_df))
