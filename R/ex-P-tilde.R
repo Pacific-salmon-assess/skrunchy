@@ -11,4 +11,3 @@
 #' }
 #' @source data-raw/make-example-data.R, get_P_tilde()
 "ex_P_tilde"
-

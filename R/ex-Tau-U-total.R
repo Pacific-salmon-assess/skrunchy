@@ -13,4 +13,3 @@
 #' }
 #' @source data-raw/make-example-data.R, get_Tau_U_total()
 "ex_Tau_U_total"
-

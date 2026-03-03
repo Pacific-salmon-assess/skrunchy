@@ -29,23 +29,39 @@
 #'                                FN_catch_L = ex_Tau$FN_catch_L )
 #'
 #' @export
-get_Tau_L_total <- function( omega_J,
-                             tyee, IM_tyee = 0.046,
-                             rec_catch_L, IM_rec_catch = 0.069,
-                             rec_release_L, IM_rec_release = 0.05,
-                             FN_catch_L, IM_FN_catch = 0.046,
-                             adult_ages = as.character(c(4,5,6,7))) {
+get_Tau_L_total <- function(
+  omega_J,
+  tyee,
+  IM_tyee = 0.046,
+  rec_catch_L,
+  IM_rec_catch = 0.069,
+  rec_release_L,
+  IM_rec_release = 0.05,
+  FN_catch_L,
+  IM_FN_catch = 0.046,
+  adult_ages = as.character(c(4, 5, 6, 7))
+) {
   # Check vector lengths
   l <- dim(omega_J)[1]
-  if(!isTRUE(identical(l, length(tyee)) && identical(l, length(rec_catch_L)) && identical(l, length(rec_release_L)) && identical(l, length(FN_catch_L)))) {
-    stop("Length of year (y) dimensions not equal.") }
+  if (
+    !isTRUE(
+      identical(l, length(tyee)) &&
+        identical(l, length(rec_catch_L)) &&
+        identical(l, length(rec_release_L)) &&
+        identical(l, length(FN_catch_L))
+    )
+  ) {
+    stop("Length of year (y) dimensions not equal.")
+  }
 
   years <- dimnames(omega_J)$y
-  proportion_adults <- apply( omega_J[ , adult_ages], 1, FUN = sum)
-  Tau_L <- proportion_adults * ( tyee * ( 1  + IM_tyee ) +
-                                   rec_catch_L * ( 1 + IM_rec_catch) +
-                                   rec_release_L * IM_rec_release +
-                                   FN_catch_L * ( 1 + IM_FN_catch ))
+  proportion_adults <- apply(omega_J[, adult_ages], 1, FUN = sum)
+  Tau_L <- proportion_adults *
+    (tyee *
+      (1 + IM_tyee) +
+      rec_catch_L * (1 + IM_rec_catch) +
+      rec_release_L * IM_rec_release +
+      FN_catch_L * (1 + IM_FN_catch))
   names(Tau_L) <- years
   return(Tau_L)
 }

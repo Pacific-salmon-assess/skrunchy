@@ -21,31 +21,38 @@
 get_MatureRun <- function(TermRun, phi_dot_M) {
   # check dimensions are the same
   # Years
-  if(! dim(TermRun)[2] == dim(phi_dot_M)[1])  {
-    stop("Length of year (y) dimensions not equal.") }
-  if(!all(dimnames(TermRun)$y %in% dimnames(phi_dot_M)$y)) {
-    stop("Year (y) values are not equal.")    }
+  if (!dim(TermRun)[2] == dim(phi_dot_M)[1]) {
+    stop("Length of year (y) dimensions not equal.")
+  }
+  if (!all(dimnames(TermRun)$y %in% dimnames(phi_dot_M)$y)) {
+    stop("Year (y) values are not equal.")
+  }
   # Ages
-  if(!dim(TermRun)[3] == dim(phi_dot_M)[2])  {
-    stop("Length of age (a) dimensions not equal.") }
-  if(!all(dimnames(TermRun)$a %in% dimnames(phi_dot_M)$a)) {
-    stop("Age (a) values are not equal.")    }
+  if (!dim(TermRun)[3] == dim(phi_dot_M)[2]) {
+    stop("Length of age (a) dimensions not equal.")
+  }
+  if (!all(dimnames(TermRun)$a %in% dimnames(phi_dot_M)$a)) {
+    stop("Age (a) values are not equal.")
+  }
 
   populations <- dimnames(TermRun)$i
   years <- dimnames(TermRun)$y
   ages <- dimnames(TermRun)$a
-  MatureRun <- array(NA, dim= dim(TermRun), dimnames = dimnames(TermRun))
-  for(i in populations) {
-    for(y in years) {
-      for(a in ages) {
-      MatureRun[i,y,a] <- TermRun[i,y,a] / (1 - phi_dot_M[y,a])
+  MatureRun <- array(NA, dim = dim(TermRun), dimnames = dimnames(TermRun))
+  for (i in populations) {
+    for (y in years) {
+      for (a in ages) {
+        MatureRun[i, y, a] <- TermRun[i, y, a] / (1 - phi_dot_M[y, a])
       }
     }
   }
-  d <- as.data.frame.table(MatureRun, responseName = "MatureRun", stringsAsFactors = FALSE)
+  d <- as.data.frame.table(
+    MatureRun,
+    responseName = "MatureRun",
+    stringsAsFactors = FALSE
+  )
   d$y <- as.integer(d$y)
   d$a <- as.integer(d$a)
   res <- list(MatureRun = MatureRun, df = d)
   res
-
 }

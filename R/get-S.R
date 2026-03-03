@@ -23,34 +23,43 @@
 #'  S <- get_S( method= "subtract_brood", E = ex_E, B = ex_B)
 #'
 #' @export
-get_S <- function( method = "sum_ages",
-                   S_star,
-                    E, B,
-                   brood_population = "Kitsumkalum",
-                   aggregate_population = "Skeena") {
-  if(method == "sum_ages") {
-  S <- apply(S_star, c(1,2), sum, simplify = TRUE)
+get_S <- function(
+  method = "sum_ages",
+  S_star,
+  E,
+  B,
+  brood_population = "Kitsumkalum",
+  aggregate_population = "Skeena"
+) {
+  if (method == "sum_ages") {
+    S <- apply(S_star, c(1, 2), sum, simplify = TRUE)
   }
 
-  if(method == "subtract_brood") {
+  if (method == "subtract_brood") {
     # Year check
-    if(!dim(E)[2] == length(B) )  {
-      stop("Length of year (y) dimensions not equal.") }
-  populations <- dimnames(E)$i
-  n_populations <- length(dimnames(E)$i)
-  years <- dimnames(E)$y
-  n_years <- length(dimnames(E)$y)
-  no_brood_populations <- dimnames(E)$i[ !dimnames(E)$i %in% c(brood_population, aggregate_population)]
-  start_array <- array(data = NA, dim = c(n_populations, n_years),
-                       dimnames = list( i =  populations, y = years))
-  S <- start_array
-  for(y in 1:n_years) {
-    # Get Spawners for brood population and aggregate population. Escapement minus brood stock.
-    S[brood_population, y ] <- E[ brood_population, y] - B[y]
-    S[ aggregate_population, y] <- E[aggregate_population, y] - B[y]
-    # All other populations, spawners = escapement (no brood)
-    S[ no_brood_populations, y ] <- E[ no_brood_populations, y]
-  }
+    if (!dim(E)[2] == length(B)) {
+      stop("Length of year (y) dimensions not equal.")
+    }
+    populations <- dimnames(E)$i
+    n_populations <- length(dimnames(E)$i)
+    years <- dimnames(E)$y
+    n_years <- length(dimnames(E)$y)
+    no_brood_populations <- dimnames(E)$i[
+      !dimnames(E)$i %in% c(brood_population, aggregate_population)
+    ]
+    start_array <- array(
+      data = NA,
+      dim = c(n_populations, n_years),
+      dimnames = list(i = populations, y = years)
+    )
+    S <- start_array
+    for (y in 1:n_years) {
+      # Get Spawners for brood population and aggregate population. Escapement minus brood stock.
+      S[brood_population, y] <- E[brood_population, y] - B[y]
+      S[aggregate_population, y] <- E[aggregate_population, y] - B[y]
+      # All other populations, spawners = escapement (no brood)
+      S[no_brood_populations, y] <- E[no_brood_populations, y]
+    }
   }
   ds <- as.data.frame.table(S, responseName = "S")
   ds$y <- as.integer(as.character(ds$y))

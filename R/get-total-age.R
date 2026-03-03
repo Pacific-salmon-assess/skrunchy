@@ -15,6 +15,5 @@
 #'
 #' @export
 get_total_age <- function(GR_age) {
-  as.integer(ifelse( grepl( "[[:digit:]]{2}", GR_age), substr(GR_age, 1,1) , NA))
+  as.integer(ifelse(grepl("[[:digit:]]{2}", GR_age), substr(GR_age, 1, 1), NA))
 }
-

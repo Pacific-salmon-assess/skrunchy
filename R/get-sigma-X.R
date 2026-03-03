@@ -26,14 +26,25 @@
 #' sigma_X
 #'
 #' @export
-get_sigma_X <- function( X, sigma_X, K, sigma_K, P_tilde, sigma_P_tilde, aggregate_population = TRUE) {
-   if(aggregate_population == TRUE) {
-        variance <- X^2 * ( sigma_K^2 / K^2 + sigma_P_tilde^2 / P_tilde^2 )
-        SE <- sqrt(variance)
-   }
-   if( aggregate_population == FALSE) {
-      variance <- X^2 * sigma_P_tilde^2 + P_tilde^2 * sigma_X^2 - sigma_P_tilde^2 * sigma_X^2
-      SE <- sqrt(variance)
+get_sigma_X <- function(
+  X,
+  sigma_X,
+  K,
+  sigma_K,
+  P_tilde,
+  sigma_P_tilde,
+  aggregate_population = TRUE
+) {
+  if (aggregate_population == TRUE) {
+    variance <- X^2 * (sigma_K^2 / K^2 + sigma_P_tilde^2 / P_tilde^2)
+    SE <- sqrt(variance)
   }
-    return(SE)
+  if (aggregate_population == FALSE) {
+    variance <- X^2 *
+      sigma_P_tilde^2 +
+      P_tilde^2 * sigma_X^2 -
+      sigma_P_tilde^2 * sigma_X^2
+    SE <- sqrt(variance)
+  }
+  return(SE)
 }

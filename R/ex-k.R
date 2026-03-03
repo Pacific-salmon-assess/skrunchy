@@ -12,4 +12,3 @@
 #' }
 #' @source data-raw/make-example-data.R, data-raw/kitsumkalum-escapement.csv
 "ex_k"
-
