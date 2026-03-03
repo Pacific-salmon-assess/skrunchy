@@ -12,7 +12,8 @@ get_X(
   sigma_K,
   known_population = "Kitsumkalum",
   aggregate_population = "Skeena",
-  save_csv = FALSE
+  save_csv = FALSE,
+  save_path = NULL
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ get_X(
 \item{aggregate_population}{Name of population i that is the sum of the other populations. Defaults to Skeena.}
 
 \item{save_csv}{If TRUE, save a csv of the data frame output.}
+
+\item{save_path}{Sub-directory folder of where to save csv}
 }
 \value{
 A list with three elements. First element: Numeric, X which is an array of returns to Terrace with two dimensions: population (i) and year (y).

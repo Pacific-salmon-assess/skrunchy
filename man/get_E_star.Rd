@@ -12,8 +12,7 @@ get_E_star(
   population_use_age_from_river_samples = "Kitsumkalum",
   add_6_7 = TRUE,
   save_csv = FALSE,
-  save_location,
-  save_name = "E_star.csv"
+  save_path = NULL
 )
 }
 \arguments{
@@ -32,9 +31,7 @@ age proportion data from spawning grounds (not from Tyee samples) for males and 
 
 \item{save_csv}{If TRUE, save a csv of the data frame output.}
 
-\item{save_location}{Sub-directory folder of where to save csv}
-
-\item{save_name}{File name of csv to save. Defaults to "E_star.csv"}
+\item{save_path}{Sub-directory folder of where to save csv}
 }
 \value{
 List with two elements. First element: numeric, array of escapement values with three dimensions: population (i), year (y), and age (a).

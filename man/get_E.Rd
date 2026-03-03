@@ -12,7 +12,8 @@ get_E(
   aggregate_population = "Skeena",
   lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
   upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"),
-  save_csv = FALSE
+  save_csv = FALSE,
+  save_path = NULL
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ get_E(
 \item{upper_populations}{Character vector, names of populations i upstream of Terrace. Defaults to Upper Skeena, Middle Skeena, and Large Lakes.}
 
 \item{save_csv}{If TRUE, save a csv of the data frame output.}
+
+\item{save_path}{Sub-directory folder of where to save csv}
 }
 \value{
 List with two elements. First element: numeric, matrix of escapement values for Chinook with two dimensions: population (i), and year (y).

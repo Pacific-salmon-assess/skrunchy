@@ -10,8 +10,7 @@ get_S_star(
   aggregate_population = "Skeena",
   brood_population = "Kitsumkalum",
   save_csv = FALSE,
-  save_location,
-  save_name = "S_star.csv"
+  save_path = NULL
 )
 }
 \arguments{
@@ -25,9 +24,7 @@ get_S_star(
 
 \item{save_csv}{If TRUE, save a csv of the data frame output.}
 
-\item{save_location}{Sub-directory folder of where to save csv}
-
-\item{save_name}{File name of csv to save. Defaults to "S_star.csv"}
+\item{save_path}{Sub-directory folder of where to save csv}
 }
 \value{
 List with two elements. First element: numeric, array of spawner values with three dimensions:  population (i), year (y), and age (a).

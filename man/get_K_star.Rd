@@ -14,8 +14,7 @@ get_K_star(
   H,
   H_star,
   save_csv = FALSE,
-  save_location,
-  save_name = "K_star.csv"
+  save_path = NULL
 )
 }
 \arguments{
@@ -37,9 +36,7 @@ get_K_star(
 
 \item{save_csv}{If TRUE, save a csv of the data frame output.}
 
-\item{save_location}{Sub-directory folder of where to save csv}
-
-\item{save_name}{File name of csv to save. Defaults to "E_star.csv"}
+\item{save_path}{Sub-directory folder of where to save csv}
 }
 \value{
 List with two elements. First element: numeric, array of Kitsumkalum River escapement with two dimensions: return year (y) and age (a).

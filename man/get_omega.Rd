@@ -4,7 +4,7 @@
 \alias{get_omega}
 \title{Get age proportions}
 \usage{
-get_omega(n, save_csv = FALSE, save_location, save_name = "omega.csv")
+get_omega(n, save_csv = FALSE, save_path = NULL)
 }
 \arguments{
 \item{n}{Numeric, array with three dimensions. Values are the number of fish of age a assigned to population i caught in return year y.
@@ -12,9 +12,7 @@ First dimension: population (i), second dimension: year (y), third dimension: ag
 
 \item{save_csv}{If TRUE, save a csv of the data frame output.}
 
-\item{save_location}{Sub-directory folder of where to save csv}
-
-\item{save_name}{File name of csv to save. Defaults to "omega.csv"}
+\item{save_path}{Sub-directory folder of where to save csv}
 }
 \value{
 A list with two objects. First object: numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).

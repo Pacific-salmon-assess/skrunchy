@@ -1,5 +1,10 @@
 ^skrunchy\.Rproj$
 ^\.Rproj\.user$
-^README\.Rmd$
 ^LICENSE\.md$
+^README\.Rmd$
+^\.github$
+^[.]?air[.]toml$
+^\.vscode$
 ^data-raw$
+^scripts$
+^fig$

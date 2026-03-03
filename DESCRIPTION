@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Luke", "Warkentin", , "luke.warkentin@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5597-9840"))
-Description: What the package does (one paragraph).
+Description: The goal of skrunchy is to recreate and update the run reconstruction for Skeena River summer run timing Chinook upstream of Tyee test fishery (aggregate plus six Conservation Units), as documented in [Winther et al. 2024](https://publications.gc.ca/site/eng/9.901355/publication.html "An assessment of Skeena River Chinook salmon using genetic stock identification 1984 to 2020").
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -13,9 +13,8 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 
-Depends:
     abind,
-    here,
-    zoo,
+    zoo    
+Depends:
     R (>= 3.5)
 LazyData: true
