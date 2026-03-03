@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/Pacific-salmon-assess/skrunchy/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Pacific-salmon-assess/skrunchy/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 **Sk**eena River **Run** Reconstruction for **Ch**inook Salmon
