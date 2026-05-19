@@ -11,10 +11,10 @@ get_R(N)
 }
 \value{
 List with three elements. First element: numeric, array of recruits by  brood year with three dimensions: population (i), brood year (b).
-Second element: data frame version of first element, plus return year. Third element: data frame of recruits by age, population, brood year and return year.
+Second element: data frame version of first element. Third element: data frame of recruits by age, population, brood year and return year.
 }
 \description{
-Calculate recruits by return year and brood year by adding up total run by brood year.
+Calculate recruits by brood year by adding up total run by brood year.
 Produces an array with recruits by brood year, a data frame with both return year and brood year, and a data frame with ages and return year and brood year.
 }
 \details{
