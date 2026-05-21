@@ -10,7 +10,7 @@ get_E(
   Tau_U,
   known_population = "Kitsumkalum",
   aggregate_population = "Skeena",
-  lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
+  lower_populations = c("Lower Skeena", "Zymoetz"),
   upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"),
   save_csv = FALSE,
   save_path = NULL
@@ -46,7 +46,7 @@ Calculates E, escapement by population by subtracting freshwater terminal mortal
 E <- get_E(K = ex_k$kitsumkalum_escapement, X = ex_X, Tau_U = ex_Tau_U_total,
    known_population = "Kitsumkalum",
     aggregate_population = "Skeena",
-    lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
+    lower_populations = c("Lower Skeena", "Zymoetz"),
     upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"))
 
 }

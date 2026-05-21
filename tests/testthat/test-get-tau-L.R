@@ -2,7 +2,7 @@ test_that("Total mortalities by year populations sum to aggregate population", {
   populations <- c(
     "Kitsumkalum",
     "Lower Skeena",
-    "Zymoetz-Fiddler",
+    "Zymoetz",
     "Upper Skeena",
     "Middle Skeena",
     "Large Lakes",

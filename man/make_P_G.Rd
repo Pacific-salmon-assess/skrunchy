@@ -10,7 +10,7 @@ make_P_G(
   n_years = NA,
   start_year = 1984,
   end_year = 2023,
-  population_names = c("Kitsumkalum", "Lower Skeena", "Middle Skeena", "Zymoetz-Fiddler",
+  population_names = c("Kitsumkalum", "Lower Skeena", "Middle Skeena", "Zymoetz",
     "Large Lakes", "Upper Skeena"),
   seed = TRUE
 )

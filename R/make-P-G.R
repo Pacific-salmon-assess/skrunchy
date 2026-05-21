@@ -32,7 +32,7 @@ make_P_G <- function(
     "Kitsumkalum",
     "Lower Skeena",
     "Middle Skeena",
-    "Zymoetz-Fiddler",
+    "Zymoetz",
     "Large Lakes",
     "Upper Skeena"
   ),

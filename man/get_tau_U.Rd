@@ -10,7 +10,7 @@ get_tau_U(
   P_tilde,
   aggregate_population = "Skeena",
   upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-  lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"),
+  lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
   add_6_7 = TRUE
 )
 }
@@ -25,7 +25,7 @@ get_tau_U(
 
 \item{upper_populations}{Character, vector of names of upper populations. Defaults to Middle Skeena, Large Lakes, and Upper Skeena.}
 
-\item{lower_populations}{Character, vector of names of lower populations. Defaults to Lower Skeena, Kitsumkalum, and Zymoetz-Fiddler.}
+\item{lower_populations}{Character, vector of names of lower populations. Defaults to Lower Skeena, Kitsumkalum, and Zymoetz.}
 
 \item{add_6_7}{Logical, If TRUE, add age 7 fish to age 6 fish of the same brood year (treat age 7 mortalities as age 6 mortalities from the age 6 brood year). Default is TRUE. Note that this "modifies" the return year of age 7 mortalities (true return year -1).}
 }
@@ -45,7 +45,7 @@ tau_U <- get_tau_U( Tau_U = ex_Tau_U_total, omega = ex_omega,
                     upper_populations = c("Middle Skeena", "Large Lakes",
                             "Upper Skeena"),
                     lower_populations = c("Lower Skeena", "Kitsumkalum",
-                                        "Zymoetz-Fiddler"),
+                                        "Zymoetz"),
                     add_6_7 = TRUE )
 
 }

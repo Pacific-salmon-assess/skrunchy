@@ -20,7 +20,7 @@ d <- make_P_G(
     "Kitsumkalum",
     "Lower Skeena",
     "Middle Skeena",
-    "Zymoetz-Fiddler",
+    "Zymoetz",
     "Large Lakes",
     "Upper Skeena"
   ),
@@ -158,7 +158,7 @@ E <- get_E(
   Tau_U = ex_Tau_U_total,
   known_population = "Kitsumkalum",
   aggregate_population = "Skeena",
-  lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
+  lower_populations = c("Lower Skeena", "Zymoetz"),
   upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes")
 )
 ex_E <- E$E
@@ -264,7 +264,7 @@ tau_U <- get_tau_U(
   P_tilde = ex_P_tilde,
   aggregate_population = "Skeena",
   upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-  lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"),
+  lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
   add_6_7 = TRUE
 )
 ex_tau_U <- tau_U$tau_U
@@ -363,52 +363,55 @@ str(R)
 ex_R_recruits <- R$R
 
 # Save example data sets to data/ as .rda files
-usethis::use_data(ex_P, overwrite = TRUE)
-usethis::use_data(ex_sigma_P, overwrite = TRUE)
-usethis::use_data(ex_G, overwrite = TRUE)
-usethis::use_data(ex_P_tilde, overwrite = TRUE)
-usethis::use_data(ex_sigma_P_tilde, overwrite = TRUE)
-usethis::use_data(ex_k, overwrite = TRUE)
-usethis::use_data(ex_X, overwrite = TRUE)
-usethis::use_data(ex_Tau_U_total, overwrite = TRUE)
-usethis::use_data(ex_E, overwrite = TRUE)
-usethis::use_data(ex_n, overwrite = TRUE)
-usethis::use_data(ex_n_with_jacks, overwrite = TRUE)
-usethis::use_data(ex_omega, overwrite = TRUE)
-usethis::use_data(ex_omega_J, overwrite = TRUE)
-usethis::use_data(ex_omega_KM, overwrite = TRUE)
-usethis::use_data(ex_omega_KF, overwrite = TRUE)
-usethis::use_data(ex_K_star, overwrite = TRUE)
-usethis::use_data(ex_E_star, overwrite = TRUE)
-usethis::use_data(ex_B_star, overwrite = TRUE)
-usethis::use_data(ex_B, overwrite = TRUE)
-usethis::use_data(ex_S_star, overwrite = TRUE)
-usethis::use_data(ex_S, overwrite = TRUE)
-usethis::use_data(ex_H_star, overwrite = TRUE)
-usethis::use_data(ex_H, overwrite = TRUE)
-usethis::use_data(ex_W_star, overwrite = TRUE)
-usethis::use_data(ex_Tau_L_total, overwrite = TRUE)
-usethis::use_data(ex_Tau, overwrite = TRUE)
-usethis::use_data(ex_tau_L, overwrite = TRUE)
-usethis::use_data(ex_Tau_U_total, overwrite = TRUE)
-usethis::use_data(ex_tau_U, overwrite = TRUE)
-usethis::use_data(ex_tau_dot_M, overwrite = TRUE)
-usethis::use_data(ex_tau_M, overwrite = TRUE)
-usethis::use_data(ex_tau_obsolete, overwrite = TRUE)
-usethis::use_data(ex_p_wild, overwrite = TRUE)
-usethis::use_data(ex_tau_W, overwrite = TRUE)
-usethis::use_data(ex_TermRun, overwrite = TRUE)
-usethis::use_data(ex_phi_dot_M, overwrite = TRUE)
-usethis::use_data(ex_MatureRun, overwrite = TRUE)
-usethis::use_data(ex_r, overwrite = TRUE)
-usethis::use_data(ex_A_phi, overwrite = TRUE)
-usethis::use_data(ex_phi_dot_E, overwrite = TRUE)
-usethis::use_data(ex_A_P, overwrite = TRUE)
-usethis::use_data(ex_phi_N, overwrite = TRUE)
-usethis::use_data(ex_Q, overwrite = TRUE)
-usethis::use_data(ex_phi_Q, overwrite = TRUE)
-usethis::use_data(ex_N_total_run, overwrite = TRUE)
-usethis::use_data(ex_R_recruits, overwrite = TRUE)
+usethis::use_data(
+  ex_P,
+  ex_sigma_P,
+  ex_G,
+  ex_P_tilde,
+  ex_sigma_P_tilde,
+  ex_k,
+  ex_X,
+  ex_Tau_U_total,
+  ex_E,
+  ex_n,
+  ex_n_with_jacks,
+  ex_omega,
+  ex_omega_J,
+  ex_omega_KM,
+  ex_omega_KF,
+  ex_K_star,
+  ex_E_star,
+  ex_B_star,
+  ex_B,
+  ex_S_star,
+  ex_S,
+  ex_H_star,
+  ex_H,
+  ex_W_star,
+  ex_Tau_L_total,
+  ex_Tau,
+  ex_tau_L,
+  ex_Tau_U_total,
+  ex_tau_U,
+  ex_tau_dot_M,
+  ex_tau_M,
+  ex_tau_obsolete,
+  ex_p_wild,
+  ex_tau_W,
+  ex_TermRun,
+  ex_phi_dot_M,
+  ex_MatureRun,
+  ex_r,
+  ex_A_phi,
+  ex_phi_dot_E,
+  ex_A_P,
+  ex_phi_N,
+  ex_Q,
+  ex_phi_Q,
+  ex_N_total_run,
+  ex_R_recruits,
+  overwrite = TRUE
+)
 
 rm(list = ls()) # for testing examples
 

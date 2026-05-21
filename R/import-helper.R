@@ -1,4 +1,4 @@
-#' @importFrom stats aggregate runif
+#' @importFrom stats aggregate runif rnorm rmultinom
 #' @importFrom utils write.csv
 #' @importFrom dplyr filter group_by summarize
 #' @importFrom tidyr pivot_longer

@@ -113,7 +113,7 @@ Get escapement for each population, plot with returns to Terrace (note, will onl
 E <- get_E(K = ex_k$kitsumkalum_escapement, X = X$X, Tau_U = ex_Tau_U_total,
      known_population = "Kitsumkalum",
      aggregate_population = "Skeena",
-     lower_populations = c("Lower Skeena", "Zymoetz-Fiddler"),
+     lower_populations = c("Lower Skeena", "Zymoetz"),
      upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"))
 
 ggplot(X$df, aes(y = X, x = y, group = i)) +
@@ -308,13 +308,13 @@ ggplot( tau_L$df , aes(y =tau_L, x = y, group = i)) +
         strip.text.y = element_text(angle = 0))
 ```
 
-Estimate freshwater terminal mortalities in the upper Skeena by population, year, and age. Should be 0 for Kitsumkalum, Lower Skeena, and Zymoetz-Fiddler. 
+Estimate freshwater terminal mortalities in the upper Skeena by population, year, and age. Should be 0 for Kitsumkalum, Lower Skeena, and Zymoetz. 
 
 
 ```{r example_tau_U, dpi = 300, fig.width = w,fig.height=h }
 tau_U <- get_tau_U(Tau_U = Tau_U_total, omega = omega$omega, P_tilde = P_tilde$P_tilde, aggregate_population = "Skeena",
                    upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"), add_6_7 = TRUE)
+    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz"), add_6_7 = TRUE)
 
 ggplot( tau_U$df, aes(y =tau_U, x = y, group = i)) +
   geom_point() + 

@@ -2,7 +2,7 @@ test_that("Total mortalities by year populations sum to aggregate population", {
   populations <- c(
     "Kitsumkalum",
     "Lower Skeena",
-    "Zymoetz-Fiddler",
+    "Zymoetz",
     "Upper Skeena",
     "Middle Skeena",
     "Large Lakes",
@@ -36,7 +36,7 @@ test_that("Total mortalities by year populations sum to aggregate population", {
     P_tilde = P_tilde$P_tilde,
     aggregate_population = "Skeena",
     upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"),
+    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
     add_6_7 = FALSE
   )
   expect_equal(
@@ -51,7 +51,7 @@ test_that("Total mortalities by year populations sum to aggregate population", {
     P_tilde = P_tilde$P_tilde,
     aggregate_population = "Skeena",
     upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"),
+    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
     add_6_7 = TRUE
   )
   expect_equal(

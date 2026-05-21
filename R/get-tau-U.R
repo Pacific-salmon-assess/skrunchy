@@ -9,7 +9,7 @@
 #' @param P_tilde Numeric, array of genetic proportions at Skeena Tyee test fishery with 2 dimensions: i (population) and year (y).
 #' @param aggregate_population Character, name of aggregate population. Defaults to "Skeena"
 #' @param upper_populations Character, vector of names of upper populations. Defaults to Middle Skeena, Large Lakes, and Upper Skeena.
-#' @param lower_populations Character, vector of names of lower populations. Defaults to Lower Skeena, Kitsumkalum, and Zymoetz-Fiddler.
+#' @param lower_populations Character, vector of names of lower populations. Defaults to Lower Skeena, Kitsumkalum, and Zymoetz.
 #' @param add_6_7 Logical, If TRUE, add age 7 fish to age 6 fish of the same brood year (treat age 7 mortalities as age 6 mortalities from the age 6 brood year). Default is TRUE. Note that this "modifies" the return year of age 7 mortalities (true return year -1).
 #'
 #' @return A list with two objects. First object: numeric, array of total terminal mortalities in the upper Skeena with three dimensions: population (i), year (y), and age (a).
@@ -22,7 +22,7 @@
 #'                     upper_populations = c("Middle Skeena", "Large Lakes",
 #'                             "Upper Skeena"),
 #'                     lower_populations = c("Lower Skeena", "Kitsumkalum",
-#'                                         "Zymoetz-Fiddler"),
+#'                                         "Zymoetz"),
 #'                     add_6_7 = TRUE )
 #'
 #' @export
@@ -32,7 +32,7 @@ get_tau_U <- function(
   P_tilde,
   aggregate_population = "Skeena",
   upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-  lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz-Fiddler"),
+  lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
   add_6_7 = TRUE
 ) {
   # Check year and population

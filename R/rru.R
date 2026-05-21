@@ -1,30 +1,16 @@
-#' Do run reconstruction, conventional based on Winther et al. 2024
+#' Do run reconstruction, use bootstrap/ Monte Carlo to propagate uncertainty.
+#'
+#' This function does one iteration.
 #'
 #' Wrapper function that does the whole run reconstruction, option to save the outputs
 #' into data/ folder as .rds files.
 #'
-#' @inheritParams get_P_tilde
-#' @inheritParams get_X
-#' @inheritParams get_Tau_L_total
-#' @inheritParams get_Tau_U_total
-#' @inheritParams get_E
-#' @inheritParams get_E_star
-#' @inheritParams get_S_star
-#' @inheritParams get_W_star
-#' @inheritParams get_p
-#' @inheritParams get_tau_L
-#' @inheritParams get_tau_U
-#' @inheritParams get_tau_M
-#' @inheritParams get_TermRun
-#' @inheritParams get_MatureRun
-#' @inheritParams get_A_phi
-#' @inheritParams get_A_P
-#' @inheritParams get_phi_N
-#' @inheritParams get_phi_Q
-#' @inheritParams get_N
-#' @inheritParams get_R
-#' @param name_key Dataframe, with details on names
-#' @param save_outputs Logical, whether to save the outputs. Default is TRUE.
+#' @inheritParams rr
+#' @param n_gsi_samples Integer, number of gsi samples by year, for sampling.
+#' @param n_age_samples Integer, number of age samples by year, for sampling.
+#' @param n_age_samples_J Integer, number of age samples by year, including age 3 (jacks), for sampling.
+#' @param iteration_number Integer, index of iteration
+#'
 #'
 #' @returns
 #' List of results.
@@ -33,11 +19,18 @@
 #' @export
 #'
 #' @examples
-#'  rr <- function(
+#'
+#'  n_gsi_samples <- apply(ex_n, 2, sum)
+#'  n_age_samples <- apply(ex_n, c(1,2), sum)
+#'  n_age_samples_J <- apply(ex_n_with_jacks, c(1,2), sum)
+#'  results <- rru(
 #'    P = ex_P,
 #'    sigma_P = ex_sigma_P,
 #'    G = ex_G,
-#'    K = ex_k$kitsumkalum_escapament,
+#'    K = ex_k$kitsumkalum_escapement,
+#'    n_gsi_samples = n_gsi_samples,
+#'    n_age_samples = n_age_samples,
+#'    n_age_samples_J = n_age_samples_J,
 #'    sigma_K = ex_k$sd,
 #'    y_K = ex_k$year,
 #'    omega = ex_omega,
@@ -62,13 +55,17 @@
 #'    phi_dot_E = ex_phi_dot_E,
 #'    Q = ex_Q,
 #'    name_key = variable_name_key,
-#'    save_outputs = FALSE
+#'    save_outputs = FALSE,
+#'    iteration_number  = 1
 #'    )
 #'
-rr <- function(
+rru <- function(
   P,
   sigma_P,
   G,
+  n_gsi_samples,
+  n_age_samples,
+  n_age_samples_J,
   K,
   sigma_K,
   y_K,
@@ -94,39 +91,73 @@ rr <- function(
   phi_dot_E,
   Q,
   name_key,
-  save_outputs = TRUE
+  save_outputs = TRUE,
+  iteration_number
 ) {
-  # # Get number of GSI samples in each year
-  # n_gsi_samples <- as.numeric(table(tyee_biodata_age_sex_length_CU$y))
-  # P_tilde$P_tilde
-  # dim(P_tilde$P_tilde)
-  # n_years <- dim(P_tilde$P_tilde)[2]
-  # P_tilde_sample <- P_tilde$P_tilde
-  # for (i in 1:n_years) {
-  #   P_tilde_sample[, i] <- rmultinom(
-  #     n = 1,
-  #     size = n_gsi_samples[i],
-  #     prob = P_tilde$P_tilde[, i]
-  #   ) /
-  #     n_gsi_samples[i]
-  # }
-
   # Use data from Skeena Tyee test fishery weekly catch and genetic mixture data,
   # and pool it into annual genetic proportions.
   P_tilde <- get_P_tilde(P = P, sigma_P = sigma_P, G = G)
+
+  # Monte carlo sample from P_tilde to represent uncertainty
+  # Get number of GSI samples in each year
+  n_years <- dim(P_tilde$P_tilde)[2]
+  n_populations <- dim(omega)[1]
+
+  P_tilde_sample <- P_tilde$P_tilde
+  P_tilde_sample[] <- NA
+  for (y in 1:n_years) {
+    P_tilde_sample[, y] <- rmultinom(
+      n = 1,
+      size = n_gsi_samples[y],
+      prob = P_tilde$P_tilde[, y]
+    ) /
+      n_gsi_samples[y]
+  }
+
+  # Also get samples for omega and omega_J
+  omega_sample <- omega
+  omega_sample[] <- NA
+  for (y in 1:n_years) {
+    for (i in 1:n_populations) {
+      omega_sample[i, y, ] <- rmultinom(
+        n = 1,
+        size = n_age_samples[y],
+        prob = omega[i, y, ]
+      ) /
+        n_age_samples[y]
+    }
+  }
+
+  omega_J_sample <- omega_J
+  omega_J_sample[] <- NA
+  for (y in 1:n_years) {
+    omega_J_sample[y, ] <- rmultinom(
+      n = 1,
+      size = n_age_samples_J[y],
+      prob = omega_J[y, ]
+    ) /
+      n_age_samples_J[y]
+  }
+  # Note that for now, sigma_P_tilde and sigma_K are not used in the same way as
+  # in the deterministic run reconstruction
+
+  # Get a monte carlo sample of K
+  K_sample <- rnorm(n = length(K), mean = K, sd = sigma_K)
+
   # Now do expansions to get returns to Terrace for each population, and the
   # Skeena aggregate.
   X <- get_X(
-    P_tilde = P_tilde$P_tilde,
+    P_tilde = P_tilde_sample,
     sigma_P_tilde = P_tilde$sigma_P_tilde,
-    K = K,
+    K = K_sample,
     sigma_K = sigma_K,
     y_K = y_K
   )
+
   # Estimate terminal mortalities, total by year
   # Get freshwater terminal mortalities in the lower Skeena by year
   Tau_L_total <- get_Tau_L_total(
-    omega_J = omega_J,
+    omega_J = omega_J_sample,
     tyee = tyee,
     rec_catch_L = rec_catch_L,
     rec_release_L = rec_release_L,
@@ -134,7 +165,7 @@ rr <- function(
   )
   # Get freshwater terminal mortalities in the upper Skeena by year
   Tau_U_total <- get_Tau_U_total(
-    omega_J = omega_J,
+    omega_J = omega_J_sample,
     rec_catch_U = rec_catch_U,
     FN_catch_U = FN_catch_U
   )
@@ -142,7 +173,7 @@ rr <- function(
   # only be different for Skeena aggregate and the three upper populations).
   # See below for $T_U$ calculations.
   E <- get_E(
-    K = K,
+    K = K_sample,
     X = X$X,
     Tau_U = Tau_U_total,
     known_population = "Kitsumkalum",
@@ -158,7 +189,7 @@ rr <- function(
   # Get age-specific escapement by using age proportions.
   E_star <- get_E_star(
     E = E$E,
-    omega = omega,
+    omega = omega_sample,
     K_star = K_star,
     add_6_7 = add_6_7
   )
@@ -178,17 +209,17 @@ rr <- function(
   # Estimate freshwater terminal mortalities in the lower Skeena by population, year, and age.
   tau_L <- get_tau_L(
     Tau_L = Tau_L_total,
-    omega = omega,
-    P_tilde = P_tilde$P_tilde,
+    omega = omega_sample,
+    P_tilde = P_tilde_sample,
     aggregate_population = "Skeena",
     add_6_7 = add_6_7
   )
   # Estimate freshwater terminal mortalities in the upper Skeena by population,
-  # year, and age. Should be 0 for Kitsumkalum, Lower Skeena, and Zymoetz.
+  # year, and age. Should be 0 for Kitsumkalum, Lower Skeena, and Zymoetz-Fiddler.
   tau_U <- get_tau_U(
     Tau_U = Tau_U_total,
-    omega = omega,
-    P_tilde = P_tilde$P_tilde,
+    omega = omega_sample,
+    P_tilde = P_tilde_sample,
     aggregate_population = "Skeena",
     upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
     lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
@@ -372,6 +403,7 @@ rr <- function(
   new_names1
   names(dcsum1) <- new_names1
   run_reconstruction_table_summary <- dcsum1
+  run_reconstruction_table_summary$iter_n <- iteration_number
 
   # columns dcsum1# columns to merge into brood table
   btmc <- c("i", "y", "W_wild_spawners")
@@ -427,10 +459,11 @@ rr <- function(
     )
   }
 
-  results <- list(
-    run_reconstruction_table,
-    run_reconstruction_table_summary,
-    brood_table
-  )
-  results
+  run_reconstruction_table_summary
+  # results <- list(
+  #   run_reconstruction_table,
+  #   run_reconstruction_table_summary,
+  #   brood_table
+  # )
+  # results
 }
