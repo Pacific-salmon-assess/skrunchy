@@ -99,7 +99,6 @@ rru <- function(
   P_tilde <- get_P_tilde(P = P, sigma_P = sigma_P, G = G)
 
   # Monte carlo sample from P_tilde to represent uncertainty
-  # Get number of GSI samples in each year
   n_years <- dim(P_tilde$P_tilde)[2]
   n_populations <- dim(omega)[1]
 
