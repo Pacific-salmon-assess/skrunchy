@@ -175,10 +175,10 @@ rru <- function(
     K = K_sample,
     X = X$X,
     Tau_U = Tau_U_total,
-    known_population = "Kitsumkalum",
-    aggregate_population = "Skeena",
-    lower_populations = c("Lower Skeena", "Zymoetz"),
-    upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes")
+    known_population = known_population, # "Kitsumkalum",
+    aggregate_population = aggregate_population, # "Skeena",
+    lower_populations = lower_populations, # c("Lower Skeena", "Zymoetz"),
+    upper_populations = upper_populations # c("Upper Skeena", "Middle Skeena", "Large Lakes")
   )
   # Get age proportions by age, population and year
   omega
@@ -210,7 +210,7 @@ rru <- function(
     Tau_L = Tau_L_total,
     omega = omega_sample,
     P_tilde = P_tilde_sample,
-    aggregate_population = "Skeena",
+    aggregate_population = aggregate_population, # "Skeena",
     add_6_7 = add_6_7
   )
   # Estimate freshwater terminal mortalities in the upper Skeena by population,
@@ -219,9 +219,9 @@ rru <- function(
     Tau_U = Tau_U_total,
     omega = omega_sample,
     P_tilde = P_tilde_sample,
-    aggregate_population = "Skeena",
-    upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
+    aggregate_population = aggregate_population, # "Skeena",
+    upper_populations = upper_populations, # c("Middle Skeena", "Large Lakes", "Upper Skeena"),
+    lower_populations = lower_populations, # c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
     add_6_7 = add_6_7
   )
   # Estimate marine terminal mortalities in the marine area by population, year, and age.
