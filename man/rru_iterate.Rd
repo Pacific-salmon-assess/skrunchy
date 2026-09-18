@@ -71,6 +71,7 @@ See \code{\link[=rru]{rru()}} for a single run.
  n_age_samples <- apply(ex_n, c(1,2), sum)
  n_age_samples_J <- apply(ex_n_with_jacks, c(1,2), sum)
  results <- rru_iterate(
+   n_iter = 10,
    P = ex_P,
    sigma_P = ex_sigma_P,
    G = ex_G,
