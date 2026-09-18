@@ -7,6 +7,8 @@
 #'
 #' @param X Numeric, assumed to be comprised of all observed count data (e.g. K)
 #' used for estimating mu, size, and prob parameters for a negative binomial sampler.
+#' @importFrom MASS fitdistr
+
 
 estimate_nbinomial_params <- function(X) {
     if (mean(X) >= var(X)) stop("Mean of the dataset is greater than or equal to its variance; consider a Poisson distribution")
