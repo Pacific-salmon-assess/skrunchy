@@ -18,7 +18,8 @@ Imports:
     tidyr,
     rlang,
     here,
-    usethis
+    usethis, 
+    MASS
 Depends:
     R (>= 3.5)
 LazyData: true

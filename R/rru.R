@@ -142,7 +142,7 @@ rru <- function(
   # in the deterministic run reconstruction
 
   # Get a monte carlo sample of K
-  K_sample <- rnorm(n = length(K), mean = K, sd = sigma_K)
+  K_sample_normal <- rnorm(n = length(K), mean = K, sd = sigma_K)
   # ! # Apply a negative binomial instead:
   # ! # An alternative parametrization (often used in ecology) is by the
   # ! #   _mean_ 'mu' (see above), and 'size', the _dispersion parameter_,
@@ -152,7 +152,13 @@ rru <- function(
 
   K_mu <- estimate_nbinomial_params(K)$mu
   K_size <- estimate_nbinomial_params(K)$size
-  K_sample <- rnbinom(mu = K_mu, size = K_size)
+  K_sample <- rnbinom(n = length(K), size = K_size, mu = K_mu)
+  # FLAG: I think this produces a time series that has no correlation with the original data.
+  # e.g., samples every year from the same distribution (observed high years don't get higher sampled values).
+  # I'm hazy on this distribution, but don't we want to retain some of the original
+  # trend, and just use the sampling error from the observed data?
+  # Does below make sense?
+  K_sample <- rnbinom(n = length(K), size = K_size, mu = K)
 
   # Now do expansions to get returns to Terrace for each population, and the
   # Skeena aggregate.
