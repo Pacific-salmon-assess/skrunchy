@@ -20,44 +20,44 @@
 #'
 #' @examples
 #'
-#'  n_gsi_samples <- apply(ex_n, 2, sum)
-#'  n_age_samples <- apply(ex_n, c(1,2), sum)
-#'  n_age_samples_J <- apply(ex_n_with_jacks, c(1,2), sum)
-#'  results <- rru(
-#'    P = ex_P,
-#'    sigma_P = ex_sigma_P,
-#'    G = ex_G,
-#'    K = ex_k$kitsumkalum_escapement,
-#'    n_gsi_samples = n_gsi_samples,
-#'    n_age_samples = n_age_samples,
-#'    n_age_samples_J = n_age_samples_J,
-#'    sigma_K = ex_k$sd,
-#'    y_K = ex_k$year,
-#'    omega = ex_omega,
-#'    omega_J = ex_omega_J,
-#'    tyee = ex_Tau$tyee,
-#'    rec_catch_L = ex_Tau$rec_catch_L,
-#'    rec_release_L = ex_Tau$rec_release_L,
-#'    FN_catch_L = ex_Tau$FN_catch_L,
-#'    rec_catch_U = ex_Tau$rec_catch_U,
-#'    FN_catch_U = ex_Tau$FN_catch_U,
-#'    known_population = "Kitsumkalum",
-#'    aggregate_population = "Skeena",
-#'    lower_populations = c("Lower Skeena", "Zymoetz"),
-#'    upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"),
-#'    K_star = ex_K_star,
-#'    add_6_7 = TRUE,
-#'    B_star = ex_B_star,
-#'    H_star = ex_H_star,
-#'    tau_dot_M = ex_tau_dot_M,
-#'    phi_dot_M = ex_phi_dot_M,
-#'    r = ex_r,
-#'    phi_dot_E = ex_phi_dot_E,
-#'    Q = ex_Q,
-#'    name_key = variable_name_key,
-#'    save_outputs = FALSE,
-#'    iteration_number  = 1
-#'    )
+#' n_gsi_samples <- apply(ex_n, 2, sum)
+#' n_age_samples <- apply(ex_n, c(1, 2), sum)
+#' n_age_samples_J <- apply(ex_n_with_jacks, c(1, 2), sum)
+#' results <- rru(
+#'   P = ex_P,
+#'   sigma_P = ex_sigma_P,
+#'   G = ex_G,
+#'   K = ex_k$kitsumkalum_escapement,
+#'   n_gsi_samples = n_gsi_samples,
+#'   n_age_samples = n_age_samples,
+#'   n_age_samples_J = n_age_samples_J,
+#'   sigma_K = ex_k$sd,
+#'   y_K = ex_k$year,
+#'   omega = ex_omega,
+#'   omega_J = ex_omega_J,
+#'   tyee = ex_Tau$tyee,
+#'   rec_catch_L = ex_Tau$rec_catch_L,
+#'   rec_release_L = ex_Tau$rec_release_L,
+#'   FN_catch_L = ex_Tau$FN_catch_L,
+#'   rec_catch_U = ex_Tau$rec_catch_U,
+#'   FN_catch_U = ex_Tau$FN_catch_U,
+#'   known_population = "Kitsumkalum",
+#'   aggregate_population = "Skeena",
+#'   lower_populations = c("Lower Skeena", "Zymoetz"),
+#'   upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"),
+#'   K_star = ex_K_star,
+#'   add_6_7 = TRUE,
+#'   B_star = ex_B_star,
+#'   H_star = ex_H_star,
+#'   tau_dot_M = ex_tau_dot_M,
+#'   phi_dot_M = ex_phi_dot_M,
+#'   r = ex_r,
+#'   phi_dot_E = ex_phi_dot_E,
+#'   Q = ex_Q,
+#'   name_key = variable_name_key,
+#'   save_outputs = FALSE,
+#'   iteration_number = 1
+#' )
 #'
 rru <- function(
   P,
@@ -137,11 +137,22 @@ rru <- function(
     ) /
       n_age_samples_J[y]
   }
+
   # Note that for now, sigma_P_tilde and sigma_K are not used in the same way as
   # in the deterministic run reconstruction
 
   # Get a monte carlo sample of K
   K_sample <- rnorm(n = length(K), mean = K, sd = sigma_K)
+  # ! # Apply a negative binomial instead:
+  # ! # An alternative parametrization (often used in ecology) is by the
+  # ! #   _mean_ 'mu' (see above), and 'size', the _dispersion parameter_,
+  # ! #   where 'prob' = 'size/(size+mu)'.  The variance is 'mu + mu^2/size'
+  # ! #   in this parametrization.
+  # ! # Mairin has made a new function, estimate_nbinomial_params, for this
+
+  K_mu <- estimate_nbinomial_params(K)$mu
+  K_size <- estimate_nbinomial_params(K)$size
+  K_sample <- rnbinom(mu = K_mu, size = K_size)
 
   # Now do expansions to get returns to Terrace for each population, and the
   # Skeena aggregate.
@@ -175,10 +186,10 @@ rru <- function(
     K = K_sample,
     X = X$X,
     Tau_U = Tau_U_total,
-    known_population = "Kitsumkalum",
-    aggregate_population = "Skeena",
-    lower_populations = c("Lower Skeena", "Zymoetz"),
-    upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes")
+    known_population = known_population, # "Kitsumkalum",
+    aggregate_population = aggregate_population, # "Skeena",
+    lower_populations = lower_populations, # c("Lower Skeena", "Zymoetz"),
+    upper_populations = upper_populations # c("Upper Skeena", "Middle Skeena", "Large Lakes")
   )
   # Get age proportions by age, population and year
   omega
@@ -210,7 +221,7 @@ rru <- function(
     Tau_L = Tau_L_total,
     omega = omega_sample,
     P_tilde = P_tilde_sample,
-    aggregate_population = "Skeena",
+    aggregate_population = aggregate_population, # "Skeena",
     add_6_7 = add_6_7
   )
   # Estimate freshwater terminal mortalities in the upper Skeena by population,
@@ -219,9 +230,9 @@ rru <- function(
     Tau_U = Tau_U_total,
     omega = omega_sample,
     P_tilde = P_tilde_sample,
-    aggregate_population = "Skeena",
-    upper_populations = c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-    lower_populations = c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
+    aggregate_population = aggregate_population, # "Skeena",
+    upper_populations = upper_populations, # c("Middle Skeena", "Large Lakes", "Upper Skeena"),
+    lower_populations = lower_populations, # c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
     add_6_7 = add_6_7
   )
   # Estimate marine terminal mortalities in the marine area by population, year, and age.
@@ -303,7 +314,7 @@ rru <- function(
   # List of data with CU and return year and age
   list_df_iya <- list(
     # omega$df,
-    #"n" = n # n age observations, would need to make into df
+    # "n" = n # n age observations, would need to make into df
     E_star$df,
     B_star_df2,
     S_star$df,
@@ -358,7 +369,7 @@ rru <- function(
     all.x = TRUE
   )
 
-  #variable_name_key
+  # variable_name_key
 
   new_names <- names(dc)
   for (i in 1:length(names(dc))) {
@@ -370,7 +381,7 @@ rru <- function(
       names(dc)[i]
     )
   }
-  #new_names
+  # new_names
 
   dcn <- dc
   names(dcn) <- new_names
