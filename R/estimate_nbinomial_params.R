@@ -14,7 +14,7 @@ estimate_nbinomial_params <- function(X) {
     return(list(
         mu = as.double(fit$estimate["mu"]),
         size = as.double(fit$estimate["size"]),
-        prob = as.double(fit$estimate["mu"]) / (
+        prob = as.double(fit$estimate["size"]) / (
             as.double(fit$estimate["size"]) + as.double(fit$estimate["mu"]))
     ))
 }
