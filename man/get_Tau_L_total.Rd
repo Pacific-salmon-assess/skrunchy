@@ -7,6 +7,7 @@
 get_Tau_L_total(
   omega_J,
   tyee,
+  use_tyee,
   IM_tyee = 0.046,
   rec_catch_L,
   IM_rec_catch = 0.069,
@@ -14,7 +15,9 @@ get_Tau_L_total(
   IM_rec_release = 0.05,
   FN_catch_L,
   IM_FN_catch = 0.046,
-  adult_ages = as.character(c(4, 5, 6, 7))
+  adult_ages = as.character(c(4, 5, 6, 7)),
+  add_uncertainty = FALSE,
+  cv_freshwater_mortality = 0.3
 )
 }
 \arguments{
@@ -22,6 +25,8 @@ get_Tau_L_total(
 Note that this should include age proportion for Skeena aggregate. This is used to remove jacks from the terminal mortality.}
 
 \item{tyee}{Numeric, vector of the total catch of adult and jack Chinook at the Skeena Tyee Test fishery, by year.}
+
+\item{use_tyee}{Logical, should tyee test fishery mortality count data be used? Added since TNBC TERM N includes Tyee test fishery mortality.}
 
 \item{IM_tyee}{Numeric, value to use for incidental mortality (drouput) for Tyee test fishery. Default is 4.6\%.}
 
@@ -38,6 +43,10 @@ Note that this should include age proportion for Skeena aggregate. This is used 
 \item{IM_FN_catch}{Numeric, value to use for incidental mortality (drouput) for First Nations FSC catch. Default is 4.6\%.}
 
 \item{adult_ages}{Character, vector of adult ages to use. Should match age names of omega_J columns. Defaults to "4", "5", "6", and "7".}
+
+\item{add_uncertainty}{Logical, should a sample be drawn for adding uncertainty? Used for rru(). Defaults to FALSE}
+
+\item{cv_freshwater_mortality}{Numeric, if add_uncertainty = TRUE, cv to apply to monte carlo sample draw of each source of mortality. Defaults to 0.3 (CV = 30\%).}
 }
 \value{
 A numeric vector of total terminal mortalities including catch and incidental mortalities, for the lower Skeena (downstream of Terrace), by year.
@@ -54,6 +63,7 @@ See Winther et al. 2024 Appendix 2 https://publications.gc.ca/site/eng/9.901355/
 omega_J_all <- get_omega( ex_n_with_jacks ) # get age proportions with jacks
 omega_J <- omega_J_all$omega["Skeena",,] # select just Skeena age proportions
 Tau_L_total <- get_Tau_L_total( omega_J = omega_J, tyee = ex_Tau$tyee,
+                                use_tyee = FALSE,
                                rec_catch_L = ex_Tau$rec_catch_L,
                                rec_release_L = ex_Tau$rec_release_L,
                                FN_catch_L = ex_Tau$FN_catch_L )

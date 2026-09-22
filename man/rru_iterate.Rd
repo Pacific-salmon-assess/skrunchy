@@ -58,6 +58,9 @@ Equal to the number of fish caught plus incidental mortalities for non-net fishe
 areas seaward of the terminal area, divided by total stock for the cohort, in nominal fish (not adjusted for AEQs).}
     \item{\code{Q}}{Numeric, array of adult equivalency (AEQ) rates with two dimensions: year (y) and age (a).
 Output from CTC Chinook model based on Kitsumkalum CWT releases (KLM).}
+    \item{\code{use_tyee}}{Logical, should tyee test fishery mortality count data be used? Added since TNBC TERM N includes Tyee test fishery mortality.}
+    \item{\code{add_uncertainty}}{Logical, should a sample be drawn for adding uncertainty? Used for rru(). Defaults to FALSE}
+    \item{\code{cv_freshwater_mortality}}{Numeric, if add_uncertainty = TRUE, cv to apply to monte carlo sample draw of each source of mortality. Defaults to 0.3 (CV = 30\%).}
   }}
 }
 \value{

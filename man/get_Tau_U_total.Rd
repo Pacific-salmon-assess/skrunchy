@@ -10,7 +10,9 @@ get_Tau_U_total(
   IM_rec_catch = 0.069,
   FN_catch_U,
   IM_FN_catch = 0.046,
-  adult_ages = as.character(c(4, 5, 6, 7))
+  adult_ages = as.character(c(4, 5, 6, 7)),
+  add_uncertainty = FALSE,
+  cv_freshwater_mortality = 0.3
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ get_Tau_U_total(
 \item{IM_FN_catch}{Numeric, value to use for incidental mortality (drouput) for First Nations FSC catch. Default is 4.6\%.}
 
 \item{adult_ages}{Character, vector of adult ages to use. Should match age names of omega_J columns. Defaults to "4", "5", "6", and "7".}
+
+\item{add_uncertainty}{Logical, should a sample be drawn for adding uncertainty? Used for rru(). Defaults to FALSE}
+
+\item{cv_freshwater_mortality}{Numeric, if add_uncertainty = TRUE, cv to apply to monte carlo sample draw of each source of mortality. Defaults to 0.3 (CV = 30\%).}
 }
 \value{
 A numeric vector of total terminal mortalities including catch and incidental mortalities, for the upper Skeena (upstream of Terrace), by year.

@@ -9,6 +9,7 @@
 #' @param omega_J Numeric, array of proportions of each age including jacks (age 3) for the Skeena River aggregate, with two dimensions: year (y), and age (a).
 #' Note that this should include age proportion for Skeena aggregate. This is used to remove jacks from the terminal mortality.
 #' @param tyee Numeric, vector of the total catch of adult and jack Chinook at the Skeena Tyee Test fishery, by year.
+#' @param use_tyee Logical, should tyee test fishery mortality count data be used? Added since TNBC TERM N includes Tyee test fishery mortality.
 #' @param IM_tyee Numeric, value to use for incidental mortality (drouput) for Tyee test fishery. Default is 4.6%.
 #' @param rec_catch_L Numeric, vector of recreational catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.
 #' @param IM_rec_catch Numeric, value to use for incidental mortality (drop-off) for recreational catch. Default is 6.9%.
@@ -17,6 +18,8 @@
 #' @param FN_catch_L Numeric, vector of First Nations FSC catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.
 #' @param IM_FN_catch Numeric, value to use for incidental mortality (drouput) for First Nations FSC catch. Default is 4.6%.
 #' @param adult_ages Character, vector of adult ages to use. Should match age names of omega_J columns. Defaults to "4", "5", "6", and "7".
+#' @param add_uncertainty Logical, should a sample be drawn for adding uncertainty? Used for rru(). Defaults to FALSE
+#' @param cv_freshwater_mortality Numeric, if add_uncertainty = TRUE, cv to apply to monte carlo sample draw of each source of mortality. Defaults to 0.3 (CV = 30%).
 #'
 #' @return A numeric vector of total terminal mortalities including catch and incidental mortalities, for the lower Skeena (downstream of Terrace), by year.
 #'
@@ -24,6 +27,7 @@
 #' omega_J_all <- get_omega( ex_n_with_jacks ) # get age proportions with jacks
 #' omega_J <- omega_J_all$omega["Skeena",,] # select just Skeena age proportions
 #' Tau_L_total <- get_Tau_L_total( omega_J = omega_J, tyee = ex_Tau$tyee,
+#'                                 use_tyee = FALSE,
 #'                                rec_catch_L = ex_Tau$rec_catch_L,
 #'                                rec_release_L = ex_Tau$rec_release_L,
 #'                                FN_catch_L = ex_Tau$FN_catch_L )
@@ -32,6 +36,7 @@
 get_Tau_L_total <- function(
   omega_J,
   tyee,
+  use_tyee,
   IM_tyee = 0.046,
   rec_catch_L,
   IM_rec_catch = 0.069,
@@ -39,7 +44,9 @@ get_Tau_L_total <- function(
   IM_rec_release = 0.05,
   FN_catch_L,
   IM_FN_catch = 0.046,
-  adult_ages = as.character(c(4, 5, 6, 7))
+  adult_ages = as.character(c(4, 5, 6, 7)),
+  add_uncertainty = FALSE,
+  cv_freshwater_mortality = 0.3
 ) {
   # Check vector lengths
   l <- dim(omega_J)[1]
@@ -56,12 +63,30 @@ get_Tau_L_total <- function(
 
   years <- dimnames(omega_J)$y
   proportion_adults <- apply(omega_J[, adult_ages], 1, FUN = sum)
-  Tau_L <- proportion_adults *
-    (tyee *
-      (1 + IM_tyee) +
-      rec_catch_L * (1 + IM_rec_catch) +
-      rec_release_L * IM_rec_release +
-      FN_catch_L * (1 + IM_FN_catch))
+  if (use_tyee == FALSE) {
+    tyee <- rep(0, length(tyee))
+  }
+  if (add_uncertainty == FALSE) {
+    Tau_L <- proportion_adults *
+      (tyee *
+        (1 + IM_tyee) +
+        rec_catch_L * (1 + IM_rec_catch) +
+        rec_release_L * IM_rec_release +
+        FN_catch_L * (1 + IM_FN_catch))
+  }
+  if (add_uncertainty == TRUE) {
+    n_obs <- length(rec_catch_L)
+    cv <- cv_freshwater_mortality
+    Tau_L <- proportion_adults *
+      (tyee *
+        (1 + IM_tyee) +
+        rnorm(n = n_obs, mean = rec_catch_L, sd = cv * rec_catch_L) *
+          (1 + IM_rec_catch) +
+        rnorm(n = n_obs, mean = rec_release_L, sd = cv * rec_release_L) *
+          IM_rec_release +
+        rnorm(n = n_obs, mean = FN_catch_L, sd = cv * FN_catch_L) *
+          (1 + IM_FN_catch))
+  }
   names(Tau_L) <- years
   return(Tau_L)
 }

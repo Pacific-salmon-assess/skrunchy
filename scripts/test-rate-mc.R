@@ -1,15 +1,94 @@
 library(ggplot2)
 library(dplyr)
-
+library(MSEtool)
+library(EnvStats)
+library(MSEtool)
+library(MASS)
+library(skrunchy2025)
 
 # Desired inputs: array of rates (exploitation). Maybe an option to manually give a CV to use?
 # Like an option to use empirical CV or assign a CV?
 # Desired outputs: array with same dimensions, with new resampled rates
 
+library(devtools)
+devtools::load_all(.)
+
+
+d <- as.numeric(phi_dot_E[, 1])
+
+which(phi_dot_E == 0)
+
+which(phi_dot_M == 0)
+phi_dot_M
+
+plot(density(phi_dot_E[, 1]), xlim = c(0, 1))
+lines(density(phi_dot_E[, 2]), col = "dodgerblue")
+lines(density(phi_dot_E[, 3]), col = "firebrick")
+
+
 # Options:
 
-sd(phi_dot_E)
-mean(phi_dot_E)
+# MASS:fitdistr()
+
+x <- d[d > 0]
+
+m <- mean(x)
+v <- var(x)
+
+tmp <- m * (1 - m) / v - 1
+
+a0 <- m * tmp
+b0 <- (1 - m) * tmp
+
+c(a0, b0)
+
+
+pi_hat <- mean(d == 0)
+
+fit <- fitdistr(
+  d[d > 0],
+  densfun = "beta",
+  start = list(shape1 = a0, shape2 = b0)
+)
+
+
+pi_hat
+
+
+n <- length(d)
+plot(d2 ~ d)
+d
+d2
+hist(d)
+hist(d2)
+
+dput(d)
+
+MASS::fitdistr(d, densfun = "beta", start = list(shape1 = 1, shape2 = 3))
+
+fitdistr(d[-length(d)], densfun = "beta", start = list(shape1 = 1, shape2 = 3))
+
+betaparam <- ebeta(phi_dot_E[, 1], method = "mle")
+betaparam
+str(betaparam)
+hist(
+  rbeta(
+    100,
+    shape1 = betaparam$parameters[1],
+    shape2 = betaparam$parameters[2]
+  ),
+  breaks = seq(0, 1, 0.1)
+)
+hist(phi_dot_E[, 1], breaks = seq(0, 1, 0.1))
+
+a <- alphaconv(m = mean(phi_dot_E[, 1]), sd = sd(phi_dot_E[, 1]))
+b <- betaconv(m = mean(phi_dot_E[, 1]), sd(phi_dot_E[, 1]))
+a
+b
+
+bt <- rbeta(n = 100, shape1 = a, shape2 = b)
+hist(t)
+hist(phi_dot_E)
 
 
 est_beta_params <- function(mu, sigma, tol = 1e-8) {
@@ -30,6 +109,10 @@ est_beta_params <- function(mu, sigma, tol = 1e-8) {
   return(list(shape1 = alpha, shape2 = beta))
 }
 
+est_beta_params(mu = mean(phi_dot_E[, 1]), sigma = sd(phi_dot_E[, 1]))
+
+
+# delta / hurdle model for zero-inflated beta distribution
 
 r_beta_mixture <- function(n, mu, sigma, p0 = 0, p1 = 0, max_er = 0.5) {
   params <- est_beta_params(mu, sigma)
@@ -69,13 +152,13 @@ t3 <- r_beta_mixture(
   p1 = 0
 )
 #
-# ttog <- r_beta_mixture(
-#   n = length(phi_dot_E[]),
-#   mu = phi_dot_E[],
-#   sigma = sd(phi_dot_E[]),
-#   p0 = 0,
-#   p1 = 0
-# )
+ttog <- r_beta_mixture(
+  n = length(phi_dot_E[]),
+  mu = phi_dot_E[],
+  sigma = sd(phi_dot_E[]),
+  p0 = 0,
+  p1 = 0
+)
 
 t <- c(t1, t2, t3)
 

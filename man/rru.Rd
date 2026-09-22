@@ -22,6 +22,9 @@ rru(
   FN_catch_L,
   rec_catch_U,
   FN_catch_U,
+  use_tyee = FALSE,
+  add_uncertainty = TRUE,
+  cv_freshwater_mortality = 0.3,
   known_population = "Kitsumkalum",
   aggregate_population = "Skeena",
   lower_populations = c("Lower Skeena", "Zymoetz"),
@@ -75,6 +78,12 @@ Note that this should include age proportion for Skeena aggregate. This is used 
 \item{rec_catch_U}{Numeric, vector of recreational catch of jack and adult Chinook in the upper Skeena (upstream of Terrace), by year.}
 
 \item{FN_catch_U}{Numeric, vector of First Nations FSC catch of jack and adult Chinook in the upper Skeena (upstream of Terrace), by year.}
+
+\item{use_tyee}{Logical, should tyee test fishery mortality count data be used? Added since TNBC TERM N includes Tyee test fishery mortality.}
+
+\item{add_uncertainty}{Logical, should a sample be drawn for adding uncertainty? Used for rru(). Defaults to FALSE}
+
+\item{cv_freshwater_mortality}{Numeric, if add_uncertainty = TRUE, cv to apply to monte carlo sample draw of each source of mortality. Defaults to 0.3 (CV = 30\%).}
 
 \item{known_population}{Name of population i with known or estimated escapement. Defaults to Kitsumkalum.}
 
@@ -152,6 +161,8 @@ results <- rru(
   FN_catch_L = ex_Tau$FN_catch_L,
   rec_catch_U = ex_Tau$rec_catch_U,
   FN_catch_U = ex_Tau$FN_catch_U,
+  use_tyee= FALSE,
+  cv_freshwater_mortality = 0.3,
   known_population = "Kitsumkalum",
   aggregate_population = "Skeena",
   lower_populations = c("Lower Skeena", "Zymoetz"),

@@ -10,6 +10,7 @@
 #' @param n_age_samples Integer, number of age samples by year, for sampling.
 #' @param n_age_samples_J Integer, number of age samples by year, including age 3 (jacks), for sampling.
 #' @param iteration_number Integer, index of iteration
+#' @inheritParams get_Tau_L_total
 #'
 #'
 #' @returns
@@ -41,6 +42,8 @@
 #'   FN_catch_L = ex_Tau$FN_catch_L,
 #'   rec_catch_U = ex_Tau$rec_catch_U,
 #'   FN_catch_U = ex_Tau$FN_catch_U,
+#'   use_tyee= FALSE,
+#'   cv_freshwater_mortality = 0.3,
 #'   known_population = "Kitsumkalum",
 #'   aggregate_population = "Skeena",
 #'   lower_populations = c("Lower Skeena", "Zymoetz"),
@@ -77,6 +80,9 @@ rru <- function(
   FN_catch_L,
   rec_catch_U,
   FN_catch_U,
+  use_tyee = FALSE,
+  add_uncertainty = TRUE,
+  cv_freshwater_mortality = 0.3,
   known_population = "Kitsumkalum",
   aggregate_population = "Skeena",
   lower_populations = c("Lower Skeena", "Zymoetz"),
@@ -159,6 +165,9 @@ rru <- function(
   # trend, and just use the sampling error from the observed data?
   # Does below make sense?
   K_sample <- rnbinom(n = length(K), size = K_size, mu = K)
+  # This actually samples pretty far from original data. Much more than normal distribution.
+  # For now, just use normal for testing
+  K_sample <- K_sample_normal
 
   # Now do expansions to get returns to Terrace for each population, and the
   # Skeena aggregate.
@@ -177,13 +186,18 @@ rru <- function(
     tyee = tyee,
     rec_catch_L = rec_catch_L,
     rec_release_L = rec_release_L,
-    FN_catch_L = FN_catch_L
+    FN_catch_L = FN_catch_L,
+    use_tyee = FALSE,
+    add_uncertainty = add_uncertainty,
+    cv_freshwater_mortality = cv_freshwater_mortality
   )
   # Get freshwater terminal mortalities in the upper Skeena by year
   Tau_U_total <- get_Tau_U_total(
     omega_J = omega_J_sample,
     rec_catch_U = rec_catch_U,
-    FN_catch_U = FN_catch_U
+    FN_catch_U = FN_catch_U,
+    add_uncertainty = add_uncertainty,
+    cv_freshwater_mortality = cv_freshwater_mortality
   )
   # Get escapement for each population, plot with returns to Terrace (note, will
   # only be different for Skeena aggregate and the three upper populations).
