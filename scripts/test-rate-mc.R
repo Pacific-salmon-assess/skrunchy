@@ -16,6 +16,9 @@ devtools::load_all(.)
 
 d <- as.numeric(phi_dot_E[, 1])
 
+mean(phi_dot_E == 0)
+mean(phi_dot_M == 0)
+
 which(phi_dot_E == 0)
 
 which(phi_dot_M == 0)
