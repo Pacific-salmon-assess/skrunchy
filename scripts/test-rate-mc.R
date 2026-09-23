@@ -4,6 +4,7 @@ library(MSEtool)
 library(EnvStats)
 library(MSEtool)
 library(MASS)
+library(fitdistrplus)
 library(skrunchy2025)
 
 # Desired inputs: array of rates (exploitation). Maybe an option to manually give a CV to use?
@@ -15,6 +16,7 @@ devtools::load_all(.)
 
 
 d <- as.numeric(phi_dot_E[, 1])
+
 
 mean(phi_dot_E == 0)
 mean(phi_dot_M == 0)
@@ -28,11 +30,7 @@ plot(density(phi_dot_E[, 1]), xlim = c(0, 1))
 lines(density(phi_dot_E[, 2]), col = "dodgerblue")
 lines(density(phi_dot_E[, 3]), col = "firebrick")
 
-
-# Options:
-
-# MASS:fitdistr()
-
+# Use method of moments method to get starting values
 x <- d[d > 0]
 
 m <- mean(x)
@@ -46,14 +44,26 @@ b0 <- (1 - m) * tmp
 c(a0, b0)
 
 
-pi_hat <- mean(d == 0)
+# Options:
 
-fit <- fitdistr(
+# MASS:fitdistr()
+fit <- MASS::fitdistr(
   d[d > 0],
   densfun = "beta",
   start = list(shape1 = a0, shape2 = b0)
 )
 
+fit
+
+# fitdistrplus
+fit <- fitdistrplus::fitdist(
+  d[d > 0],
+  distr = "beta",
+  method = "mle",
+  start = list(shape1 = a0, shape2 = b0)
+)
+fit
+# results very similar
 
 pi_hat
 
@@ -68,6 +78,7 @@ hist(d2)
 dput(d)
 
 MASS::fitdistr(d, densfun = "beta", start = list(shape1 = 1, shape2 = 3))
+
 
 fitdistr(d[-length(d)], densfun = "beta", start = list(shape1 = 1, shape2 = 3))
 
@@ -116,6 +127,14 @@ est_beta_params(mu = mean(phi_dot_E[, 1]), sigma = sd(phi_dot_E[, 1]))
 
 
 # delta / hurdle model for zero-inflated beta distribution
+
+pi_hat <- mean(d == 0)
+
+u <- ifelse(
+  runif(n) < pi_hat,
+  0,
+  rbeta(n, fit$estimate["shape1"], fit$estimate["shape2"])
+)
 
 r_beta_mixture <- function(n, mu, sigma, p0 = 0, p1 = 0, max_er = 0.5) {
   params <- est_beta_params(mu, sigma)
