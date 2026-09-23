@@ -33,6 +33,9 @@ rru(
   add_6_7 = TRUE,
   B_star,
   H_star,
+  rate_resample_method,
+  rate_resample_cv,
+  rate_resample_max_er,
   tau_dot_M,
   phi_dot_M,
   r,
@@ -103,6 +106,12 @@ age proportion data from spawning grounds (not from Tyee samples) for males and 
 \item{H_star}{Numeric, array of number of hatchery origin spawners returning to the population with a hatchery (e.g., Kitsumkalum River), by year (y) and age (a). Excludes age 3 fish (jacks).
 This is the sum of CTC model output column Esc_exp by return year and age, for KLM (fry) and KLY (yearlings) combined.}
 
+\item{rate_resample_method}{Character, which method to use to add error. Options are "lognormal", "beta", or "logit".}
+
+\item{rate_resample_cv}{Numeric, decimal CV to use for lognormal method.}
+
+\item{rate_resample_max_er}{Numeric, single value of max ER rate from resampling. Defaults to 0.5}
+
 \item{tau_dot_M}{Numeric, array of terminal marine exploitation rates with dimensions year (y) and age (a). Sum of exploitation rate for terminal
 marine net fisheries and exploitation rate for terminal marine sport fisheries
 (coded "TNBC TERM N" and "TNBC TERM S" by the Chinook Technical Committee, respectively), which are outputs from the Kitsumkalum CWT analysis.}
@@ -172,6 +181,9 @@ results <- rru(
   B_star = ex_B_star,
   H_star = ex_H_star,
   tau_dot_M = ex_tau_dot_M,
+  rate_resample_method = "lognormal",
+  rate_resample_cv = 0.3,
+  rate_resample_max_er = 0.5,
   phi_dot_M = ex_phi_dot_M,
   r = ex_r,
   phi_dot_E = ex_phi_dot_E,

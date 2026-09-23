@@ -61,6 +61,9 @@ Output from CTC Chinook model based on Kitsumkalum CWT releases (KLM).}
     \item{\code{use_tyee}}{Logical, should tyee test fishery mortality count data be used? Added since TNBC TERM N includes Tyee test fishery mortality.}
     \item{\code{add_uncertainty}}{Logical, should a sample be drawn for adding uncertainty? Used for rru(). Defaults to FALSE}
     \item{\code{cv_freshwater_mortality}}{Numeric, if add_uncertainty = TRUE, cv to apply to monte carlo sample draw of each source of mortality. Defaults to 0.3 (CV = 30\%).}
+    \item{\code{rate_resample_max_er}}{Numeric, single value of max ER rate from resampling. Defaults to 0.5}
+    \item{\code{rate_resample_method}}{Character, which method to use to add error. Options are "lognormal", "beta", or "logit".}
+    \item{\code{rate_resample_cv}}{Numeric, decimal CV to use for lognormal method.}
   }}
 }
 \value{
@@ -87,6 +90,8 @@ See \code{\link[=rru]{rru()}} for a single run.
    omega = ex_omega,
    omega_J = ex_omega_J,
    tyee = ex_Tau$tyee,
+   use_tyee= FALSE,
+   cv_freshwater_mortality = 0.3,
    rec_catch_L = ex_Tau$rec_catch_L,
    rec_release_L = ex_Tau$rec_release_L,
    FN_catch_L = ex_Tau$FN_catch_L,
@@ -100,6 +105,9 @@ See \code{\link[=rru]{rru()}} for a single run.
    add_6_7 = TRUE,
    B_star = ex_B_star,
    H_star = ex_H_star,
+   rate_resample_method = "lognormal",
+   rate_resample_cv = 0.3,
+   rate_resample_max_er = 0.5,
    tau_dot_M = ex_tau_dot_M,
    phi_dot_M = ex_phi_dot_M,
    r = ex_r,

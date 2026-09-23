@@ -18,6 +18,34 @@ devtools::load_all(.)
 d <- as.numeric(phi_dot_E[, 1])
 
 
+# Multiplicative lognormal noise
+# preserves 0 values
+
+cv <- 0.3
+
+# sample error from normal distribution, then transform with exp to get all positive values.
+
+x_new <- d * exp(rnorm(length(d), 0, sqrt(log(1 + cv^2))))
+plot(x_new)
+points(d, col = "red")
+
+log(1 / cv^2)
+log(1 / 0.6^2)
+
+sqrt(log(1 / cv^2))
+sqrt(log(1 / 0.6^2))
+
+
+plot(seq(-50, 100, 1))
+exp(seq(-50, 100, 1))
+plot(exp(seq(-50, 100, 1)))
+
+plot(rnorm(length(d), 0, sqrt(log(1 + cv^2))))
+plot(exp(rnorm(length(d), 0, sqrt(log(1 + cv^2)))))
+
+plot(d ~ x_new)
+abline(a = 0, b = 1)
+
 mean(phi_dot_E == 0)
 mean(phi_dot_M == 0)
 

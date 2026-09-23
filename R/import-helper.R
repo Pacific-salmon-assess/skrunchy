@@ -1,4 +1,4 @@
-#' @importFrom stats aggregate runif rnorm rmultinom rnbinom var
+#' @importFrom stats aggregate runif rnorm rmultinom rnbinom var plogis qlogis rbeta setNames
 #' @importFrom utils write.csv
 #' @importFrom dplyr filter group_by summarize
 #' @importFrom tidyr pivot_longer

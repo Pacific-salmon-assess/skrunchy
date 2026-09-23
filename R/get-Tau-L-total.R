@@ -75,6 +75,8 @@ get_Tau_L_total <- function(
         FN_catch_L * (1 + IM_FN_catch))
   }
   if (add_uncertainty == TRUE) {
+    # Add a warning about negative values, give proportion negative values.
+    # Add floor for values of 0 (risk of negative values in rnorm).
     n_obs <- length(rec_catch_L)
     cv <- cv_freshwater_mortality
     Tau_L <- proportion_adults *

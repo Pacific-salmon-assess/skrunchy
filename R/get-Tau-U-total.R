@@ -48,10 +48,13 @@ get_Tau_U_total <- function(
       (rec_catch_U * (1 + IM_rec_catch) + FN_catch_U * (1 + IM_FN_catch))
   }
   if (add_uncertainty == TRUE) {
+    # Add a warning about negative values, give proportion negative values.
+    # Add floor for values of 0 (risk of negative values in rnorm).
+    # Test edge case (guardrail?) for Tau_U being higher than X_U, for Skeena aggregate and Upper CUs
     n_obs <- length(rec_catch_U)
     cv <- cv_freshwater_mortality
     Tau_U <- proportion_adults *
-      (rnorm(n = n_obs, mean = rec_catch_U, sd = cv * FN_catch_U) *
+      (rnorm(n = n_obs, mean = rec_catch_U, sd = cv * rec_catch_U) *
         (1 + IM_rec_catch) +
         rnorm(n = n_obs, mean = FN_catch_U, sd = cv * FN_catch_U) *
           (1 + IM_FN_catch))
