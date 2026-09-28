@@ -9,7 +9,7 @@
 #'
 #' @returns
 #'
-#' List of results.
+#' List of results. Item 1: data frame with results summarized, mean, sd, 5th and 95th percentiles.
 #'
 #'
 #' @export
@@ -86,7 +86,12 @@ rru_iterate <- function(
       dplyr::across(
         c("W_wild_spawners", "harvest", "N_total_run", "est_hr"),
         # Add 5th and 95th percentiles to summary stats
-        list(mean = ~ mean(.x, na.rm = TRUE), sd = ~ sd(.x, na.rm = TRUE)),
+        list(
+          mean = ~ mean(.x, na.rm = TRUE),
+          sd = ~ sd(.x, na.rm = TRUE),
+          p5 = ~ quantile(.x, probs = 0.05, na.rm = TRUE),
+          p95 = ~ quantile(.x, probs = 0.95, na.rm = TRUE)
+        ),
         .names = "{.col}_{.fn}"
       ),
       .groups = "drop"
@@ -94,7 +99,7 @@ rru_iterate <- function(
     tidyr::pivot_longer(
       cols = -c(i_population, y_return_year),
       names_to = c("variable", ".value"),
-      names_pattern = "^(.*)_(mean|sd)$"
+      names_pattern = "^(.*)_(mean|sd|p5|p95)$"
     )
 
   # list of arrays, one for each variable
@@ -126,5 +131,5 @@ rru_iterate <- function(
     names(dat)[3:6]
   )
 
-  full_results_list <- list(results, sdat, array_list)
+  full_results_list <- list(sdat, results, array_list)
 }

@@ -67,7 +67,7 @@ Output from CTC Chinook model based on Kitsumkalum CWT releases (KLM).}
   }}
 }
 \value{
-List of results.
+List of results. Item 1: data frame with results summarized, mean, sd, 5th and 95th percentiles.
 }
 \description{
 See \code{\link[=rru]{rru()}} for a single run.

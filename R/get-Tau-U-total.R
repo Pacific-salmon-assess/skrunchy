@@ -58,6 +58,15 @@ get_Tau_U_total <- function(
         (1 + IM_rec_catch) +
         rnorm(n = n_obs, mean = FN_catch_U, sd = cv * FN_catch_U) *
           (1 + IM_FN_catch))
+    perc_neg <- round(mean(Tau_U < 0) * 100, 1)
+    if (any(Tau_U < 0)) {
+      warning(paste0(
+        "Resampling with uncertainty has created negative mortality values. ",
+        perc_neg,
+        "% of resampled values were negative and replaced with zeros."
+      ))
+      Tau_U[Tau_U < 0] <- 0 # replace negative values with zeros
+    }
   }
   names(Tau_U) <- years
   return(Tau_U)
