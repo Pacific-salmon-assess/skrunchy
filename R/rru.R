@@ -223,11 +223,17 @@ rru <- function(
   # proportions, sex-specific escapement, and hatchery contributions.
   K_star
   # Get age-specific escapement by using age proportions.
+  # Need to get K_star resample
+  #get_K_star()
+
   E_star <- get_E_star(
     E = E$E,
     omega = omega_sample,
-    K_star = K_star,
-    add_6_7 = add_6_7
+    #K_star = K_star, # FLAG: need to eventually have a way to use K_star inputs with MC sampling
+    use_alternate_escapement_by_age = FALSE,
+    add_6_7 = add_6_7,
+    K_star = NULL,
+    population_use_age_from_river_samples = NULL
   )
   # Get spawners for each population (accounts for brood stock removals).
   # Spawners should only be different from escapement for Skeena aggregate and
