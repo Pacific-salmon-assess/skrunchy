@@ -105,7 +105,8 @@ rru <- function(
   Q,
   name_key,
   save_outputs = TRUE,
-  iteration_number
+  iteration_number,
+  ...
 ) {
   # Use data from Skeena Tyee test fishery weekly catch and genetic mixture data,
   # and pool it into annual genetic proportions.

@@ -90,7 +90,8 @@ rru_iterate <- function(
           mean = ~ mean(.x, na.rm = TRUE),
           sd = ~ sd(.x, na.rm = TRUE),
           p5 = ~ quantile(.x, probs = 0.05, na.rm = TRUE),
-          p95 = ~ quantile(.x, probs = 0.95, na.rm = TRUE)
+          p95 = ~ quantile(.x, probs = 0.95, na.rm = TRUE),
+          cv = ~ sd(.x, na.rm = TRUE) / mean(.x, na.rm = TRUE)
         ),
         .names = "{.col}_{.fn}"
       ),
@@ -99,7 +100,7 @@ rru_iterate <- function(
     tidyr::pivot_longer(
       cols = -c(i_population, y_return_year),
       names_to = c("variable", ".value"),
-      names_pattern = "^(.*)_(mean|sd|p5|p95)$"
+      names_pattern = "^(.*)_(mean|sd|p5|p95|cv)$"
     )
 
   # list of arrays, one for each variable
