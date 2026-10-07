@@ -3,12 +3,14 @@
 #' See [rru()] for a single run.
 #'
 #' @param n_iter Inter, number of iterations to run. Defaults to 1000.
-#' @param seed Integer or NULL, should a seed be set? For reproducibiliy. Default to 1.
+#' @param seed Integer or NULL, should a seed be set? For reproducibility. Default to 1.
 #' @inheritDotParams rru
+#' @inheritParams rru
+#' @param save_outputs_iterate Logical, should the summarized results of the iterations be saved to the data/ folder?
 #'
 #' @returns
 #'
-#' List of results.
+#' List of results. Item 1: data frame with results summarized, mean, sd, 5th and 95th percentiles.
 #'
 #'
 #' @export
@@ -31,6 +33,8 @@
 #'    omega = ex_omega,
 #'    omega_J = ex_omega_J,
 #'    tyee = ex_Tau$tyee,
+#'    use_tyee= FALSE,
+#'    cv_freshwater_mortality = 0.3,
 #'    rec_catch_L = ex_Tau$rec_catch_L,
 #'    rec_release_L = ex_Tau$rec_release_L,
 #'    FN_catch_L = ex_Tau$FN_catch_L,
@@ -44,6 +48,9 @@
 #'    add_6_7 = TRUE,
 #'    B_star = ex_B_star,
 #'    H_star = ex_H_star,
+#'    rate_resample_method = "lognormal",
+#'    rate_resample_cv = 0.3,
+#'    rate_resample_max_er = 0.5,
 #'    tau_dot_M = ex_tau_dot_M,
 #'    phi_dot_M = ex_phi_dot_M,
 #'    r = ex_r,
@@ -51,11 +58,13 @@
 #'    Q = ex_Q,
 #'    name_key = variable_name_key,
 #'    save_outputs = FALSE,
+#'    save_outputs_iterate = FALSE
 #'    )
 #'
 rru_iterate <- function(
   n_iter = 1000,
   seed = 1,
+  save_outputs_iterate = FALSE,
   ...
 ) {
   j <- n_iter
@@ -70,4 +79,71 @@ rru_iterate <- function(
   }
 
   results
+  x <- results
+  dat <- dplyr::bind_rows(x) |>
+    dplyr::ungroup()
+
+  sdat <- dat |>
+    dplyr::group_by(.data$i_population, .data$y_return_year) |> # eventually add a_age column when spawner recruit code, or give Dylan an age proportion array of harvest
+    dplyr::summarise(
+      dplyr::across(
+        c("W_wild_spawners", "harvest", "N_total_run", "est_hr"),
+        # Get summary stats
+        list(
+          mean = ~ mean(.x, na.rm = TRUE),
+          sd = ~ sd(.x, na.rm = TRUE),
+          p5 = ~ quantile(.x, probs = 0.05, na.rm = TRUE),
+          p95 = ~ quantile(.x, probs = 0.95, na.rm = TRUE),
+          cv = ~ sd(.x, na.rm = TRUE) / mean(.x, na.rm = TRUE)
+        ),
+        .names = "{.col}_{.fn}"
+      ),
+      .groups = "drop"
+    ) |>
+    tidyr::pivot_longer(
+      cols = -c(.data$i_population, .data$y_return_year),
+      names_to = c("variable", ".value"),
+      names_pattern = "^(.*)_(mean|sd|p5|p95|cv)$"
+    )
+
+  # list of arrays, one for each variable
+  # Values and labels for each array dimension
+  dim_levels <- list(
+    i_population = unique(dat$i_population),
+    y_return_year = sort(unique(dat$y_return_year)),
+    iter_n = sort(unique(dat$iter_n))
+  )
+
+  # Row-level array indices
+  idx <- cbind(
+    match(dat$i_population, dim_levels$i_population),
+    match(dat$y_return_year, dim_levels$y_return_year),
+    match(dat$iter_n, dim_levels$iter_n)
+  )
+
+  # Convert columns 3:6 into separate arrays
+  array_list <- setNames(
+    lapply(names(dat)[3:6], function(var) {
+      out <- array(
+        NA_real_,
+        dim = lengths(dim_levels),
+        dimnames = dim_levels
+      )
+      out[idx] <- dat[[var]]
+      out
+    }),
+    names(dat)[3:6]
+  )
+
+  full_results_list <- list(sdat, results, array_list)
+  full_results_list
+
+  if (save_outputs_iterate == TRUE) {
+    run_reconstruction_table_summary_with_uncertainty <- sdat
+    # Save summarized/ merged data objects
+    usethis::use_data(
+      run_reconstruction_table_summary_with_uncertainty,
+      overwrite = TRUE
+    )
+  }
 }

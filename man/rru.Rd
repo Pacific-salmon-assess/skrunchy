@@ -22,6 +22,9 @@ rru(
   FN_catch_L,
   rec_catch_U,
   FN_catch_U,
+  use_tyee = FALSE,
+  add_uncertainty = TRUE,
+  cv_freshwater_mortality = 0.3,
   known_population = "Kitsumkalum",
   aggregate_population = "Skeena",
   lower_populations = c("Lower Skeena", "Zymoetz"),
@@ -30,6 +33,9 @@ rru(
   add_6_7 = TRUE,
   B_star,
   H_star,
+  rate_resample_method,
+  rate_resample_cv,
+  rate_resample_max_er,
   tau_dot_M,
   phi_dot_M,
   r,
@@ -37,7 +43,8 @@ rru(
   Q,
   name_key,
   save_outputs = TRUE,
-  iteration_number
+  iteration_number,
+  ...
 )
 }
 \arguments{
@@ -76,6 +83,12 @@ Note that this should include age proportion for Skeena aggregate. This is used 
 
 \item{FN_catch_U}{Numeric, vector of First Nations FSC catch of jack and adult Chinook in the upper Skeena (upstream of Terrace), by year.}
 
+\item{use_tyee}{Logical, should tyee test fishery mortality count data be used? Added since TNBC TERM N includes Tyee test fishery mortality.}
+
+\item{add_uncertainty}{Logical, should a sample be drawn for adding uncertainty? Used for rru(). Defaults to FALSE}
+
+\item{cv_freshwater_mortality}{Numeric, if add_uncertainty = TRUE, cv to apply to monte carlo sample draw of each source of mortality. Defaults to 0.3 (CV = 30\%).}
+
 \item{known_population}{Name of population i with known or estimated escapement. Defaults to Kitsumkalum.}
 
 \item{aggregate_population}{Name of population i that is the sum of the other populations. Defaults to Skeena.}
@@ -93,6 +106,12 @@ age proportion data from spawning grounds (not from Tyee samples) for males and 
 
 \item{H_star}{Numeric, array of number of hatchery origin spawners returning to the population with a hatchery (e.g., Kitsumkalum River), by year (y) and age (a). Excludes age 3 fish (jacks).
 This is the sum of CTC model output column Esc_exp by return year and age, for KLM (fry) and KLY (yearlings) combined.}
+
+\item{rate_resample_method}{Character, which method to use to add error. Options are "lognormal", "beta", or "logit".}
+
+\item{rate_resample_cv}{Numeric, decimal CV to use for lognormal method.}
+
+\item{rate_resample_max_er}{Numeric, single value of max ER rate from resampling. Defaults to 0.5}
 
 \item{tau_dot_M}{Numeric, array of terminal marine exploitation rates with dimensions year (y) and age (a). Sum of exploitation rate for terminal
 marine net fisheries and exploitation rate for terminal marine sport fisheries
@@ -117,6 +136,8 @@ Output from CTC Chinook model based on Kitsumkalum CWT releases (KLM).}
 \item{save_outputs}{Logical, whether to save the outputs. Default is TRUE.}
 
 \item{iteration_number}{Integer, index of iteration}
+
+\item{...}{Other arguments to pass to internal functions.}
 }
 \value{
 List of results.
@@ -152,6 +173,8 @@ results <- rru(
   FN_catch_L = ex_Tau$FN_catch_L,
   rec_catch_U = ex_Tau$rec_catch_U,
   FN_catch_U = ex_Tau$FN_catch_U,
+  use_tyee= FALSE,
+  cv_freshwater_mortality = 0.3,
   known_population = "Kitsumkalum",
   aggregate_population = "Skeena",
   lower_populations = c("Lower Skeena", "Zymoetz"),
@@ -161,6 +184,9 @@ results <- rru(
   B_star = ex_B_star,
   H_star = ex_H_star,
   tau_dot_M = ex_tau_dot_M,
+  rate_resample_method = "lognormal",
+  rate_resample_cv = 0.3,
+  rate_resample_max_er = 0.5,
   phi_dot_M = ex_phi_dot_M,
   r = ex_r,
   phi_dot_E = ex_phi_dot_E,

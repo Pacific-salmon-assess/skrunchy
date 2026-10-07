@@ -10,6 +10,9 @@
 #' @param n_age_samples Integer, number of age samples by year, for sampling.
 #' @param n_age_samples_J Integer, number of age samples by year, including age 3 (jacks), for sampling.
 #' @param iteration_number Integer, index of iteration
+#' @inheritParams get_Tau_L_total
+#' @inheritParams resample_exploitation_rates
+#' @param ... Other arguments to pass to internal functions.
 #'
 #'
 #' @returns
@@ -41,6 +44,8 @@
 #'   FN_catch_L = ex_Tau$FN_catch_L,
 #'   rec_catch_U = ex_Tau$rec_catch_U,
 #'   FN_catch_U = ex_Tau$FN_catch_U,
+#'   use_tyee= FALSE,
+#'   cv_freshwater_mortality = 0.3,
 #'   known_population = "Kitsumkalum",
 #'   aggregate_population = "Skeena",
 #'   lower_populations = c("Lower Skeena", "Zymoetz"),
@@ -50,6 +55,9 @@
 #'   B_star = ex_B_star,
 #'   H_star = ex_H_star,
 #'   tau_dot_M = ex_tau_dot_M,
+#'   rate_resample_method = "lognormal",
+#'   rate_resample_cv = 0.3,
+#'   rate_resample_max_er = 0.5,
 #'   phi_dot_M = ex_phi_dot_M,
 #'   r = ex_r,
 #'   phi_dot_E = ex_phi_dot_E,
@@ -77,6 +85,9 @@ rru <- function(
   FN_catch_L,
   rec_catch_U,
   FN_catch_U,
+  use_tyee = FALSE,
+  add_uncertainty = TRUE,
+  cv_freshwater_mortality = 0.3,
   known_population = "Kitsumkalum",
   aggregate_population = "Skeena",
   lower_populations = c("Lower Skeena", "Zymoetz"),
@@ -85,6 +96,9 @@ rru <- function(
   add_6_7 = TRUE,
   B_star,
   H_star,
+  rate_resample_method,
+  rate_resample_cv,
+  rate_resample_max_er,
   tau_dot_M,
   phi_dot_M,
   r,
@@ -92,7 +106,8 @@ rru <- function(
   Q,
   name_key,
   save_outputs = TRUE,
-  iteration_number
+  iteration_number,
+  ...
 ) {
   # Use data from Skeena Tyee test fishery weekly catch and genetic mixture data,
   # and pool it into annual genetic proportions.
@@ -142,7 +157,7 @@ rru <- function(
   # in the deterministic run reconstruction
 
   # Get a monte carlo sample of K
-  K_sample_normal <- rnorm(n = length(K), mean = K, sd = sigma_K)
+  K_sample <- rnorm(n = length(K), mean = K, sd = sigma_K)
   # ! # Apply a negative binomial instead:
   # ! # An alternative parametrization (often used in ecology) is by the
   # ! #   _mean_ 'mu' (see above), and 'size', the _dispersion parameter_,
@@ -150,15 +165,17 @@ rru <- function(
   # ! #   in this parametrization.
   # ! # Mairin has made a new function, estimate_nbinomial_params, for this
 
-  K_mu <- estimate_nbinomial_params(K)$mu
-  K_size <- estimate_nbinomial_params(K)$size
-  K_sample <- rnbinom(n = length(K), size = K_size, mu = K_mu)
+  # K_mu <- estimate_nbinomial_params(K)$mu
+  # K_size <- estimate_nbinomial_params(K)$size
+  # K_sample <- rnbinom(n = length(K), size = K_size, mu = K_mu)
   # FLAG: I think this produces a time series that has no correlation with the original data.
   # e.g., samples every year from the same distribution (observed high years don't get higher sampled values).
   # I'm hazy on this distribution, but don't we want to retain some of the original
   # trend, and just use the sampling error from the observed data?
   # Does below make sense?
-  K_sample <- rnbinom(n = length(K), size = K_size, mu = K)
+  # K_sample <- rnbinom(n = length(K), size = K_size, mu = K)
+  # This actually samples pretty far from original data. Much more than normal distribution.
+  # For now, just use normal
 
   # Now do expansions to get returns to Terrace for each population, and the
   # Skeena aggregate.
@@ -177,13 +194,19 @@ rru <- function(
     tyee = tyee,
     rec_catch_L = rec_catch_L,
     rec_release_L = rec_release_L,
-    FN_catch_L = FN_catch_L
+    FN_catch_L = FN_catch_L,
+    use_tyee = FALSE,
+    add_uncertainty = add_uncertainty,
+    cv_freshwater_mortality = cv_freshwater_mortality
   )
   # Get freshwater terminal mortalities in the upper Skeena by year
   Tau_U_total <- get_Tau_U_total(
     omega_J = omega_J_sample,
     rec_catch_U = rec_catch_U,
-    FN_catch_U = FN_catch_U
+    FN_catch_U = FN_catch_U,
+    add_uncertainty = add_uncertainty,
+    cv_freshwater_mortality = cv_freshwater_mortality,
+    X = X$X
   )
   # Get escapement for each population, plot with returns to Terrace (note, will
   # only be different for Skeena aggregate and the three upper populations).
@@ -203,11 +226,17 @@ rru <- function(
   # proportions, sex-specific escapement, and hatchery contributions.
   K_star
   # Get age-specific escapement by using age proportions.
+  # Need to get K_star resample
+  #get_K_star()
+
   E_star <- get_E_star(
     E = E$E,
     omega = omega_sample,
-    K_star = K_star,
-    add_6_7 = add_6_7
+    #K_star = K_star, # FLAG: need to eventually have a way to use K_star inputs with MC sampling
+    use_alternate_escapement_by_age = FALSE,
+    add_6_7 = add_6_7,
+    K_star = NULL,
+    population_use_age_from_river_samples = NULL
   )
   # Get spawners for each population (accounts for brood stock removals).
   # Spawners should only be different from escapement for Skeena aggregate and
@@ -238,11 +267,18 @@ rru <- function(
     P_tilde = P_tilde_sample,
     aggregate_population = aggregate_population, # "Skeena",
     upper_populations = upper_populations, # c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-    lower_populations = lower_populations, # c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
+    lower_populations = c(known_population, lower_populations), # c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
     add_6_7 = add_6_7
   )
+  # add uncertainty to Terminal marine mortality rate
+  tau_dot_M_sample <- resample_exploitation_rates(
+    tau_dot_M,
+    rate_resample_method = rate_resample_method,
+    rate_resample_cv = rate_resample_cv,
+    rate_resample_max_er = rate_resample_max_er
+  )
   # Estimate marine terminal mortalities in the marine area by population, year, and age.
-  tau_M <- get_tau_M(W_star = W_star$W_star, tau_dot_M = tau_dot_M)
+  tau_M <- get_tau_M(W_star = W_star$W_star, tau_dot_M = tau_dot_M_sample)
   # Get wild total terminal mortality
   tau_W <- get_tau_W(
     tau_U = tau_U$tau_U,
@@ -257,11 +293,26 @@ rru <- function(
     B_star = B_star
   )
   # Get mature run
-  MatureRun <- get_MatureRun(TermRun = TermRun$TermRun, phi_dot_M = phi_dot_M)
+  phi_dot_M_sample <- resample_exploitation_rates(
+    phi_dot_M,
+    rate_resample_method = rate_resample_method,
+    rate_resample_cv = rate_resample_cv,
+    rate_resample_max_er = rate_resample_max_er
+  )
+  MatureRun <- get_MatureRun(
+    TermRun = TermRun$TermRun,
+    phi_dot_M = phi_dot_M_sample
+  )
   # Get pre-terminal post fishery abundance.
   A_phi <- get_A_phi(MatureRun = MatureRun$MatureRun, r = r)
   # Get pre-fishery ocean abundance.
-  A_P <- get_A_P(A_phi = A_phi$A_phi, phi_dot_E = phi_dot_E)
+  phi_dot_E_sample <- resample_exploitation_rates(
+    phi_dot_E,
+    rate_resample_method = rate_resample_method,
+    rate_resample_cv = rate_resample_cv,
+    rate_resample_max_er = rate_resample_max_er
+  )
+  A_P <- get_A_P(A_phi = A_phi$A_phi, phi_dot_E = phi_dot_E_sample)
   # Get preterminal fishing mortality in nominal fish.
   phi_N <- get_phi_N(A_P = A_P$A_P, A_phi = A_phi$A_phi)
   # Get preterminal fishing mortality in adult equivalents.

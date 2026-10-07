@@ -4,12 +4,14 @@
 \alias{rru_iterate}
 \title{Do run reconstruction with uncertainty, iterate many times}
 \usage{
-rru_iterate(n_iter = 1000, seed = 1, ...)
+rru_iterate(n_iter = 1000, seed = 1, save_outputs_iterate = FALSE, ...)
 }
 \arguments{
 \item{n_iter}{Inter, number of iterations to run. Defaults to 1000.}
 
-\item{seed}{Integer or NULL, should a seed be set? For reproducibiliy. Default to 1.}
+\item{seed}{Integer or NULL, should a seed be set? For reproducibility. Default to 1.}
+
+\item{save_outputs_iterate}{Logical, should the summarized results of the iterations be saved to the data/ folder?}
 
 \item{...}{
   Arguments passed on to \code{\link{rru}}
@@ -36,8 +38,8 @@ Note that this should include age proportion for Skeena aggregate. This is used 
     \item{\code{FN_catch_L}}{Numeric, vector of First Nations FSC catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.}
     \item{\code{rec_catch_U}}{Numeric, vector of recreational catch of jack and adult Chinook in the upper Skeena (upstream of Terrace), by year.}
     \item{\code{FN_catch_U}}{Numeric, vector of First Nations FSC catch of jack and adult Chinook in the upper Skeena (upstream of Terrace), by year.}
-    \item{\code{lower_populations}}{Character vector, names of populations i downstream of Terrace. Defaults to Lower Skeena and Zymoetz-Fiddler.}
     \item{\code{upper_populations}}{Character vector, names of populations i upstream of Terrace. Defaults to Upper Skeena, Middle Skeena, and Large Lakes.}
+    \item{\code{lower_populations}}{Character vector, names of populations i downstream of Terrace. Defaults to Lower Skeena and Zymoetz-Fiddler.}
     \item{\code{omega}}{Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).}
     \item{\code{K_star}}{Numeric, array of Kitsumkalum River escapement with two dimensions: return year (y) and age (a). Calculated using
 age proportion data from spawning grounds (not from Tyee samples) for males and females separately.}
@@ -58,10 +60,16 @@ Equal to the number of fish caught plus incidental mortalities for non-net fishe
 areas seaward of the terminal area, divided by total stock for the cohort, in nominal fish (not adjusted for AEQs).}
     \item{\code{Q}}{Numeric, array of adult equivalency (AEQ) rates with two dimensions: year (y) and age (a).
 Output from CTC Chinook model based on Kitsumkalum CWT releases (KLM).}
+    \item{\code{use_tyee}}{Logical, should tyee test fishery mortality count data be used? Added since TNBC TERM N includes Tyee test fishery mortality.}
+    \item{\code{add_uncertainty}}{Logical, should a sample be drawn for adding uncertainty? Used for rru(). Defaults to FALSE}
+    \item{\code{cv_freshwater_mortality}}{Numeric, if add_uncertainty = TRUE, cv to apply to monte carlo sample draw of each source of mortality. Defaults to 0.3 (CV = 30\%).}
+    \item{\code{rate_resample_max_er}}{Numeric, single value of max ER rate from resampling. Defaults to 0.5}
+    \item{\code{rate_resample_method}}{Character, which method to use to add error. Options are "lognormal", "beta", or "logit".}
+    \item{\code{rate_resample_cv}}{Numeric, decimal CV to use for lognormal method.}
   }}
 }
 \value{
-List of results.
+List of results. Item 1: data frame with results summarized, mean, sd, 5th and 95th percentiles.
 }
 \description{
 See \code{\link[=rru]{rru()}} for a single run.
@@ -84,6 +92,8 @@ See \code{\link[=rru]{rru()}} for a single run.
    omega = ex_omega,
    omega_J = ex_omega_J,
    tyee = ex_Tau$tyee,
+   use_tyee= FALSE,
+   cv_freshwater_mortality = 0.3,
    rec_catch_L = ex_Tau$rec_catch_L,
    rec_release_L = ex_Tau$rec_release_L,
    FN_catch_L = ex_Tau$FN_catch_L,
@@ -97,6 +107,9 @@ See \code{\link[=rru]{rru()}} for a single run.
    add_6_7 = TRUE,
    B_star = ex_B_star,
    H_star = ex_H_star,
+   rate_resample_method = "lognormal",
+   rate_resample_cv = 0.3,
+   rate_resample_max_er = 0.5,
    tau_dot_M = ex_tau_dot_M,
    phi_dot_M = ex_phi_dot_M,
    r = ex_r,
@@ -104,6 +117,7 @@ See \code{\link[=rru]{rru()}} for a single run.
    Q = ex_Q,
    name_key = variable_name_key,
    save_outputs = FALSE,
+   save_outputs_iterate = FALSE
    )
 
 }

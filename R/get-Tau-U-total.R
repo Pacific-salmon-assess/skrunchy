@@ -12,6 +12,10 @@
 #' @param FN_catch_U Numeric, vector of First Nations FSC catch of jack and adult Chinook in the upper Skeena (upstream of Terrace), by year.
 #' @param IM_FN_catch Numeric, value to use for incidental mortality (drouput) for First Nations FSC catch. Default is 4.6%.
 #' @param adult_ages Character, vector of adult ages to use. Should match age names of omega_J columns. Defaults to "4", "5", "6", and "7".
+#' @param add_uncertainty Logical, should a sample be drawn for adding uncertainty? Used for rru(). Defaults to FALSE
+#' @param cv_freshwater_mortality Numeric, if add_uncertainty = TRUE, cv to apply to monte carlo sample draw of each source of mortality. Defaults to 0.3 (CV = 30%).
+#' @param X Numeric, array of returns to Terrace with two dimensions: population (i) and year (y).
+#' @param upper_populations Character vector, names of populations i upstream of Terrace. Defaults to Upper Skeena, Middle Skeena, and Large Lakes.
 #'
 #' @return A numeric vector of total terminal mortalities including catch and incidental mortalities, for the upper Skeena (upstream of Terrace), by year.
 #'
@@ -30,7 +34,11 @@ get_Tau_U_total <- function(
   IM_rec_catch = 0.069,
   FN_catch_U,
   IM_FN_catch = 0.046,
-  adult_ages = as.character(c(4, 5, 6, 7))
+  adult_ages = as.character(c(4, 5, 6, 7)),
+  add_uncertainty = FALSE,
+  cv_freshwater_mortality = 0.3,
+  upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"),
+  X = NULL
 ) {
   # Check vector lengths
   dim(omega_J)[1]
@@ -39,8 +47,40 @@ get_Tau_U_total <- function(
 
   years <- dimnames(omega_J)$y
   proportion_adults <- apply(omega_J[, adult_ages], 1, FUN = sum)
-  Tau_U <- proportion_adults *
-    (rec_catch_U * (1 + IM_rec_catch) + FN_catch_U * (1 + IM_FN_catch))
+  if (add_uncertainty == FALSE) {
+    Tau_U <- proportion_adults *
+      (rec_catch_U * (1 + IM_rec_catch) + FN_catch_U * (1 + IM_FN_catch))
+  }
+  if (add_uncertainty == TRUE) {
+    # Add a warning about negative values, give proportion negative values.
+    # Add floor for values of 0 (risk of negative values in rnorm).
+    # Test edge case (guardrail?) for Tau_U being higher than X_U, for Skeena aggregate and Upper CUs
+    n_obs <- length(rec_catch_U)
+    cv <- cv_freshwater_mortality
+    Tau_U <- proportion_adults *
+      (rnorm(n = n_obs, mean = rec_catch_U, sd = cv * rec_catch_U) *
+        (1 + IM_rec_catch) +
+        rnorm(n = n_obs, mean = FN_catch_U, sd = cv * FN_catch_U) *
+          (1 + IM_FN_catch))
+    perc_neg <- round(mean(Tau_U < 0) * 100, 1)
+    if (any(Tau_U < 0)) {
+      warning(paste0(
+        "Resampling with uncertainty has created negative mortality values. ",
+        perc_neg,
+        "% of resampled values were negative and replaced with zeros."
+      ))
+      Tau_U[Tau_U < 0] <- 0 # replace negative values with zeros
+    }
+    # warning about if Tau_U is greater than X_U. Can't have harvest upstream of Terrace exceed return to Terrace
+    X_U <- apply(X[upper_populations, ], 2, sum) # add upper population return to Terrace, to check against resampled
+    if (any(Tau_U > X_U)) {
+      stop(
+        "Resampling introduced harvest upstream of Terrace (Tau_U) greater
+          than return to Terrace of upper CUs (X_U). Check freshwater catch numbers and
+          `cv_freshwater_mortality` argument."
+      )
+    }
+  }
   names(Tau_U) <- years
   return(Tau_U)
 }
