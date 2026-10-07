@@ -9,7 +9,7 @@ rru_iterate(n_iter = 1000, seed = 1, ...)
 \arguments{
 \item{n_iter}{Inter, number of iterations to run. Defaults to 1000.}
 
-\item{seed}{Integer or NULL, should a seed be set? For reproducibiliy. Default to 1.}
+\item{seed}{Integer or NULL, should a seed be set? For reproducibility. Default to 1.}
 
 \item{...}{
   Arguments passed on to \code{\link{rru}}
@@ -36,8 +36,8 @@ Note that this should include age proportion for Skeena aggregate. This is used 
     \item{\code{FN_catch_L}}{Numeric, vector of First Nations FSC catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.}
     \item{\code{rec_catch_U}}{Numeric, vector of recreational catch of jack and adult Chinook in the upper Skeena (upstream of Terrace), by year.}
     \item{\code{FN_catch_U}}{Numeric, vector of First Nations FSC catch of jack and adult Chinook in the upper Skeena (upstream of Terrace), by year.}
-    \item{\code{lower_populations}}{Character vector, names of populations i downstream of Terrace. Defaults to Lower Skeena and Zymoetz-Fiddler.}
     \item{\code{upper_populations}}{Character vector, names of populations i upstream of Terrace. Defaults to Upper Skeena, Middle Skeena, and Large Lakes.}
+    \item{\code{lower_populations}}{Character vector, names of populations i downstream of Terrace. Defaults to Lower Skeena and Zymoetz-Fiddler.}
     \item{\code{omega}}{Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).}
     \item{\code{K_star}}{Numeric, array of Kitsumkalum River escapement with two dimensions: return year (y) and age (a). Calculated using
 age proportion data from spawning grounds (not from Tyee samples) for males and females separately.}

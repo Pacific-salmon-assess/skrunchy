@@ -12,7 +12,9 @@ get_Tau_U_total(
   IM_FN_catch = 0.046,
   adult_ages = as.character(c(4, 5, 6, 7)),
   add_uncertainty = FALSE,
-  cv_freshwater_mortality = 0.3
+  cv_freshwater_mortality = 0.3,
+  upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"),
+  X = NULL
 )
 }
 \arguments{
@@ -31,6 +33,10 @@ get_Tau_U_total(
 \item{add_uncertainty}{Logical, should a sample be drawn for adding uncertainty? Used for rru(). Defaults to FALSE}
 
 \item{cv_freshwater_mortality}{Numeric, if add_uncertainty = TRUE, cv to apply to monte carlo sample draw of each source of mortality. Defaults to 0.3 (CV = 30\%).}
+
+\item{upper_populations}{Character vector, names of populations i upstream of Terrace. Defaults to Upper Skeena, Middle Skeena, and Large Lakes.}
+
+\item{X}{Numeric, array of returns to Terrace with two dimensions: population (i) and year (y).}
 }
 \value{
 A numeric vector of total terminal mortalities including catch and incidental mortalities, for the upper Skeena (upstream of Terrace), by year.

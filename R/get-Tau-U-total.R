@@ -14,6 +14,8 @@
 #' @param adult_ages Character, vector of adult ages to use. Should match age names of omega_J columns. Defaults to "4", "5", "6", and "7".
 #' @param add_uncertainty Logical, should a sample be drawn for adding uncertainty? Used for rru(). Defaults to FALSE
 #' @param cv_freshwater_mortality Numeric, if add_uncertainty = TRUE, cv to apply to monte carlo sample draw of each source of mortality. Defaults to 0.3 (CV = 30%).
+#' @param X Numeric, array of returns to Terrace with two dimensions: population (i) and year (y).
+#' @param upper_populations Character vector, names of populations i upstream of Terrace. Defaults to Upper Skeena, Middle Skeena, and Large Lakes.
 #'
 #' @return A numeric vector of total terminal mortalities including catch and incidental mortalities, for the upper Skeena (upstream of Terrace), by year.
 #'
@@ -34,7 +36,9 @@ get_Tau_U_total <- function(
   IM_FN_catch = 0.046,
   adult_ages = as.character(c(4, 5, 6, 7)),
   add_uncertainty = FALSE,
-  cv_freshwater_mortality = 0.3
+  cv_freshwater_mortality = 0.3,
+  upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"),
+  X = NULL
 ) {
   # Check vector lengths
   dim(omega_J)[1]
@@ -67,8 +71,15 @@ get_Tau_U_total <- function(
       ))
       Tau_U[Tau_U < 0] <- 0 # replace negative values with zeros
     }
-    # Add warning about if Tau_U is greater than X_U
-    #if( )
+    # warning about if Tau_U is greater than X_U. Can't have harvest upstream of Terrace exceed return to Terrace
+    X_U <- apply(X[upper_populations, ], 2, sum) # add upper population return to Terrace, to check against resampled
+    if (any(Tau_U > X_U)) {
+      stop(
+        "Resampling introduced harvest upstream of Terrace (Tau_U) greater
+          than return to Terrace of upper CUs (X_U). Check freshwater catch numbers and
+          `cv_freshwater_mortality` argument."
+      )
+    }
   }
   names(Tau_U) <- years
   return(Tau_U)

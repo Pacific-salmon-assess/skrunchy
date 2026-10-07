@@ -205,7 +205,8 @@ rru <- function(
     rec_catch_U = rec_catch_U,
     FN_catch_U = FN_catch_U,
     add_uncertainty = add_uncertainty,
-    cv_freshwater_mortality = cv_freshwater_mortality
+    cv_freshwater_mortality = cv_freshwater_mortality,
+    X = X$X
   )
   # Get escapement for each population, plot with returns to Terrace (note, will
   # only be different for Skeena aggregate and the three upper populations).

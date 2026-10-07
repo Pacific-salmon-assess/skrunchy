@@ -3,7 +3,7 @@
 #' See [rru()] for a single run.
 #'
 #' @param n_iter Inter, number of iterations to run. Defaults to 1000.
-#' @param seed Integer or NULL, should a seed be set? For reproducibiliy. Default to 1.
+#' @param seed Integer or NULL, should a seed be set? For reproducibility. Default to 1.
 #' @inheritDotParams rru
 #' @inheritParams rru
 #'
@@ -81,11 +81,11 @@ rru_iterate <- function(
     dplyr::ungroup()
 
   sdat <- dat |>
-    dplyr::group_by(.data$i_population, .data$y_return_year) |>
+    dplyr::group_by(.data$i_population, .data$y_return_year) |> # eventually add a_age column when spawner recruit code, or give Dylan an age proportion array of harvest
     dplyr::summarise(
       dplyr::across(
         c("W_wild_spawners", "harvest", "N_total_run", "est_hr"),
-        # Add 5th and 95th percentiles to summary stats
+        # Get summary stats
         list(
           mean = ~ mean(.x, na.rm = TRUE),
           sd = ~ sd(.x, na.rm = TRUE),
@@ -133,4 +133,5 @@ rru_iterate <- function(
   )
 
   full_results_list <- list(sdat, results, array_list)
+  full_results_list
 }
