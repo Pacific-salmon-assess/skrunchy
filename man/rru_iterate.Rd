@@ -4,12 +4,14 @@
 \alias{rru_iterate}
 \title{Do run reconstruction with uncertainty, iterate many times}
 \usage{
-rru_iterate(n_iter = 1000, seed = 1, ...)
+rru_iterate(n_iter = 1000, seed = 1, save_outputs_iterate = FALSE, ...)
 }
 \arguments{
 \item{n_iter}{Inter, number of iterations to run. Defaults to 1000.}
 
 \item{seed}{Integer or NULL, should a seed be set? For reproducibility. Default to 1.}
+
+\item{save_outputs_iterate}{Logical, should the summarized results of the iterations be saved to the data/ folder?}
 
 \item{...}{
   Arguments passed on to \code{\link{rru}}
@@ -115,6 +117,7 @@ See \code{\link[=rru]{rru()}} for a single run.
    Q = ex_Q,
    name_key = variable_name_key,
    save_outputs = FALSE,
+   save_outputs_iterate = FALSE
    )
 
 }

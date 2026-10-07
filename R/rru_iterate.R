@@ -6,6 +6,7 @@
 #' @param seed Integer or NULL, should a seed be set? For reproducibility. Default to 1.
 #' @inheritDotParams rru
 #' @inheritParams rru
+#' @param save_outputs_iterate Logical, should the summarized results of the iterations be saved to the data/ folder?
 #'
 #' @returns
 #'
@@ -57,11 +58,13 @@
 #'    Q = ex_Q,
 #'    name_key = variable_name_key,
 #'    save_outputs = FALSE,
+#'    save_outputs_iterate = FALSE
 #'    )
 #'
 rru_iterate <- function(
   n_iter = 1000,
   seed = 1,
+  save_outputs_iterate = FALSE,
   ...
 ) {
   j <- n_iter
@@ -134,4 +137,13 @@ rru_iterate <- function(
 
   full_results_list <- list(sdat, results, array_list)
   full_results_list
+
+  if (save_outputs_iterate == TRUE) {
+    run_reconstruction_table_summary_with_uncertainty <- sdat
+    # Save summarized/ merged data objects
+    usethis::use_data(
+      run_reconstruction_table_summary_with_uncertainty,
+      overwrite = TRUE
+    )
+  }
 }
