@@ -67,8 +67,8 @@ get_Tau_U_total <- function(
       ))
       Tau_U[Tau_U < 0] <- 0 # replace negative values with zeros
     }
-    # Add warning about if Tau_U is greater than X__U
-    if( )
+    # Add warning about if Tau_U is greater than X_U
+    #if( )
   }
   names(Tau_U) <- years
   return(Tau_U)

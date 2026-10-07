@@ -81,7 +81,7 @@ rru_iterate <- function(
     dplyr::ungroup()
 
   sdat <- dat |>
-    dplyr::group_by(i_population, y_return_year) |>
+    dplyr::group_by(.data$i_population, .data$y_return_year) |>
     dplyr::summarise(
       dplyr::across(
         c("W_wild_spawners", "harvest", "N_total_run", "est_hr"),
@@ -98,7 +98,7 @@ rru_iterate <- function(
       .groups = "drop"
     ) |>
     tidyr::pivot_longer(
-      cols = -c(i_population, y_return_year),
+      cols = -c(.data$i_population, .data$y_return_year),
       names_to = c("variable", ".value"),
       names_pattern = "^(.*)_(mean|sd|p5|p95|cv)$"
     )

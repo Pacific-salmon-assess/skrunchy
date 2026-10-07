@@ -12,6 +12,7 @@
 #' @param iteration_number Integer, index of iteration
 #' @inheritParams get_Tau_L_total
 #' @inheritParams resample_exploitation_rates
+#' @param ... Other arguments to pass to internal functions.
 #'
 #'
 #' @returns

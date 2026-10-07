@@ -43,7 +43,8 @@ rru(
   Q,
   name_key,
   save_outputs = TRUE,
-  iteration_number
+  iteration_number,
+  ...
 )
 }
 \arguments{
@@ -135,6 +136,8 @@ Output from CTC Chinook model based on Kitsumkalum CWT releases (KLM).}
 \item{save_outputs}{Logical, whether to save the outputs. Default is TRUE.}
 
 \item{iteration_number}{Integer, index of iteration}
+
+\item{...}{Other arguments to pass to internal functions.}
 }
 \value{
 List of results.
