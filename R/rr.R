@@ -43,6 +43,7 @@
 #'    omega = ex_omega,
 #'    omega_J = ex_omega_J,
 #'    tyee = ex_Tau$tyee,
+#'    use_tyee= FALSE,
 #'    rec_catch_L = ex_Tau$rec_catch_L,
 #'    rec_release_L = ex_Tau$rec_release_L,
 #'    FN_catch_L = ex_Tau$FN_catch_L,
@@ -75,6 +76,7 @@ rr <- function(
   omega,
   omega_J,
   tyee,
+  use_tyee,
   rec_catch_L,
   rec_release_L,
   FN_catch_L,
@@ -128,6 +130,7 @@ rr <- function(
   Tau_L_total <- get_Tau_L_total(
     omega_J = omega_J,
     tyee = tyee,
+    use_tyee = FALSE,
     rec_catch_L = rec_catch_L,
     rec_release_L = rec_release_L,
     FN_catch_L = FN_catch_L
@@ -136,7 +139,7 @@ rr <- function(
   Tau_U_total <- get_Tau_U_total(
     omega_J = omega_J,
     rec_catch_U = rec_catch_U,
-    FN_catch_U = FN_catch_U
+    FN_catch_U = FN_catch_U,
   )
   # Get escapement for each population, plot with returns to Terrace (note, will
   # only be different for Skeena aggregate and the three upper populations).

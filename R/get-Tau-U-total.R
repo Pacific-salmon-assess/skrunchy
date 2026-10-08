@@ -72,6 +72,7 @@ get_Tau_U_total <- function(
       Tau_U[Tau_U < 0] <- 0 # replace negative values with zeros
     }
     # warning about if Tau_U is greater than X_U. Can't have harvest upstream of Terrace exceed return to Terrace
+    # Add more details to warning. Which years, by how much?
     X_U <- apply(X[upper_populations, ], 2, sum) # add upper population return to Terrace, to check against resampled
     if (any(Tau_U > X_U)) {
       stop(
