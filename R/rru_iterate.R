@@ -136,7 +136,6 @@ rru_iterate <- function(
   )
 
   full_results_list <- list(sdat, results, array_list)
-  full_results_list
 
   if (save_outputs_iterate == TRUE) {
     run_reconstruction_table_summary_with_uncertainty <- sdat
@@ -146,4 +145,6 @@ rru_iterate <- function(
       overwrite = TRUE
     )
   }
+
+  full_results_list
 }
