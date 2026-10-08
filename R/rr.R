@@ -194,7 +194,7 @@ rr <- function(
     P_tilde = P_tilde$P_tilde,
     aggregate_population = aggregate_population, # "Skeena",
     upper_populations = upper_populations, # c("Middle Skeena", "Large Lakes", "Upper Skeena"),
-    lower_populations = lower_populations, # c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
+    lower_populations = c(known_population, lower_populations), # c("Lower Skeena", "Kitsumkalum", "Zymoetz"),
     add_6_7 = add_6_7
   )
   # Estimate marine terminal mortalities in the marine area by population, year, and age.
