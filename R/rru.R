@@ -195,7 +195,7 @@ rru <- function(
     rec_catch_L = rec_catch_L,
     rec_release_L = rec_release_L,
     FN_catch_L = FN_catch_L,
-    use_tyee = FALSE,
+    use_tyee = use_tyee,
     add_uncertainty = add_uncertainty,
     cv_freshwater_mortality = cv_freshwater_mortality
   )
@@ -527,10 +527,10 @@ rru <- function(
   }
 
   run_reconstruction_table_summary
-  # results <- list(
-  #   run_reconstruction_table,
-  #   run_reconstruction_table_summary,
-  #   brood_table
-  # )
-  # results
+  results <- list(
+    run_reconstruction_table,
+    run_reconstruction_table_summary,
+    # brood_table
+  )
+  results
 }
