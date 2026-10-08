@@ -14,6 +14,7 @@ rr(
   omega,
   omega_J,
   tyee,
+  use_tyee,
   rec_catch_L,
   rec_release_L,
   FN_catch_L,
@@ -55,6 +56,8 @@ rr(
 Note that this should include age proportion for Skeena aggregate. This is used to remove jacks from the terminal mortality.}
 
 \item{tyee}{Numeric, vector of the total catch of adult and jack Chinook at the Skeena Tyee Test fishery, by year.}
+
+\item{use_tyee}{Logical, should tyee test fishery mortality count data be used? Added since TNBC TERM N includes Tyee test fishery mortality.}
 
 \item{rec_catch_L}{Numeric, vector of recreational catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.}
 
@@ -125,6 +128,7 @@ into data/ folder as .rds files.
    omega = ex_omega,
    omega_J = ex_omega_J,
    tyee = ex_Tau$tyee,
+   use_tyee= FALSE,
    rec_catch_L = ex_Tau$rec_catch_L,
    rec_release_L = ex_Tau$rec_release_L,
    FN_catch_L = ex_Tau$FN_catch_L,

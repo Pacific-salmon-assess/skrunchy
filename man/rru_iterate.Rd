@@ -33,6 +33,7 @@ rru_iterate(n_iter = 1000, seed = 1, save_outputs_iterate = FALSE, ...)
     \item{\code{omega_J}}{Numeric, array of proportions of each age including jacks (age 3) for the Skeena River aggregate, with two dimensions: year (y), and age (a).
 Note that this should include age proportion for Skeena aggregate. This is used to remove jacks from the terminal mortality.}
     \item{\code{tyee}}{Numeric, vector of the total catch of adult and jack Chinook at the Skeena Tyee Test fishery, by year.}
+    \item{\code{use_tyee}}{Logical, should tyee test fishery mortality count data be used? Added since TNBC TERM N includes Tyee test fishery mortality.}
     \item{\code{rec_catch_L}}{Numeric, vector of recreational catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.}
     \item{\code{rec_release_L}}{Numeric, vector of recreational catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.}
     \item{\code{FN_catch_L}}{Numeric, vector of First Nations FSC catch of jack and adult Chinook in the lower Skeena (downstream of Terrace), by year.}
@@ -60,7 +61,6 @@ Equal to the number of fish caught plus incidental mortalities for non-net fishe
 areas seaward of the terminal area, divided by total stock for the cohort, in nominal fish (not adjusted for AEQs).}
     \item{\code{Q}}{Numeric, array of adult equivalency (AEQ) rates with two dimensions: year (y) and age (a).
 Output from CTC Chinook model based on Kitsumkalum CWT releases (KLM).}
-    \item{\code{use_tyee}}{Logical, should tyee test fishery mortality count data be used? Added since TNBC TERM N includes Tyee test fishery mortality.}
     \item{\code{add_uncertainty}}{Logical, should a sample be drawn for adding uncertainty? Used for rru(). Defaults to FALSE}
     \item{\code{cv_freshwater_mortality}}{Numeric, if add_uncertainty = TRUE, cv to apply to monte carlo sample draw of each source of mortality. Defaults to 0.3 (CV = 30\%).}
     \item{\code{rate_resample_max_er}}{Numeric, single value of max ER rate from resampling. Defaults to 0.5}

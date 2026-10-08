@@ -139,7 +139,7 @@ rr <- function(
   Tau_U_total <- get_Tau_U_total(
     omega_J = omega_J,
     rec_catch_U = rec_catch_U,
-    FN_catch_U = FN_catch_U,
+    FN_catch_U = FN_catch_U
   )
   # Get escapement for each population, plot with returns to Terrace (note, will
   # only be different for Skeena aggregate and the three upper populations).
