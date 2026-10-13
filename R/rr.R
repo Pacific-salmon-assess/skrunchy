@@ -130,7 +130,7 @@ rr <- function(
   Tau_L_total <- get_Tau_L_total(
     omega_J = omega_J,
     tyee = tyee,
-    use_tyee = FALSE,
+    use_tyee = use_tyee,
     rec_catch_L = rec_catch_L,
     rec_release_L = rec_release_L,
     FN_catch_L = FN_catch_L

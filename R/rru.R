@@ -195,7 +195,7 @@ rru <- function(
     rec_catch_L = rec_catch_L,
     rec_release_L = rec_release_L,
     FN_catch_L = FN_catch_L,
-    use_tyee = FALSE,
+    use_tyee = use_tyee,
     add_uncertainty = add_uncertainty,
     cv_freshwater_mortality = cv_freshwater_mortality
   )
@@ -444,6 +444,13 @@ rru <- function(
   names(dcn) <- new_names
 
   run_reconstruction_table <- dcn
+  # pivot to long format
+  run_reconstruction_table_long <- pivot_longer(
+    run_reconstruction_table,
+    cols = !(1:4),
+    names_to = "var",
+    values_to = "value"
+  )
 
   # Sum wild spawners, total harvest, and total run by CU and return year
   dcsum <- dc |>
@@ -527,10 +534,11 @@ rru <- function(
   }
 
   run_reconstruction_table_summary
-  # results <- list(
-  #   run_reconstruction_table,
-  #   run_reconstruction_table_summary,
-  #   brood_table
-  # )
-  # results
+  results <- list(
+    run_reconstruction_table,
+    run_reconstruction_table_summary,
+    brood_table,
+    run_reconstruction_table_long
+  )
+  results
 }
