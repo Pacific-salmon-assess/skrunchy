@@ -79,7 +79,9 @@ rru_iterate <- function(
   }
 
   results
-  x <- results
+
+  # pull out summary tables
+  x <- lapply(results, `[[`, 2)
   dat <- dplyr::bind_rows(x) |>
     dplyr::ungroup()
 
@@ -135,13 +137,44 @@ rru_iterate <- function(
     names(dat)[3:6]
   )
 
-  full_results_list <- list(sdat, results, array_list)
+  # pull out full tables of variables and summarize
+  full <- lapply(results, `[[`, 4)
+  fdat <- dplyr::bind_rows(full) |>
+    dplyr::ungroup()
+  # Summarise all variables
+  fdatsum <- fdat |>
+    dplyr::select(!.data$b_brood_year) |>
+    dplyr::group_by(
+      .data$i_population,
+      .data$y_return_year,
+      .data$a_age,
+      .data$var
+    ) |>
+    dplyr::summarise(
+      dplyr::across(
+        .data$value,
+        # Get summary stats
+        list(
+          mean = ~ mean(.x, na.rm = TRUE),
+          sd = ~ sd(.x, na.rm = TRUE),
+          p5 = ~ quantile(.x, probs = 0.05, na.rm = TRUE),
+          p95 = ~ quantile(.x, probs = 0.95, na.rm = TRUE),
+          cv = ~ sd(.x, na.rm = TRUE) / mean(.x, na.rm = TRUE)
+        ),
+        .names = "{.fn}"
+      ),
+      .groups = "drop"
+    )
+
+  full_results_list <- list(sdat, results, array_list, fdatsum)
 
   if (save_outputs_iterate == TRUE) {
     run_reconstruction_table_summary_with_uncertainty <- sdat
+    run_reconstruction_table_with_uncertainty <- fdatsum
     # Save summarized/ merged data objects
     usethis::use_data(
       run_reconstruction_table_summary_with_uncertainty,
+      run_reconstruction_table_with_uncertainty,
       overwrite = TRUE
     )
   }

@@ -444,6 +444,13 @@ rru <- function(
   names(dcn) <- new_names
 
   run_reconstruction_table <- dcn
+  # pivot to long format
+  run_reconstruction_table_long <- pivot_longer(
+    run_reconstruction_table,
+    cols = !(1:4),
+    names_to = "var",
+    values_to = "value"
+  )
 
   # Sum wild spawners, total harvest, and total run by CU and return year
   dcsum <- dc |>
@@ -530,7 +537,8 @@ rru <- function(
   results <- list(
     run_reconstruction_table,
     run_reconstruction_table_summary,
-    # brood_table
+    brood_table,
+    run_reconstruction_table_long
   )
   results
 }
