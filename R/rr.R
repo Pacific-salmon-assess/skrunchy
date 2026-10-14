@@ -162,6 +162,8 @@ rr <- function(
   E_star <- get_E_star(
     E = E$E,
     omega = omega,
+    use_alternate_escapement_by_age = TRUE,
+    population_use_age_from_river_samples = "Kitsumkalum",
     K_star = K_star,
     add_6_7 = add_6_7
   )
