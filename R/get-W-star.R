@@ -56,6 +56,17 @@ get_W_star <- function(
       ] # all others
     }
   }
+  # Warning and fix for negative values
+  perc_neg <- round(mean(W_star < 0) * 100, 1)
+  if (any(W_star < 0)) {
+    warning(paste0(
+      "Negative values. ",
+      perc_neg,
+      "% of values were negative and replaced with zeros."
+    ))
+    W_star[W_star < 0] <- 0 # replace negative values with zeros
+  }
+  # Process data for result
   d <- as.data.frame.table(
     W_star,
     responseName = "W_star",
