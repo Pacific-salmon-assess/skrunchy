@@ -51,6 +51,8 @@
 #'   lower_populations = c("Lower Skeena", "Zymoetz"),
 #'   upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"),
 #'   K_star = ex_K_star,
+#'   use_alternate_escapement_by_age = TRUE,
+#'   population_use_age_from_river_samples = "Kitsumkalum",
 #'   add_6_7 = TRUE,
 #'   B_star = ex_B_star,
 #'   H_star = ex_H_star,
@@ -93,6 +95,8 @@ rru <- function(
   lower_populations = c("Lower Skeena", "Zymoetz"),
   upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"),
   K_star,
+  use_alternate_escapement_by_age = TRUE,
+  population_use_age_from_river_samples = "Kitsumkalum",
   add_6_7 = TRUE,
   B_star,
   H_star,
@@ -233,10 +237,10 @@ rru <- function(
     E = E$E,
     omega = omega_sample,
     #K_star = K_star, # FLAG: need to eventually have a way to use K_star inputs with MC sampling
-    use_alternate_escapement_by_age = FALSE,
+    use_alternate_escapement_by_age = use_alternate_escapement_by_age,
+    population_use_age_from_river_samples = population_use_age_from_river_samples,
     add_6_7 = add_6_7,
-    K_star = NULL,
-    population_use_age_from_river_samples = NULL
+    K_star = K_star,
   )
   # Get spawners for each population (accounts for brood stock removals).
   # Spawners should only be different from escapement for Skeena aggregate and
