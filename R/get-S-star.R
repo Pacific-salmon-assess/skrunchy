@@ -54,16 +54,16 @@ get_S_star <- function(
       S_star[no_brood_populations, y, a] = E_star[no_brood_populations, y, a] # all others
     }
   }
-  # Warning and fix for negative values
-  perc_neg <- round(mean(S_star < 0) * 100, 1)
-  if (any(S_star < 0)) {
-    warning(paste0(
-      "Negative values. ",
-      perc_neg,
-      "% of values were negative and replaced with zeros."
-    ))
-    S_star[S_star < 0] <- 0 # replace negative values with zeros
-  }
+  # # Warning and fix for negative values
+  # perc_neg <- round(mean(S_star < 0) * 100, 1)
+  # if (any(S_star < 0)) {
+  #   warning(paste0(
+  #     "Negative values. ",
+  #     perc_neg,
+  #     "% of values were negative and replaced with zeros."
+  #   ))
+  #   S_star[S_star < 0] <- 0 # replace negative values with zeros
+  # }
   # Process data for result
   d <- as.data.frame.table(
     S_star,
