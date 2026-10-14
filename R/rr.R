@@ -98,7 +98,8 @@ rr <- function(
   phi_dot_E,
   Q,
   name_key,
-  save_outputs = TRUE
+  save_outputs = TRUE,
+  ...
 ) {
   # # Get number of GSI samples in each year
   # n_gsi_samples <- as.numeric(table(tyee_biodata_age_sex_length_CU$y))
