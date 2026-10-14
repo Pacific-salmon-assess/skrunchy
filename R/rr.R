@@ -25,6 +25,7 @@
 #' @inheritParams get_R
 #' @param name_key Dataframe, with details on names
 #' @param save_outputs Logical, whether to save the outputs. Default is TRUE.
+#' @param ... Other arguments to pass to internal functions.
 #'
 #' @returns
 #' List of results.

@@ -36,7 +36,8 @@ rr(
   phi_dot_E,
   Q,
   name_key,
-  save_outputs = TRUE
+  save_outputs = TRUE,
+  ...
 )
 }
 \arguments{
@@ -114,6 +115,8 @@ Output from CTC Chinook model based on Kitsumkalum CWT releases (KLM).}
 \item{name_key}{Dataframe, with details on names}
 
 \item{save_outputs}{Logical, whether to save the outputs. Default is TRUE.}
+
+\item{...}{Other arguments to pass to internal functions.}
 }
 \value{
 List of results.
