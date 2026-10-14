@@ -87,6 +87,8 @@ rr <- function(
   lower_populations = c("Lower Skeena", "Zymoetz"),
   upper_populations = c("Upper Skeena", "Middle Skeena", "Large Lakes"),
   K_star,
+  use_alternate_escapement_by_age = TRUE,
+  population_use_age_from_river_samples = "Kitsumkalum",
   add_6_7 = TRUE,
   B_star,
   H_star,
@@ -162,8 +164,8 @@ rr <- function(
   E_star <- get_E_star(
     E = E$E,
     omega = omega,
-    use_alternate_escapement_by_age = TRUE,
-    population_use_age_from_river_samples = "Kitsumkalum",
+    use_alternate_escapement_by_age = use_alternate_escapement_by_age,
+    population_use_age_from_river_samples = population_use_age_from_river_samples,
     K_star = K_star,
     add_6_7 = add_6_7
   )

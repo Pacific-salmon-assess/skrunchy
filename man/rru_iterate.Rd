@@ -42,8 +42,10 @@ Note that this should include age proportion for Skeena aggregate. This is used 
     \item{\code{upper_populations}}{Character vector, names of populations i upstream of Terrace. Defaults to Upper Skeena, Middle Skeena, and Large Lakes.}
     \item{\code{lower_populations}}{Character vector, names of populations i downstream of Terrace. Defaults to Lower Skeena and Zymoetz-Fiddler.}
     \item{\code{omega}}{Numeric, array of proportions of each age with three dimensions: population (i), year (y), and age (a).}
+    \item{\code{use_alternate_escapement_by_age}}{Logical, should alternate escapement by age data be used for a population? Defaults to TRUE.}
     \item{\code{K_star}}{Numeric, array of Kitsumkalum River escapement with two dimensions: return year (y) and age (a). Calculated using
 age proportion data from spawning grounds (not from Tyee samples) for males and females separately.}
+    \item{\code{population_use_age_from_river_samples}}{Character, name of population to use alternate escapement by age data from sampling on spawning grounds. Defaults to Kitsumkalum.}
     \item{\code{add_6_7}}{If TRUE, add age 7 fish to age 6 fish of the same return year (treat age 7 returns as age 6 returns from the age 6 return year). Default is TRUE. Note that this "modifies" the brood year of age 7 fish (true brood year +1).}
     \item{\code{B_star}}{Numeric, array of number of brood stock adult Chinook taken from the Kitsumkalum river, by year (y) and age (a).}
     \item{\code{H_star}}{Numeric, array of number of hatchery origin spawners returning to the population with a hatchery (e.g., Kitsumkalum River), by year (y) and age (a). Excludes age 3 fish (jacks).
