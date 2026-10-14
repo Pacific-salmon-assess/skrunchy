@@ -245,11 +245,11 @@ rru <- function(
   # Get spawners for each population (accounts for brood stock removals).
   # Spawners should only be different from escapement for Skeena aggregate and
   # Kitsumkalum, since brood removals are only for Kitsumkalum.
-  S_star <- get_S_star(E_star = E_star$E_star, B_star = B_star)
+  S_star <- pmax(get_S_star(E_star = E_star$E_star, B_star = B_star), 0)
   # Get wild spawners for each population (accounts for hatchery origin spawners),
   # Wild spawners should only be different from spawners for Skeena aggregate and
   # Kitsumkalum, since hatchery origin spawners only occur for Kitsumkalum.
-  W_star <- get_W_star(S_star = S_star$S_star, H_star = H_star)
+  W_star <- pmax(get_W_star(S_star = S_star$S_star, H_star = H_star), 0)
   # Get proportion wild spawners for each population. Should only be <1
   # for Skeena aggregate and Kitsumkalum, since hatchery origin spawners only occur
   # for Kitsumkalum. Note this is not real data, p is very high for Kitsumkalum across years.
