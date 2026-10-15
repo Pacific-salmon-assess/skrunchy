@@ -186,7 +186,7 @@ rru <- function(
   X <- get_X(
     P_tilde = P_tilde_sample,
     sigma_P_tilde = P_tilde$sigma_P_tilde,
-    K = K_sample,
+    K = K,
     sigma_K = sigma_K,
     y_K = y_K
   )
@@ -216,7 +216,7 @@ rru <- function(
   # only be different for Skeena aggregate and the three upper populations).
   # See below for $T_U$ calculations.
   E <- get_E(
-    K = K_sample,
+    K = K,
     X = X$X,
     Tau_U = Tau_U_total,
     known_population = known_population, # "Kitsumkalum",
@@ -236,11 +236,10 @@ rru <- function(
   E_star <- get_E_star(
     E = E$E,
     omega = omega_sample,
-    #K_star = K_star, # FLAG: need to eventually have a way to use K_star inputs with MC sampling
+    K_star = K_star, # FLAG: need to eventually have a way to use K_star inputs with MC sampling
     use_alternate_escapement_by_age = use_alternate_escapement_by_age,
     population_use_age_from_river_samples = population_use_age_from_river_samples,
-    add_6_7 = add_6_7,
-    K_star = K_star
+    add_6_7 = add_6_7
   )
   # Get spawners for each population (accounts for brood stock removals).
   # Spawners should only be different from escapement for Skeena aggregate and
