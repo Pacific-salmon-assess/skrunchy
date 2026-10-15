@@ -194,7 +194,8 @@ rru <- function(
   # Estimate terminal mortalities, total by year
   # Get freshwater terminal mortalities in the lower Skeena by year
   Tau_L_total <- get_Tau_L_total(
-    omega_J = omega_J_sample,
+    #omega_J = omega_J_sample,
+    omega_J = omega_J,
     tyee = tyee,
     rec_catch_L = rec_catch_L,
     rec_release_L = rec_release_L,
@@ -205,7 +206,8 @@ rru <- function(
   )
   # Get freshwater terminal mortalities in the upper Skeena by year
   Tau_U_total <- get_Tau_U_total(
-    omega_J = omega_J_sample,
+    #omega_J = omega_J_sample,
+    omega_J = omega_J,
     rec_catch_U = rec_catch_U,
     FN_catch_U = FN_catch_U,
     add_uncertainty = add_uncertainty,
@@ -235,7 +237,8 @@ rru <- function(
 
   E_star <- get_E_star(
     E = E$E,
-    omega = omega_sample,
+    #omega = omega_sample,
+    omega = omega,
     K_star = K_star, # FLAG: need to eventually have a way to use K_star inputs with MC sampling
     use_alternate_escapement_by_age = use_alternate_escapement_by_age,
     population_use_age_from_river_samples = population_use_age_from_river_samples,
@@ -257,7 +260,8 @@ rru <- function(
   # Estimate freshwater terminal mortalities in the lower Skeena by population, year, and age.
   tau_L <- get_tau_L(
     Tau_L = Tau_L_total,
-    omega = omega_sample,
+    #omega = omega_sample,
+    omega = omega,
     P_tilde = P_tilde_sample,
     aggregate_population = aggregate_population, # "Skeena",
     add_6_7 = add_6_7
@@ -266,7 +270,8 @@ rru <- function(
   # year, and age. Should be 0 for Kitsumkalum, Lower Skeena, and Zymoetz-Fiddler.
   tau_U <- get_tau_U(
     Tau_U = Tau_U_total,
-    omega = omega_sample,
+    #omega = omega_sample,
+    omega = omega,
     P_tilde = P_tilde_sample,
     aggregate_population = aggregate_population, # "Skeena",
     upper_populations = upper_populations, # c("Middle Skeena", "Large Lakes", "Upper Skeena"),
